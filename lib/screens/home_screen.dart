@@ -1,237 +1,125 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/config_screen.dart';
+import 'package:flutter_application_1/services/service_api.dart';
+import 'package:flutter_application_1/themes/theme_apk.dart';
+import 'package:flutter_application_1/widget/card_widget.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  bool fondo = false;
-  bool ocultar = true;
-
-  @override
-  void initState() {
-    super.initState();
-    Timer.periodic(Duration(seconds: 1, milliseconds: 300), (timer) {
-      setState(() {
-        fondo = !fondo;
-      });
-    });
-  }
-
+class HomeScreen extends StatelessWidget{
+  HomeScreen({super.key});
+  Map? datosG;
   @override
   Widget build(BuildContext context) {
-    final medidas = MediaQuery.of(context).size;
-    final ancho = medidas.width;
-    final alto = medidas.height;
-
+    final ancho = MediaQuery.of(context).size.width;
+    final alto = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-            top: alto * 0.3,
-            left: ancho * 0.05,
-            child: AnimatedOpacity(
-              duration: Duration(seconds: 1),
-              opacity: fondo ? 1 : 0,
-              child: AnimatedContainer(
-                duration: Duration(seconds: 2),
-                width: fondo ? ancho : 0,
-                height: fondo ? alto * 0.5 : 0,
+      backgroundColor: ThemeApk.fondoModoOscuro,
+      appBar: AppBar(
+        elevation: 1.1,
+        backgroundColor: ThemeApk.fondoModoOscuro,
+        shadowColor: Colors.white,
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: 
+        Text(
+          "ANüikii",
+          style: TextStyle(
+            fontSize: ancho * 0.065,
+            color: Color.fromARGB(255, 164, 122, 243),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              // Navigator.pushReplacementNamed(context, "/config");
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ConfigScreen(dato: datosG),));
+            },
+            child: Card(
+              child: Container(
+                width: 30,
+                height: 30,
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(34, 101, 72, 189),
                   borderRadius: BorderRadius.circular(1000),
                 ),
+                child: Icon(Icons.wifi,color: Colors.green,),
               ),
             ),
+          )
+        ],
+      ),
+      body: Consumer<ServiceApi>(builder: (context, value, child) {
+        final dato = value.datos;
+        datosG = dato;
+        return dato!.isEmpty
+        ? Center(
+          child: CircularProgressIndicator(
+            color: ThemeApk.fondoModoOscuro,
           ),
-          Center(
-            child: Card(
-              color: Color.fromARGB(240, 29, 25, 41),
-              child: Container(
-                width: ancho * 0.9,
-                height: alto * 0.7,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xff4B3B68), width: 2),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 24,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+        )
+        :Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  CardWidget(
+                    colorCard: Colors.transparent,
+                    shadowCard: Colors.transparent,
+                    elevacion: 1,
+                    ancho: ancho*0.9, 
+                    alto: alto*0.1,
+                    decoracion: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: ThemeApk.bordeModoOscuro
+                      ),
+                      color: ThemeApk.fondoModoOscuro
+                      
+                    ),
+                    contenido: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            alignment: Alignment.center,
-                            width: 130,
-                            height: 130,
+                            width: 50,
+                            height: 50,
                             decoration: BoxDecoration(
-                              // color: const Color.fromARGB(153, 77, 172, 14),
-                              borderRadius: BorderRadius.circular(1000),
-                              image: DecorationImage(
-                                image: AssetImage("assets/logo.png"),
-                                fit: BoxFit.cover,
-                              ),
+                              color: ThemeApk.verdeModoOscuro,
+                              borderRadius: BorderRadius.circular(1000)
                             ),
-                            // child: Text("Logo"),
+                            child: Icon(Icons.person_3_rounded),
+                          ),
+                          Container(
+                            width: ancho*0.5,
+                            height: 50,
+                            child: Column(
+                              children: [
+                                Text("¡Hola, ${dato["rol"]}!",style: TextStyle(
+                                  fontSize: ancho*0.05
+                                ),),
+                                Text("Ficha: ${dato["ficha"]}",style: TextStyle(
+                                  fontSize: ancho*0.03
+                                ))
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: ancho*0.09,
+                            height: 50,
                           ),
                         ],
                       ),
-                      SizedBox(height: alto * 0.04),
-                      Text(
-                        "ANüikii",
-                        style: TextStyle(
-                          fontSize: ancho * 0.07,
-                          color: Color.fromARGB(255, 164, 122, 243),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: alto * 0.04),
-                      SizedBox(
-                        width: ancho * 0.75,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Número de documento"),
-                            SizedBox(height: alto * 0.01),
-                            TextField(
-                              onTapOutside: (event) {
-                                FocusScope.of(context).unfocus();
-                              },
-                              style: TextStyle(color: Colors.white),
-                              cursorColor: Colors.white,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 164, 122, 243),
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 164, 122, 243),
-                                  ),
-                                ),
-                                prefixIcon: Icon(Icons.badge_outlined),
-                                prefixIconColor: Color.fromARGB(
-                                  255,
-                                  164,
-                                  122,
-                                  243,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      //contraseña
-                      SizedBox(height: alto * 0.04),
-                      SizedBox(
-                        width: ancho * 0.75,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Contraseña"),
-                            SizedBox(height: alto * 0.01),
-                            TextField(
-                              onTapOutside: (event) {
-                                FocusScope.of(context).unfocus();
-                              },
-                              style: TextStyle(color: Colors.white),
-                              cursorColor: Colors.white,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 164, 122, 243),
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 164, 122, 243),
-                                  ),
-                                ),
-                                prefixIcon: Icon(Icons.key),
-                                prefixIconColor: Color.fromARGB(
-                                  255,
-                                  164,
-                                  122,
-                                  243,
-                                ),
-                                suffixIcon: GestureDetector(
-                                  onTap: () {
-                                    setState(() {});
-                                    ocultar = !ocultar;
-                                  },
-                                  child: Icon(
-                                    ocultar
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                  ),
-                                ),
-                                suffixIconColor: ocultar
-                                    ? Colors.grey
-                                    : Colors.white,
-                              ),
-                            ),
-                            SizedBox(height: alto * 0.02),
-                            Center(
-                              child: Text(
-                                "Ingresar con tus credenciales asignadas del sena",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: ancho * 0.03,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: alto * 0.01),
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xffA9CA19),
-                                fixedSize: Size(ancho * 0.75, alto * 0.02),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Iniciar Sesión",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  Icon(
-                                    Icons.arrow_right_outlined,
-                                    size: ancho * 0.1,
-                                    color: Colors.black,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                    ),
+                  )
+                ],
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },),
     );
   }
 }
