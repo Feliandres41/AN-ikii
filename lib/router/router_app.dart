@@ -8,6 +8,7 @@ class RouterApp {
     "/":(context)=>SplashScreen(),
     "/login":(context)=>LoginScreen(),
     "/home":(context)=>HomeScreen(),
+    "/config":(context)=>ConfigScreen()
     // "/config":(context)=>ConfigScreen()
   };
 }

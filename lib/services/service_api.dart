@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ServiceApi extends ChangeNotifier{
-  final _url = "http://10.4.62.45:8000/api";
+  final _url = "http://10.4.55.22:8000/api";
   String? _token;
   Map? datos;
 

@@ -263,6 +263,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               SizedBox(height: alto * 0.01),
                               ElevatedButton(
                                 onPressed: () async{
+                                  setState(() {
+                                    errorDocument = false;
+                                    errorPassword = false;
+                                  });
                                   if(formKeyDocument.currentState!.validate() && formKeyPassword.currentState!.validate()){
                                     int code = await Provider.of<ServiceApi>(context,listen: false).login(_document.text, _password.text);
                                     if(code==200){
@@ -305,7 +309,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     Icon(
                                       Icons.arrow_right_rounded,
-                                      size: ancho * 0.1,
+                                      size: ancho * 0.08,
                                       color: Colors.black,
                                     ),
                                   ],
