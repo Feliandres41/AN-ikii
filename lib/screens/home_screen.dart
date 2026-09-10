@@ -1,64 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/config_screen.dart';
 import 'package:flutter_application_1/services/service_api.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
+import 'package:flutter_application_1/widget/app_bar_widget.dart';
 import 'package:flutter_application_1/widget/bottom_navigation_bar_widget.dart';
 import 'package:flutter_application_1/widget/card_widget.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
   Map? datosG;
   @override
   Widget build(BuildContext context) {
     final ancho = MediaQuery.of(context).size.width;
-    final tamanoTitulo = (ancho * 0.065).clamp(22.0, 30.0).toDouble();
+    // final tamanoTitulo = (ancho * 0.065).clamp(22.0, 30.0).toDouble();
     return Scaffold(
       backgroundColor: Provider.of<ThemeApk>(context).cardDesc,
-      appBar: AppBar(
-        leading: Container(
-          width: ancho * 0.2,
-          height: ancho * 0.2,
-          decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage("assets/logo.png")),
-          ),
-        ),
-        elevation: 1.1,
-        backgroundColor: Provider.of<ThemeApk>(context).cardDesc,
-        shadowColor: Colors.white,
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Text(
-          "ANüikii",
-          style: TextStyle(
-            fontSize: tamanoTitulo,
-            color: Color(0xFFA47AF3),
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              // Navigator.pushReplacementNamed(context, "/config");
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => ConfigScreen()),
-              );
-            },
-            child: Card(
-              shadowColor: Colors.transparent,
-              color: Colors.transparent,
-              child: Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(1000),
-                ),
-                child: Icon(Icons.wifi, color: Colors.green),
-              ),
-            ),
-          ),
-        ],
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: AppBarWidget(),
       ),
       body: Consumer<ServiceApi>(
         builder: (context, value, child) {
@@ -164,3 +124,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+

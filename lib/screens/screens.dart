@@ -7,5 +7,11 @@ export './login_screen.dart';
 //home
 export './login_screen.dart';
 
-//config
+//perfil
 export './config_screen.dart';
+
+//ranking
+export './ranking_screen.dart';
+
+//camera
+export './camera_screen.dart';

@@ -217,7 +217,9 @@ class _ConfigScreenState extends State<ConfigScreen> {
                         colorCard: Colors.transparent,
                         ancho: ancho * 0.9,
                         alto: esAprendiz
-                            ? (alto * 0.19).clamp(156.0, 184.0).toDouble()
+                            ?
+                              alto*0.22
+                              // (alto * 0.19).clamp(156.0, 184.0).toDouble()
                             : 88.0,
                         elevacion: 0,
                         decoracion: BoxDecoration(
@@ -238,34 +240,45 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                     bottom: 8,
                                   ),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Expanded(
-                                        flex: 5,
-                                        child: Text(
-                                          "Nombre completo",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: tamanoEtiqueta,
-                                            color: Colors.grey,
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        // mainAxisAlignment:
+                                        //     MainAxisAlignment.center,
+                                        children: [
+                                          // Expanded(
+                                          //   flex: 5,
+                                          //   child: Text(
+                                          //     "Nombre completo",
+                                          //     maxLines: 1,
+                                          //     overflow: TextOverflow.ellipsis,
+                                          //     style: TextStyle(
+                                          //       fontSize: tamanoEtiqueta,
+                                          //       color: Colors.grey,
+                                          //     ),
+                                          //   ),
+                                          // ),
+                                          // const SizedBox(width: 8),
+                                          Text(
+                                            "Nombre completo",
+                                            style: TextStyle(
+                                              fontSize: tamanoEtiqueta,
+                                              color: Colors.grey,
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                          dato?["nombre"],
-                                          style: TextStyle(
-                                            fontSize: tamanoValor,
-                                            fontWeight: FontWeight.w600,
+                                          Text(
+                                            dato?["nombre"],
+                                            style: TextStyle(
+                                              fontSize: tamanoValor,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.center,
                                           ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.right,
-                                        ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -308,39 +321,40 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                 Padding(
                                   padding: EdgeInsets.only(
                                     left: ancho * 0.04,
-                                    right: ancho * 0.04,
-                                    bottom: 8,
-                                    top: 6,
+                                    // right: ancho * 0.04,
+                                    // bottom: 8,
+                                    // top: 6,
                                   ),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Expanded(
-                                        flex: 5,
-                                        child: Text(
-                                          "Programa",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: tamanoEtiqueta,
-                                            color: Colors.grey,
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        // mainAxisAlignment:
+                                        //     MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Programa",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: tamanoEtiqueta,
+                                              color: Colors.grey,
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                          dato?["programa"],
-                                          style: TextStyle(
-                                            fontSize: tamanoValor,
-                                            fontWeight: FontWeight.w600,
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            dato?["programa"],
+                                            style: TextStyle(
+                                              fontSize: tamanoValor,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.right,
                                           ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.right,
-                                        ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -349,39 +363,40 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                 Padding(
                                   padding: EdgeInsets.only(
                                     left: ancho * 0.04,
-                                    right: ancho * 0.04,
-                                    bottom: 8,
-                                    top: 4,
+                                    // right: ancho * 0.04,
+                                    // bottom: 8,
+                                    // top: 4,
                                   ),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Expanded(
-                                        flex: 5,
-                                        child: Text(
-                                          "Ficha de caracterización",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: tamanoEtiqueta,
-                                            color: Colors.grey,
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        // mainAxisAlignment:
+                                        //     MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Ficha de caracterización",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: tamanoEtiqueta,
+                                              color: Colors.grey,
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        flex: 4,
-                                        child: Text(
-                                          '${dato?["ficha"]}',
-                                          style: TextStyle(
-                                            fontSize: tamanoValor,
-                                            fontWeight: FontWeight.bold,
+                                          // const SizedBox(width: 8),
+                                          Text(
+                                            '${dato?["ficha"]}',
+                                            style: TextStyle(
+                                              fontSize: tamanoValor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.right,
                                           ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.right,
-                                        ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -425,21 +440,31 @@ class _ConfigScreenState extends State<ConfigScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                width: alto * 0.05,
-                                height: alto * 0.05,
+                              Padding(
+                                padding: EdgeInsets.only(right: ancho * 0.04),
+                                child: Container(
+                                  width: alto * 0.05,
+                                  height: alto * 0.05,
 
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: !estado
-                                      ? const Color.fromARGB(135, 104, 58, 183)
-                                      : Colors.white,
-                                ),
-                                child: Icon(
-                                  !estado
-                                      ? Icons.nightlight_outlined
-                                      : Icons.sunny,
-                                  color: !estado ? Colors.white : Colors.amber,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    color: !estado
+                                        ? const Color.fromARGB(
+                                            135,
+                                            104,
+                                            58,
+                                            183,
+                                          )
+                                        : Colors.white,
+                                  ),
+                                  child: Icon(
+                                    !estado
+                                        ? Icons.nightlight_outlined
+                                        : Icons.sunny,
+                                    color: !estado
+                                        ? Colors.white
+                                        : Colors.amber,
+                                  ),
                                 ),
                               ),
                               Expanded(
@@ -545,29 +570,33 @@ class _ConfigScreenState extends State<ConfigScreen> {
 
                       SizedBox(height: alto * 0.04),
 
-                      SizedBox(
-                        width: ancho * 0.9,
-                        height: 50,
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            Provider.of<ServiceApi>(
-                              context,
-                              listen: false,
-                            ).logout();
-                            Navigator.pushReplacementNamed(context, "/login");
-                          },
-                          icon: const Icon(Icons.logout, size: 20),
-                          label: const Text("Cerrar sesión"),
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: const Color(0xffff6b6b),
-                            backgroundColor: const Color(0xff32191d),
-                            elevation: 0,
-                            side: const BorderSide(color: Color(0xff74302f)),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            textStyle: const TextStyle(
-                              fontWeight: FontWeight.w600,
+                      Padding(
+                        padding: EdgeInsets.only(bottom: alto * 0.04),
+                        child: SizedBox(
+                          width: ancho * 0.9,
+                          height: 50,
+                          child: ElevatedButton.icon(
+                            onPressed: () async {
+                              final serviceApi = Provider.of<ServiceApi>(
+                                context,
+                                listen: false,
+                              );
+                              Navigator.pushReplacementNamed(context, "/login");
+                              await serviceApi.logout();
+                            },
+                            icon: const Icon(Icons.logout, size: 20),
+                            label: const Text("Cerrar sesión"),
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: const Color(0xffff6b6b),
+                              backgroundColor: const Color(0xff32191d),
+                              elevation: 0,
+                              side: const BorderSide(color: Color(0xff74302f)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              textStyle: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),

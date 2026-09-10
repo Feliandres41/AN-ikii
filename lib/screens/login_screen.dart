@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/service_api.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +17,24 @@ class _LoginScreenState extends State<LoginScreen> {
   final _password = TextEditingController();
   final GlobalKey<FormState> formKeyDocument = GlobalKey<FormState>();
   final GlobalKey<FormState> formKeyPassword = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _verificarSesion();
+  }
+
+  Future<void> _verificarSesion() async {
+    final sesionActiva = await Provider.of<ServiceApi>(
+      context,
+      listen: false,
+    ).restaurarSesion();
+    if (!mounted) return;
+
+    if (sesionActiva) {
+      Navigator.pushReplacementNamed(context, "/home");
+    }
+  }
 
   @override
   void dispose(){
@@ -69,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(
                   width: ancho * 0.9,
                   height: errorDocument || errorPassword
-                  ?alto * 0.75
+                  ?alto * 0.772
                   :alto * 0.78,
                   decoration: BoxDecoration(
                     border: Border.all(color: Color(0xff4B3B68), width: 2),

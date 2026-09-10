@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/camera_screen.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:provider/provider.dart';
 
@@ -64,7 +65,8 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: 
+                  MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
                       onTap: () {
@@ -125,25 +127,30 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
                     //     ],
                     //   ),
                     // ),
-                    SizedBox(width: ancho * 0.0),
+                    SizedBox(width: ancho * 0.1),
 
-                    Column(
-                      children: [
-                        Icon(
-                          Icons.leaderboard_outlined,
-                          color: nombre == "ranking"
-                              ? ThemeApk.verdeModoOscuro
-                              : Colors.grey,
-                        ),
-                        Text(
-                          "Ranking",
-                          style: TextStyle(
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacementNamed(context, "/ranking");
+                      },
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.leaderboard_outlined,
                             color: nombre == "ranking"
                                 ? ThemeApk.verdeModoOscuro
                                 : Colors.grey,
                           ),
-                        ),
-                      ],
+                          Text(
+                            "Ranking",
+                            style: TextStyle(
+                              color: nombre == "ranking"
+                                  ? ThemeApk.verdeModoOscuro
+                                  : Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -174,17 +181,24 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
             ),
             AnimatedPositioned(
               duration: Duration(milliseconds: 800),
-              bottom: altoBarra - tamanoCamara / 2,
+              bottom: 
+              nombre != "camara"
+              ?altoBarra - tamanoCamara / 2
+              : altoBarra - tamanoCamara / 1,
               // estado ? 10
               // : alto*0.04,
-              left: ancho / 2 - tamanoCamara / 2,
+              left: ancho / 2 - tamanoCamara / 1.5,
               child: GestureDetector(
                 onTap: () {
-                  setState(() {
-                    estado = !estado;
-                  });
-                  !estado ? animacion() : null;
-                  Provider.of<ThemeApk>(context, listen: false).modo(estado);
+                  if(nombre!="camara"){
+                    print("Navegando");
+                    // setState(() {
+                    //   estado = !estado;
+                    // });
+                    // !estado ? animacion() : null;
+                    // Provider.of<ThemeApk>(context, listen: false).modo(estado);
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CameraScreen(),));
+                  }
                 },
                 child: Container(
                   width: tamanoCamara,
@@ -199,11 +213,13 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
                     size: tamanoIconoCamara,
                     color:
                         // Color(0xFFA47AF3)
-                        Colors.white,
+                        nombre == "camara"
+                        ?Colors.white
+                        : Colors.black,
                   ),
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),

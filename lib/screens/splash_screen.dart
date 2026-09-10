@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -22,11 +21,11 @@ class _SplashScreenState extends State<SplashScreen> {
         textEstado = true;
       });
     });
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         a++;
       });
-      if(a==6){
+      if (a == 6) {
         timer.cancel();
         Navigator.pushReplacementNamed(context, "/login");
       }
