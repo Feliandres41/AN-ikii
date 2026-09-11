@@ -70,7 +70,9 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacementNamed(context, "/home");
+                        nombre!="inicio"
+                        ?Navigator.pushReplacementNamed(context, "/home")
+                        : null;
                       },
                       child: Column(
                         children: [
@@ -94,7 +96,9 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
                     //hstorial
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacementNamed(context, "/home");
+                        nombre!="historial"
+                        ?Navigator.pushReplacementNamed(context, "/history")
+                        :null;
                       },
                       child: Column(
                         children: [
@@ -131,7 +135,9 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
 
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacementNamed(context, "/ranking");
+                        nombre!="ranking"
+                        ?Navigator.pushReplacementNamed(context, "/ranking")
+                        :null;
                       },
                       child: Column(
                         children: [
@@ -154,7 +160,9 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacementNamed(context, "/config");
+                        nombre!="perfil"
+                        ?Navigator.pushReplacementNamed(context, "/config")
+                        :null;
                       },
                       child: Column(
                         children: [
