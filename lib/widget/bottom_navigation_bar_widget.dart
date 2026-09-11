@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/model_ia_config.dart';
 import 'package:flutter_application_1/screens/camera_screen.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:provider/provider.dart';
@@ -11,10 +13,13 @@ class BottomnavigationbarWidget extends StatefulWidget {
     required this.ancho,
     required this.alto,
     required this.nombrePantalla,
+    this.tomarFoto,
+
   });
   double ancho;
   double alto;
   String nombrePantalla;
+  final Future<XFile?> Function()? tomarFoto;
 
   @override
   State<BottomnavigationbarWidget> createState() =>
@@ -197,7 +202,7 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
               // : alto*0.04,
               left: ancho / 2 - tamanoCamara / 1.5,
               child: GestureDetector(
-                onTap: () {
+                onTap: () async {
                   if(nombre!="camara"){
                     print("Navegando");
                     // setState(() {
@@ -206,6 +211,14 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
                     // !estado ? animacion() : null;
                     // Provider.of<ThemeApk>(context, listen: false).modo(estado);
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CameraScreen(),));
+                  }else{
+                    final foto = await widget.tomarFoto?.call();
+                    if (foto == null) {
+                      return;
+                    }
+
+                    final imagenBytes = await foto.readAsBytes();
+                    await ModelIaConfig.mandarImagen(imagenBytes);
                   }
                 },
                 child: Container(
@@ -216,7 +229,8 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
                     color: const Color(0xDFAACA19),
                     borderRadius: BorderRadius.circular(200),
                   ),
-                  child: Icon(
+                  child: 
+                  Icon(
                     Icons.camera_alt_outlined,
                     size: tamanoIconoCamara,
                     color:
