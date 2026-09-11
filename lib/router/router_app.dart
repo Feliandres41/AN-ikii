@@ -10,7 +10,8 @@ class RouterApp {
     "/home":(context)=>HomeScreen(),
     "/ranking":(context)=>RankingScreen(),
     "/camera":(context)=>CameraScreen(),
-    "/config":(context)=>ConfigScreen()
+    "/config":(context)=>ConfigScreen(),
+    "/history":(context)=>HistoryScreen()
     // "/config":(context)=>ConfigScreen()
   };
 }

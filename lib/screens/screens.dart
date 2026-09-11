@@ -15,3 +15,6 @@ export './ranking_screen.dart';
 
 //camera
 export './camera_screen.dart';
+
+//historial
+export './history_screen.dart';

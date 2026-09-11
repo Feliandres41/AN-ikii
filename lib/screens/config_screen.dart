@@ -134,15 +134,12 @@ class _ConfigScreenState extends State<ConfigScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CardWidget(
-                            colorCard: Colors.transparent,
-                            shadowCard: Colors.transparent,
                             ancho: ancho * 0.9,
                             alto: alto * 0.05,
-                            elevacion: 0,
                             decoracion: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
-                              // color: ThemeApk.fondoModoOscuro,
-                              color: Provider.of<ThemeApk>(context).cardDesc,
+                              color: ThemeApk.fondoModoOscuro,
+                              // color: Provider.of<ThemeApk>(context).cardDesc,
                               border: Border.all(
                                 color: ThemeApk.bordeModoOscuro,
                                 width: 0.5,
@@ -158,12 +155,12 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                 Container(
                                   width: ancho * 0.425,
                                   decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: ThemeApk.verdeModoOscuro,
-                                      width: 0.5,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Color.fromARGB(47, 170, 202, 25),
+                                    // border: Border.all(
+                                    //   color: ThemeApk.verdeModoOscuro,
+                                    //   width: 0.5,
+                                    // ),
+                                    // borderRadius: BorderRadius.circular(20),
+                                    // color: Color.fromARGB(47, 170, 202, 25),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.only(
@@ -177,9 +174,10 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                       child: Text(
                                         "${dato?['rol']} - SENA",
                                         style: TextStyle(
-                                          color: temas
-                                              .textcardDesc, //Modo claro/Modo oscuro
-                                          fontSize: (ancho * 0.04).clamp(
+                                          color: Colors.white,
+                                          // temas
+                                          //     .verdeModoOscuroProvider, //Modo claro/Modo oscuro
+                                          fontSize: (ancho * 0.05).clamp(
                                             14.0,
                                             20.0,
                                           ),
@@ -213,15 +211,14 @@ class _ConfigScreenState extends State<ConfigScreen> {
                       SizedBox(height: alto * 0.02),
 
                       CardWidget(
-                        shadowCard: Colors.transparent,
-                        colorCard: Colors.transparent,
                         ancho: ancho * 0.9,
                         alto: esAprendiz
                             ?
+                            //fisico
                               alto*0.22
+                              //emulador
                               // (alto * 0.19).clamp(156.0, 184.0).toDouble()
                             : 88.0,
-                        elevacion: 0,
                         decoracion: BoxDecoration(
                           // color: ThemeApk.fondoModoOscuro,
                           color: temas.cardDesc,
@@ -424,11 +421,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
                       ),
                       SizedBox(height: alto * 0.02),
                       CardWidget(
-                        shadowCard: Colors.transparent,
-                        colorCard: Colors.transparent,
                         ancho: ancho * 0.9,
                         alto: alto * 0.1,
-                        elevacion: 0,
                         decoracion: BoxDecoration(
                           // color: ThemeApk.fondoModoOscuro,
                           color: temas.cardDesc,
@@ -495,7 +489,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                               Padding(
                                 padding: EdgeInsets.only(right: ancho * 0.02),
                                 child: Switch(
-                                  value: estado,
+                                  value: Provider.of<ThemeApk>(context).claro,
                                   onChanged: (value) {
                                     setState(() {
                                       estado = value;
