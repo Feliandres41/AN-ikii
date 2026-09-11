@@ -15,11 +15,22 @@ class CameraScreen extends StatefulWidget{
 class _CameraScreenState extends State<CameraScreen> {
   bool ayuda = true;
   bool cargando = false;
+  //camara
+  static CameraController? _controller;
+  static List<CameraDescription> cameras = [];
 
-  CameraController? _controller;
-  List<CameraDescription> cameras = [];
+  Future<XFile?> tomarFoto() async {
+    final controller = _controller;
+    if (controller == null || !controller.value.isInitialized) {
+      return null;
+    }
+
+    return controller.takePicture();
+  }
+
   @override
   void initState(){
+    super.initState();
     _initializeCamera();
   }
   Future<void> _initializeCamera() async {
@@ -40,8 +51,11 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     final ancho = MediaQuery.of(context).size.width;
     final alto = MediaQuery.of(context).size.height;
+    final altoBarra = (alto * 0.09).clamp(64.0, 76.0).toDouble();
+    final tamanoCamara = (ancho * 0.15).clamp(56.0, 72.0).toDouble();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -190,7 +204,9 @@ class _CameraScreenState extends State<CameraScreen> {
       bottomNavigationBar: BottomnavigationbarWidget(
         ancho: ancho, 
         alto: alto, 
-        nombrePantalla: "camara"),
+        nombrePantalla: "camara",
+        tomarFoto: tomarFoto,
+      ),
     );
   }
 }

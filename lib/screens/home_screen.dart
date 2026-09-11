@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/voice_config.dart';
 import 'package:flutter_application_1/models/glosario_model.dart';
 import 'package:flutter_application_1/services/service_api.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
@@ -517,7 +518,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               Transform.translate(
                                                                 offset: Offset(0, -5),
                                                                 child: IconButton(onPressed: () {
-                                                                  
+                                                                  VoiceConfig.hablar(elemento.nombreEng);
                                                                 }, icon: Icon(Icons.volume_up_outlined)),
                                                               )
                                                             ]

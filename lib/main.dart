@@ -5,7 +5,8 @@ import 'package:flutter_application_1/services/service_api.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main(){
+  
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   runApp(ProviderApi());
