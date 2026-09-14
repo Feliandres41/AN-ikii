@@ -27,33 +27,24 @@ class _HomeScreenState extends State<HomeScreen> {
     //1
     GlosarioModel(
       nombreEsp: "Desarrollo de software",
-      nombreEng: "Software Development"
+      nombreEng: "Software Development",
     ),
     //2
-    GlosarioModel(
-      nombreEsp: "Base de datos",
-      nombreEng: "Database"
-    ),
+    GlosarioModel(nombreEsp: "Base de datos", nombreEng: "Database"),
     //3
     GlosarioModel(
       nombreEsp: "Interfaz de usuario",
-      nombreEng: "User Interface (UI)"
+      nombreEng: "User Interface (UI)",
     ),
     //4
-    GlosarioModel(
-      nombreEsp: "Programación",
-      nombreEng: "Programming"
-    ),
+    GlosarioModel(nombreEsp: "Programación", nombreEng: "Programming"),
     //5
-    GlosarioModel(
-      nombreEsp: "Depuración de código",
-      nombreEng: "Debugging"
-    ),
+    GlosarioModel(nombreEsp: "Depuración de código", nombreEng: "Debugging"),
     //6
     GlosarioModel(
       nombreEsp: "Control de versiones",
-      nombreEng: "Version Control"
-    )
+      nombreEng: "Version Control",
+    ),
   ];
 
   ////////
@@ -63,9 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int _cantidad = Provider.of<ServiceApi>(
-      context,
-    ).historial["historial"].length;
+    final historial = Provider.of<ServiceApi>(context).historial;
+    final listaHistorial = historial["historial"] as List? ?? [];
+    final _cantidad = listaHistorial.length;
     final ancho = MediaQuery.of(context).size.width;
     final alto = MediaQuery.of(context).size.height;
     final temas = Provider.of<ThemeApk>(context);
@@ -73,9 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
     temas.coloresDeArranque();
 
     return Scaffold(
-      backgroundColor: !temas.claro
-          ? Color(0xff1F1A38)
-          : temas.fondoClaro,
+      backgroundColor: !temas.claro ? Color(0xff1F1A38) : temas.fondoClaro,
 
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -119,15 +108,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 context,
                               ).bordercardDesc,
                             ),
-                            color: temas.fondoCartaModo
+                            color: temas.fondoCartaModo,
                           ),
 
                           contenido: Padding(
                             padding: const EdgeInsets.only(left: 15),
 
                             child: Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                               children: [
                                 SizedBox(
@@ -137,20 +125,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: DecoratedBox(
                                     decoration: BoxDecoration(
                                       color: ThemeApk.verdeModoOscuro,
-                                      borderRadius:
-                                          BorderRadius.circular(1000),
+                                      borderRadius: BorderRadius.circular(1000),
                                     ),
 
-                                    child: const Icon(
-                                      Icons.person_3_rounded
-                                    ),
+                                    child: const Icon(Icons.person_3_rounded),
                                   ),
                                 ),
 
                                 Expanded(
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
 
                                     children: [
                                       FittedBox(
@@ -187,9 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
 
-                        SizedBox(
-                          height: alto * 0.004,
-                        ),
+                        SizedBox(height: alto * 0.004),
 
                         // informacion general de la aplicacion
                         CardWidget(
@@ -203,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 context,
                               ).bordercardDesc,
                             ),
-                            color: temas.fondoCartaModo
+                            color: temas.fondoCartaModo,
                           ),
 
                           contenido: Padding(
@@ -214,8 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
 
                             child: Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
 
                               children: [
                                 Text(
@@ -224,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: TextStyle(
                                     color: temas.letrasModoOscuro,
                                     fontSize: ancho * 0.055,
-                                    fontWeight: FontWeight.bold
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
 
@@ -240,9 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
 
-                                SizedBox(
-                                  height: alto * 0.01,
-                                ),
+                                SizedBox(height: alto * 0.01),
 
                                 Row(
                                   spacing: ancho * 0.03,
@@ -253,15 +232,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       alto: ancho * 0.08,
 
                                       decoracion: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10),
-                                        color: Color(0xFFA47AF3)
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Color(0xFFA47AF3),
                                       ),
 
                                       contenido: Icon(
                                         Icons.volume_up_outlined,
                                         color: temas.blanco,
-                                      )
+                                      ),
                                     ),
 
                                     Text(
@@ -270,15 +248,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                       style: TextStyle(
                                         color: temas.letrasModoOscuro,
                                         fontSize: ancho * 0.035,
-                                        fontWeight: FontWeight.w500
+                                        fontWeight: FontWeight.w500,
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
 
-                                SizedBox(
-                                  height: alto * 0.015,
-                                ),
+                                SizedBox(height: alto * 0.015),
 
                                 Row(
                                   spacing: ancho * 0.03,
@@ -289,16 +265,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       alto: ancho * 0.08,
 
                                       decoracion: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10),
-                                        color:
-                                            temas.verdeClaroTranslucidoFijo
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: temas.verdeClaroTranslucidoFijo,
                                       ),
 
                                       contenido: Icon(
                                         Icons.menu_book_outlined,
                                         color: temas.blanco,
-                                      )
+                                      ),
                                     ),
 
                                     Text(
@@ -307,15 +281,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                       style: TextStyle(
                                         color: temas.letrasModoOscuro,
                                         fontSize: ancho * 0.035,
-                                        fontWeight: FontWeight.w500
+                                        fontWeight: FontWeight.w500,
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
 
-                                SizedBox(
-                                  height: alto * 0.015,
-                                ),
+                                SizedBox(height: alto * 0.015),
 
                                 GestureDetector(
                                   onTap: () {
@@ -334,10 +306,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         border: Border.all(
                                           color: temas.bordeModerado,
                                         ),
-                                        color:
-                                            temas.verdeClaroTranslucidoFijo,
-                                        borderRadius:
-                                            BorderRadius.circular(10)
+                                        color: temas.verdeClaroTranslucidoFijo,
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
 
                                       contenido: Row(
@@ -356,31 +326,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                             "Probar escaner",
 
                                             style: TextStyle(
-                                              color:
-                                                  temas.letrasModoOscuro,
+                                              color: temas.letrasModoOscuro,
                                               fontSize: ancho * 0.04,
-                                              fontWeight: FontWeight.w600
+                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
                                         ],
-                                      )
-                                    )
+                                      ),
+                                    ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
                         ),
 
-
-
                         // glosario
                         Padding(
-                          padding: EdgeInsets.only(top: alto*0.02,bottom: alto*0.02),
+                          padding: EdgeInsets.only(
+                            top: alto * 0.02,
+                            bottom: alto * 0.02,
+                          ),
                           child: AnimatedSize(
                             duration: Duration(seconds: 1),
                             curve: Curves.decelerate,
-                          
+
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
@@ -389,156 +359,193 @@ class _HomeScreenState extends State<HomeScreen> {
                                     context,
                                   ).bordercardDesc,
                                 ),
-                                color: temas.fondoCartaModo
+                                color: temas.fondoCartaModo,
                               ),
-                          
+
                               width: ancho * 0.9,
-                          
+
                               // CAMBIO:
                               // cerrado mantiene tu altura original.
                               // abierto deja que el contenido determine
                               // la altura para evitar overflow.
-                              height: glosario
-                                  ? null
-                                  : alto * 0.09,
-                          
+                              height: glosario ? null : alto * 0.09,
+
                               child: Padding(
                                 padding: EdgeInsets.only(
                                   top: alto * 0.015,
                                   left: ancho * 0.08,
                                   right: ancho * 0.08,
                                 ),
-                          
+
                                 child: Column(
                                   children: [
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
-                          
+
                                       children: [
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                          
+
                                           children: [
                                             Text(
                                               "Glosario Técnico",
-                          
+
                                               style: TextStyle(
-                                                color:
-                                                    temas.letrasModoOscuro,
+                                                color: temas.letrasModoOscuro,
                                                 fontSize: ancho * 0.055,
-                                                fontWeight: FontWeight.bold
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                          
+
                                             Text(
                                               "$cantidadGlosario términos",
-                          
+
                                               style: TextStyle(
                                                 color: Colors.grey,
                                                 fontSize: ancho * 0.035,
-                                              )
-                                            )
+                                              ),
+                                            ),
                                           ],
                                         ),
-                          
+
                                         IconButton(
                                           onPressed: () {
                                             setState(() {
                                               glosario = !glosario;
                                             });
                                           },
-                          
+
                                           icon: Icon(
                                             !glosario
                                                 ? Icons.arrow_right_sharp
                                                 : Icons.arrow_drop_up_sharp,
-                          
+
                                             size: ancho * 0.09,
-                          
+
                                             color: temas.textcardDesc,
-                                          )
-                                        )
+                                          ),
+                                        ),
                                       ],
                                     ),
-                          
+
                                     glosario
                                         ? Column(
                                             children: [
-                                              SizedBox(
-                                                height: alto * 0.02,
-                                              ),
-                                              ...glosarioTecnico.map(
-                                                (elemento) {
-                                                  return Column(
-                                                    children: [
-                                                      CardWidget(
-                                                        ancho: double.infinity,
-                                                        alto: alto * 0.07,
-                                                        decoracion:
-                                                            BoxDecoration(
-                                                          color:
-                                                              temas.cardDesc,
-                                                          borderRadius:
-                                                              BorderRadius.circular(30),
-                                                          border: Border.all(
-                                                            color: temas.bordercardDesc,
-                                                          ),
+                                              SizedBox(height: alto * 0.02),
+                                              ...glosarioTecnico.map((
+                                                elemento,
+                                              ) {
+                                                return Column(
+                                                  children: [
+                                                    CardWidget(
+                                                      ancho: double.infinity,
+                                                      alto: alto * 0.07,
+                                                      decoracion: BoxDecoration(
+                                                        color: temas.cardDesc,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              30,
+                                                            ),
+                                                        border: Border.all(
+                                                          color: temas
+                                                              .bordercardDesc,
                                                         ),
-                          
-                                                        contenido: Padding(
-                                                          padding: EdgeInsets.only(left: ancho*0.05,top: alto*0.01,right: ancho*0.05),
-                                                          child: Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            children: [
-                                                              Column(
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                children: [
-                                                                  Text(
-                                                                    elemento.nombreEsp,style: TextStyle(
-                                                                      fontSize: ancho*0.038,
-                                                                      fontWeight: FontWeight.bold
-                                                                    ),
-                                                                  ),
-                                                                  Row(
-                                                                    children: [
-                                                                      Text(
-                                                                        "EN: ",style: TextStyle(
-                                                                          fontSize: ancho*0.033,
-                                                                          color: Colors.grey
-                                                                        ),
-                                                                      ),
-                                                                      Text(elemento.nombreEng,style: TextStyle(
-                                                                        fontSize: ancho*0.035,
-                                                                        color: temas.verdeModoOscuroProvider,
-                                                                        fontWeight: FontWeight.w600
-                                                                      ),)
-                                                                    ],
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              Transform.translate(
-                                                                offset: Offset(0, -5),
-                                                                child: IconButton(onPressed: () {
-                                                                  VoiceConfig.hablar(elemento.nombreEng);
-                                                                }, icon: Icon(Icons.volume_up_outlined)),
-                                                              )
-                                                            ]
-                                                          ),
-                                                        )
                                                       ),
-                          
-                                                      SizedBox(
-                                                        height: alto * 0.03,
-                                                      )
-                                                    ],
-                                                  );
-                                                }
-                                              ),
+
+                                                      contenido: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                              left:
+                                                                  ancho * 0.05,
+                                                              top: alto * 0.01,
+                                                              right:
+                                                                  ancho * 0.05,
+                                                            ),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  elemento
+                                                                      .nombreEsp,
+                                                                  style: TextStyle(
+                                                                    fontSize:
+                                                                        ancho *
+                                                                        0.038,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
+                                                                ),
+                                                                Row(
+                                                                  children: [
+                                                                    Text(
+                                                                      "EN: ",
+                                                                      style: TextStyle(
+                                                                        fontSize:
+                                                                            ancho *
+                                                                            0.033,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                      elemento
+                                                                          .nombreEng,
+                                                                      style: TextStyle(
+                                                                        fontSize:
+                                                                            ancho *
+                                                                            0.035,
+                                                                        color: temas
+                                                                            .verdeModoOscuroProvider,
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Transform.translate(
+                                                              offset: Offset(
+                                                                0,
+                                                                -5,
+                                                              ),
+                                                              child: IconButton(
+                                                                onPressed: () {
+                                                                  VoiceConfig.hablar(
+                                                                    elemento
+                                                                        .nombreEng,
+                                                                  );
+                                                                },
+                                                                icon: Icon(
+                                                                  Icons
+                                                                      .volume_up_outlined,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+
+                                                    SizedBox(
+                                                      height: alto * 0.03,
+                                                    ),
+                                                  ],
+                                                );
+                                              }),
                                             ],
                                           )
-                                        : SizedBox.shrink()
+                                        : SizedBox.shrink(),
                                   ],
                                 ),
                               ),
@@ -549,7 +556,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         // SizedBox(
                         //   // height: alto * 0.00,
                         // ),
-
                         Divider(),
 
                         // SizedBox(
@@ -685,19 +691,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         //     ),
                         //   ),
                         // )
-
-
-
                         Padding(
-                          padding: EdgeInsets.only(top: ancho*0.02),
+                          padding: EdgeInsets.only(top: ancho * 0.02),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            spacing: ancho*0.2,
+                            spacing: ancho * 0.2,
                             children: [
                               CardWidget(
                                 ancho: ancho * 0.35,
                                 alto: alto * 0.09,
-                              
+
                                 decoracion: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
                                   border: Border.all(
@@ -705,25 +708,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context,
                                     ).bordercardDesc,
                                   ),
-                                  color: temas.fondoCartaModo
+                                  color: temas.fondoCartaModo,
                                 ),
                                 contenido: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.history_sharp,
-                                    size: ancho*0.09,
+                                    Icon(
+                                      Icons.history_sharp,
+                                      size: ancho * 0.09,
                                     ),
-                                    Text("$_cantidad",style: TextStyle(
-                                      fontSize: ancho*0.05
-                                    ),)
+                                    Text(
+                                      "$_cantidad",
+                                      style: TextStyle(fontSize: ancho * 0.05),
+                                    ),
                                   ],
                                 ),
                               ),
-                          
+
                               CardWidget(
                                 ancho: ancho * 0.35,
                                 alto: alto * 0.09,
-                              
+
                                 decoracion: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
                                   border: Border.all(
@@ -731,23 +736,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context,
                                     ).bordercardDesc,
                                   ),
-                                  color: temas.fondoCartaModo
+                                  color: temas.fondoCartaModo,
                                 ),
                                 contenido: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.leaderboard_outlined,
-                                    size: ancho*0.09,
+                                    Icon(
+                                      Icons.leaderboard_outlined,
+                                      size: ancho * 0.09,
                                     ),
-                                    Text("0",style: TextStyle(
-                                      fontSize: ancho*0.05
-                                    ),)
+                                    Text(
+                                      "0",
+                                      style: TextStyle(fontSize: ancho * 0.05),
+                                    ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
