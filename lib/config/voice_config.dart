@@ -10,7 +10,7 @@ class VoiceConfig {
         "en-US"
         );
       // await flutterTts.setLanguage("en-US");
-      await flutterTts.setSpeechRate(0.5);
+      await flutterTts.setSpeechRate(0.4);
       await flutterTts.setVolume(1);
       await flutterTts.setPitch(1.0);
 

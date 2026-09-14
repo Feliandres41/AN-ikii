@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Datos del servidor
   */
   int cantidadGlosario = 6;
-  int cantidad = 3;
+  // int cantidad = 3;
 
   List<GlosarioModel> glosarioTecnico = [
     //1
@@ -63,6 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int _cantidad = Provider.of<ServiceApi>(
+      context,
+    ).historial["historial"].length;
     final ancho = MediaQuery.of(context).size.width;
     final alto = MediaQuery.of(context).size.height;
     final temas = Provider.of<ThemeApk>(context);
@@ -88,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           datosG = dato;
 
-          return dato!.isEmpty
+          return dato == null || dato.isEmpty
               ? Center(
                   child: CircularProgressIndicator(
                     color: ThemeApk.fondoModoOscuro,
@@ -710,7 +713,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Icon(Icons.history_sharp,
                                     size: ancho*0.09,
                                     ),
-                                    Text("$cantidad",style: TextStyle(
+                                    Text("$_cantidad",style: TextStyle(
                                       fontSize: ancho*0.05
                                     ),)
                                   ],
@@ -736,7 +739,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Icon(Icons.leaderboard_outlined,
                                     size: ancho*0.09,
                                     ),
-                                    Text("$cantidad",style: TextStyle(
+                                    Text("0",style: TextStyle(
                                       fontSize: ancho*0.05
                                     ),)
                                   ],

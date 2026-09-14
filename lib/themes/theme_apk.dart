@@ -19,7 +19,8 @@ class ThemeApk extends ChangeNotifier{
   static final fondoModoOscuro = Color(0xEF1D1929);
   ThemeData temaGeneral = ThemeData.dark(
     useMaterial3: true
-  ).copyWith();
+  ).copyWith(
+  );
   var claro = false;
 
   //modo oscuro(configuracion)
@@ -61,7 +62,7 @@ class ThemeApk extends ChangeNotifier{
         useMaterial3: true
       ).copyWith(
         //modo oscuro
-
+        scaffoldBackgroundColor: !claro ? Color(0xff1F1A38) : fondoClaro,
 
 
         //configuracion
@@ -70,6 +71,7 @@ class ThemeApk extends ChangeNotifier{
       cardDesc = Color(0xEF1D1929);
       bordercardDesc = Color(0xff4B3B68);
       textcardDesc = Color(0xDFC5E43D);
+      coloresDeArranque();
       notifyListeners();
     }else{
       claro = true;
@@ -77,12 +79,13 @@ class ThemeApk extends ChangeNotifier{
       temaGeneral = ThemeData.light(
         useMaterial3: true
       ).copyWith(
-        
+        scaffoldBackgroundColor: !claro ? Color(0xff1F1A38) : fondoClaro,
       );
       //modo oscuro (configuracion)
       cardDesc = Colors.white;
       bordercardDesc = Color(0x3D000000);
       textcardDesc = Colors.black;
+      coloresDeArranque();
       notifyListeners();
     }
   }

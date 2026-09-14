@@ -214,10 +214,10 @@ class _ConfigScreenState extends State<ConfigScreen> {
                         ancho: ancho * 0.9,
                         alto: esAprendiz
                             ?
-                            //fisico
-                              alto*0.22
-                              //emulador
-                              // (alto * 0.19).clamp(156.0, 184.0).toDouble()
+                              //fisico
+                              alto * 0.22
+                            //emulador
+                            // (alto * 0.19).clamp(156.0, 184.0).toDouble()
                             : 88.0,
                         decoracion: BoxDecoration(
                           // color: ThemeApk.fondoModoOscuro,
@@ -266,7 +266,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                             ),
                                           ),
                                           Text(
-                                            dato?["nombre"],
+                                            '${dato?["nombre"] ?? "Sin nombre"}',
                                             style: TextStyle(
                                               fontSize: tamanoValor,
                                               fontWeight: FontWeight.w600,
@@ -299,7 +299,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                             horizontal: 16,
                                           ),
                                           child: Text(
-                                            dato?["nombre"],
+                                            '${dato?["nombre"] ?? "Sin nombre"}',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.center,
@@ -342,7 +342,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                           ),
                                           const SizedBox(width: 8),
                                           Text(
-                                            dato?["programa"],
+                                            '${dato?["programa"] ?? "Sin programa"}',
                                             style: TextStyle(
                                               fontSize: tamanoValor,
                                               fontWeight: FontWeight.w600,
@@ -575,8 +575,10 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                 context,
                                 listen: false,
                               );
+                              if (!context.mounted) return;
+                              final cierreSesion = serviceApi.logout();
                               Navigator.pushReplacementNamed(context, "/login");
-                              await serviceApi.logout();
+                              await cierreSesion;
                             },
                             icon: const Icon(Icons.logout, size: 20),
                             label: const Text("Cerrar sesión"),

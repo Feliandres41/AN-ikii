@@ -140,9 +140,9 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
 
                     GestureDetector(
                       onTap: () {
-                        nombre!="ranking"
-                        ?Navigator.pushReplacementNamed(context, "/ranking")
-                        :null;
+                        // nombre!="ranking"
+                        // ?Navigator.pushReplacementNamed(context, "/ranking")
+                        // :null;
                       },
                       child: Column(
                         children: [
@@ -218,7 +218,7 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
                     }
 
                     final imagenBytes = await foto.readAsBytes();
-                    await ModelIaConfig.mandarImagen(imagenBytes);
+                    await ModelIaConfig.mandarImagen(imagenBytes,context);
                   }
                 },
                 child: Container(

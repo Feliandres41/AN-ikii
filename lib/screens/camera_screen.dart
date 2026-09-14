@@ -40,7 +40,7 @@ class _CameraScreenState extends State<CameraScreen> {
       return;
     }
 
-    _controller = CameraController(cameras[0], ResolutionPreset.high);
+    _controller = CameraController(cameras[0], ResolutionPreset.medium);
 
     await _controller!.initialize();
 
@@ -54,8 +54,6 @@ class _CameraScreenState extends State<CameraScreen> {
     
     final ancho = MediaQuery.of(context).size.width;
     final alto = MediaQuery.of(context).size.height;
-    final altoBarra = (alto * 0.09).clamp(64.0, 76.0).toDouble();
-    final tamanoCamara = (ancho * 0.15).clamp(56.0, 72.0).toDouble();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
