@@ -24,8 +24,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     });
   }
 
-  static int _cantidad = 10;
-  int tarjeta = _cantidad > 0 ? 1 : 0;
   int cartaPrincipal = 0;
 
   @override
@@ -33,9 +31,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final ancho = MediaQuery.of(context).size.width;
     final alto = MediaQuery.of(context).size.height;
     final temas = Provider.of<ThemeApk>(context);
-    int _cantidad = Provider.of<ServiceApi>(
-      context,
-    ).historial["historial"].length;
     //paginacion
 
     // final datos = Provider.of<ServiceApi>(context).verBusqueda();
@@ -266,7 +261,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "Tarjeta $tarjeta de ${_cantidad}",
+                                            "Tarjeta ${cartaPrincipal + 1} de ${lista.length}",
                                             style: TextStyle(
                                               color: temas.letrasModoOscuro,
                                               fontSize: ancho * 0.05,
@@ -599,7 +594,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                           if (cartaPrincipal > 0) {
                                             setState(() {
                                               cartaPrincipal--;
-                                              tarjeta--;
                                             });
                                           }
                                         },
@@ -622,10 +616,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
                                       GestureDetector(
                                         onTap: () {
-                                          if (cartaPrincipal < _cantidad - 1) {
+                                          if (cartaPrincipal <
+                                              lista.length - 1) {
                                             setState(() {
                                               cartaPrincipal++;
-                                              tarjeta++;
                                             });
                                           }
                                           print("siguiente\n $cartaPrincipal");

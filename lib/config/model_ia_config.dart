@@ -7,17 +7,19 @@ import 'package:flutter_application_1/services/service_api.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:provider/provider.dart';
 
-class ModelIaConfig{
+class ModelIaConfig {
   static var mapa;
-  static final _modelIa =GenerativeModel(
+  static final _modelIa = GenerativeModel(
     model: 'gemini-3.5-flash-lite',
     apiKey: 'AQ.Ab8RN6I4vdTf3NK94l9ZNJmJUQUPO2zwbb-PdndpDL3h3nw_gQ',
   );
-  
-  static Future<
-  void
-  > mandarImagen(Uint8List imagenBytes, BuildContext context) async {
+
+  static Future<void> mandarImagen(
+    Uint8List imagenBytes,
+    BuildContext context,
+  ) async {
     print("___");
+    final serviceApi = Provider.of<ServiceApi>(context, listen: false);
     try {
       final response = await _modelIa.generateContent([
         Content.multi([
@@ -32,7 +34,7 @@ class ModelIaConfig{
         String? respuesta = response.text;
         print("Dato obtenido correctamente\n${response.text}");
         mapa = jsonDecode(respuesta!);
-        Provider.of<ServiceApi>(context,listen: false).registrarBusqueda(mapa);
+        await serviceApi.registrarBusqueda(mapa);
         // return response.text;
       }
     } catch (e) {

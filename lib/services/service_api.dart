@@ -155,7 +155,12 @@ class ServiceApi extends ChangeNotifier {
     }
   }
 
-  Future<void> registrarBusqueda(Map mapa) async {
+  Future<bool> registrarBusqueda(Map mapa) async {
+    if (_token == null || _token!.isEmpty) {
+      print("No se pudo guardar la búsqueda: no hay token de sesión");
+      return false;
+    }
+
     try {
       final url = Uri.parse("$_url/busquedas");
       final respuesta = await http.post(
@@ -166,14 +171,17 @@ class ServiceApi extends ChangeNotifier {
         },
         body: jsonEncode(mapa),
       );
-      // print("respuesta: ${respuesta.statusCode}\n ${respuesta.body}");
+
+      print("Guardar búsqueda: ${respuesta.statusCode}\n${respuesta.body}");
       if (respuesta.statusCode == 201 || respuesta.statusCode == 200) {
         print("Dato agregado correctamente al historial ");
         await verBusqueda();
-        return;
+        return true;
       }
+      return false;
     } catch (e) {
-      print("error\n$e");
+      print("Error al guardar la búsqueda\n$e");
+      return false;
     }
   }
 

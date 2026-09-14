@@ -26,6 +26,7 @@ class BottomnavigationbarWidget extends StatefulWidget {
 }
 
 bool estado = false;
+bool cargandoDatos = false;
 
 class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
   bool _navegandoACamara = false;
@@ -207,6 +208,11 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
               child: GestureDetector(
                 onTap: () async {
                   if (_navegandoACamara) return;
+                  if (nombre == "camara") {
+                    setState(() {
+                      cargandoDatos = true;
+                    });
+                  }
 
                   if (nombre != "camara") {
                     _navegandoACamara = true;
@@ -228,7 +234,11 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
 
                     final imagenBytes = await foto.readAsBytes();
                     if (!context.mounted) return;
+
                     await ModelIaConfig.mandarImagen(imagenBytes, context);
+                    setState(() {
+                      cargandoDatos = false;
+                    });
                   }
                 },
                 child: Container(
@@ -239,13 +249,32 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
                     color: const Color(0xDFAACA19),
                     borderRadius: BorderRadius.circular(200),
                   ),
-                  child: Icon(
-                    Icons.camera_alt_outlined,
-                    size: tamanoIconoCamara,
-                    color:
-                        // Color(0xFFA47AF3)
-                        nombre == "camara" ? Colors.white : Colors.black,
+                  child: AnimatedSwitcher(
+                    duration: Duration(seconds: 1),
+                    key: ValueKey("Boton de camara"),
+                    child: !cargandoDatos
+                        ? Icon(
+                            Icons.camera_alt_outlined,
+                            size: tamanoIconoCamara,
+                            color:
+                                // Color(0xFFA47AF3)
+                                nombre == "camara"
+                                ? Colors.white
+                                : Colors.black,
+                          )
+                        : CircularProgressIndicator(
+                            color: nombre == "camara"
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                   ),
+                  // Icon(
+                  //   Icons.camera_alt_outlined,
+                  //   size: tamanoIconoCamara,
+                  //   color:
+                  //       // Color(0xFFA47AF3)
+                  //       nombre == "camara" ? Colors.white : Colors.black,
+                  // ),
                 ),
               ),
             ),
