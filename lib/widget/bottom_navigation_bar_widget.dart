@@ -14,7 +14,6 @@ class BottomnavigationbarWidget extends StatefulWidget {
     required this.alto,
     required this.nombrePantalla,
     this.tomarFoto,
-
   });
   double ancho;
   double alto;
@@ -29,6 +28,8 @@ class BottomnavigationbarWidget extends StatefulWidget {
 bool estado = false;
 
 class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
+  bool _navegandoACamara = false;
+
   void animacion() {
     Timer(Duration(milliseconds: 100), () {
       setState(() {
@@ -51,9 +52,10 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
     final altoBarra = (alto * 0.09).clamp(64.0, 76.0).toDouble();
     final tamanoCamara = (ancho * 0.15).clamp(56.0, 72.0).toDouble();
     final tamanoIconoCamara = (tamanoCamara * 0.6).clamp(28.0, 40.0).toDouble();
+    final altoBarraConCamara = altoBarra + tamanoCamara / 2;
     return Container(
       width: ancho,
-      height: altoBarra,
+      height: altoBarraConCamara,
       decoration: BoxDecoration(
         border: Border.all(color: temas.bordercardDesc),
         color: temas.cardDesc,
@@ -70,14 +72,13 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
-                  mainAxisAlignment: 
-                  MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
                       onTap: () {
-                        nombre!="inicio"
-                        ?Navigator.pushReplacementNamed(context, "/home")
-                        : null;
+                        nombre != "inicio"
+                            ? Navigator.pushReplacementNamed(context, "/home")
+                            : null;
                       },
                       child: Column(
                         children: [
@@ -101,9 +102,12 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
                     //hstorial
                     GestureDetector(
                       onTap: () {
-                        nombre!="historial"
-                        ?Navigator.pushReplacementNamed(context, "/history")
-                        :null;
+                        nombre != "historial"
+                            ? Navigator.pushReplacementNamed(
+                                context,
+                                "/history",
+                              )
+                            : null;
                       },
                       child: Column(
                         children: [
@@ -165,9 +169,9 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        nombre!="perfil"
-                        ?Navigator.pushReplacementNamed(context, "/config")
-                        :null;
+                        nombre != "perfil"
+                            ? Navigator.pushReplacementNamed(context, "/config")
+                            : null;
                       },
                       child: Column(
                         children: [
@@ -194,31 +198,37 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
             ),
             AnimatedPositioned(
               duration: Duration(milliseconds: 800),
-              bottom: 
-              nombre != "camara"
-              ?altoBarra - tamanoCamara / 2
-              : altoBarra - tamanoCamara / 1,
+              bottom: nombre != "camara"
+                  ? altoBarraConCamara - tamanoCamara
+                  : altoBarraConCamara - tamanoCamara,
               // estado ? 10
               // : alto*0.04,
               left: ancho / 2 - tamanoCamara / 1.5,
               child: GestureDetector(
                 onTap: () async {
-                  if(nombre!="camara"){
+                  if (_navegandoACamara) return;
+
+                  if (nombre != "camara") {
+                    _navegandoACamara = true;
                     print("Navegando");
                     // setState(() {
                     //   estado = !estado;
                     // });
                     // !estado ? animacion() : null;
                     // Provider.of<ThemeApk>(context, listen: false).modo(estado);
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CameraScreen(),));
-                  }else{
+                    await Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => CameraScreen()),
+                    );
+                  } else {
                     final foto = await widget.tomarFoto?.call();
                     if (foto == null) {
                       return;
                     }
 
                     final imagenBytes = await foto.readAsBytes();
-                    await ModelIaConfig.mandarImagen(imagenBytes,context);
+                    if (!context.mounted) return;
+                    await ModelIaConfig.mandarImagen(imagenBytes, context);
                   }
                 },
                 child: Container(
@@ -229,19 +239,16 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
                     color: const Color(0xDFAACA19),
                     borderRadius: BorderRadius.circular(200),
                   ),
-                  child: 
-                  Icon(
+                  child: Icon(
                     Icons.camera_alt_outlined,
                     size: tamanoIconoCamara,
                     color:
                         // Color(0xFFA47AF3)
-                        nombre == "camara"
-                        ?Colors.white
-                        : Colors.black,
+                        nombre == "camara" ? Colors.white : Colors.black,
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
