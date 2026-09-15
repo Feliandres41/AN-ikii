@@ -583,10 +583,10 @@ class _ConfigScreenState extends State<ConfigScreen> {
                             icon: const Icon(Icons.logout, size: 20),
                             label: const Text("Cerrar sesión"),
                             style: ElevatedButton.styleFrom(
-                              foregroundColor: const Color(0xffff6b6b),
-                              backgroundColor: const Color(0xff32191d),
+                              foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                              backgroundColor: const Color(0xff3979BD),
                               elevation: 0,
-                              side: const BorderSide(color: Color(0xff74302f)),
+                              side: const BorderSide(color: Color.fromARGB(255, 1, 33, 68)),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),

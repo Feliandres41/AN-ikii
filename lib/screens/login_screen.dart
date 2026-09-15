@@ -9,6 +9,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool login = false;
   bool fondo = false;
   bool ocultar = true;
   bool errorDocument = false;
@@ -285,9 +286,46 @@ class _LoginScreenState extends State<LoginScreen> {
                                     errorPassword = false;
                                   });
                                   if(formKeyDocument.currentState!.validate() && formKeyPassword.currentState!.validate()){
+                                    setState(() {
+                                      login = true;
+                                    });
                                     int code = await Provider.of<ServiceApi>(context,listen: false).login(_document.text, _password.text);
                                     if(code==200){
                                       Navigator.pushReplacementNamed(context, "/home");
+                                    }else if(code==401){
+                                      setState(() {
+                                        login = false;
+                                      });
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: const Color.fromARGB(255, 100, 24, 18),
+                                          content: Container(
+                                            child: Center(
+                                              child: Text(
+                                                "Credenciales incorrectas",style: TextStyle(
+                                                  color: Colors.white
+                                                ),
+                                              ),
+                                            ), 
+                                          )
+                                        )
+                                      );
+                                    }else if(code==404){
+                                      print("____aa_");
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: const Color.fromARGB(255, 100, 24, 18),
+                                          content: Container(
+                                            child: Center(
+                                              child: Text(
+                                                "Sin acceso a internet",style: TextStyle(
+                                                  color: Colors.white
+                                                ),
+                                              ),
+                                            ), 
+                                          )
+                                        )
+                                      );
                                     }
                                   }else if(!formKeyDocument.currentState!.validate()){
                                     print("ok");
@@ -308,6 +346,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   setState(() {
                                     errorDocument = false;
                                     errorPassword = false;
+                                    // login = false;
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -317,19 +356,28 @@ class _LoginScreenState extends State<LoginScreen> {
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Iniciar Sesión",
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    Icon(
-                                      Icons.arrow_right_rounded,
-                                      size: ancho * 0.08,
-                                      color: Colors.black,
-                                    ),
-                                  ],
+                                child: AnimatedSwitcher(
+                                  duration: Duration(seconds: 1),
+                                  key: ValueKey("botonLogin"),
+                                  child: login
+                                  ? CircularProgressIndicator(
+                                    color: Colors.black,
+                                    
+                                  ) 
+                                  :Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Iniciar Sesión",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      Icon(
+                                        Icons.arrow_right_rounded,
+                                        size: ancho * 0.08,
+                                        color: Colors.black,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               SizedBox(

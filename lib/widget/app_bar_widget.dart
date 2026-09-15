@@ -2,26 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:provider/provider.dart';
 
-class AppBarWidget extends StatelessWidget {
+class AppBarWidget extends StatefulWidget {
   AppBarWidget({
     super.key,
   });
+  static bool info = false;
 
+  @override
+  State<AppBarWidget> createState() => _AppBarWidgetState();
+}
 
+class _AppBarWidgetState extends State<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
     final ancho = MediaQuery.of(context).size.height;//sirve para responsive
     final tamanoTitulo = (ancho * 0.065).clamp(22.0, 30.0).toDouble();
+    final temas = Provider.of<ThemeApk>(context);
     return PreferredSize(
       preferredSize: const Size.fromHeight(kToolbarHeight),
       child: AppBar(
-        leading: Container(
+        leading: !AppBarWidget.info 
+        ?Container(
           width: ancho * 0.2,
           height: ancho * 0.2,
           decoration: BoxDecoration(
             image: DecorationImage(image: AssetImage("assets/logo.png")),
           ),
-        ),
+        )
+        : IconButton(onPressed: () {
+          Navigator.pop(context);
+        }, icon: Icon(Icons.arrow_back_ios_outlined,color: temas.verdeClaroTranslucidoFijo,)),
         elevation: 1.1,
         backgroundColor: Provider.of<ThemeApk>(context).cardDesc,
         shadowColor: Colors.white,

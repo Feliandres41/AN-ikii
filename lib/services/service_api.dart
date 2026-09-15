@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/datos_temporales.dart';
+import 'ranking_websocket_service.dart';
 
 class ServiceApi extends ChangeNotifier {
   ServiceApi() {
@@ -16,6 +18,8 @@ class ServiceApi extends ChangeNotifier {
       if (tokenGuardado != null && datosGuardados != null) {
         _token = tokenGuardado;
         datos = datosGuardados;
+        await _iniciarEscuchaRanking();
+        await rankingProramas();
         notifyListeners();
       }
 
@@ -32,9 +36,14 @@ class ServiceApi extends ChangeNotifier {
     } catch (e) {}
   }
 
+  // final _url = "http://10.4.61.161:8000/api";
   final _url = "https://caa-fonseca.education/api";
   final _datosTemporales = DatosTemporales();
   String? _token;
+  RankingWebSocketService? _rankingSocket;
+  StreamSubscription<Map<String, dynamic>>? _rankingSocketSubscription;
+  bool _actualizandoDesdeSocket = false;
+  bool _servicioCerrado = false;
   bool _cerrandoSesion = false;
   Map? datos;
   Map historial = {};
@@ -44,6 +53,7 @@ class ServiceApi extends ChangeNotifier {
     _cerrandoSesion = true;
     _token = null;
     datos = null;
+    await _detenerEscuchaRanking();
     await _datosTemporales.eliminarToken();
     notifyListeners();
 
@@ -83,6 +93,7 @@ class ServiceApi extends ChangeNotifier {
     final token = await _datosTemporales.obtenerToken();
     final datosGuardados = await _datosTemporales.obtenerDatos();
     if (token == null || token.isEmpty || datosGuardados == null) {
+      await _datosTemporales.eliminarToken();
       return false;
     }
 
@@ -108,6 +119,7 @@ class ServiceApi extends ChangeNotifier {
       if (respuesta.statusCode == 200) {
         _token = jsonDecode(respuesta.body)["token"];
         await _datosTemporales.guardarToken(_token!);
+        await _iniciarEscuchaRanking();
         print(
           "Login exitoso\n${respuesta.body}\n_________________________________",
         );
@@ -115,7 +127,7 @@ class ServiceApi extends ChangeNotifier {
         notifyListeners();
         return 200;
       } else {
-        print("Credenciales incorrectas\n${respuesta.body}");
+        print("Credenciales incorrectas\n${respuesta.body}\nestado: ${respuesta.statusCode}");
         return 401;
       }
     } catch (e) {
@@ -239,5 +251,142 @@ class ServiceApi extends ChangeNotifier {
 
     historial = _conservarUltimosVeinte(historialGuardado);
     notifyListeners();
+  }
+
+  Future<void> _iniciarEscuchaRanking() async {
+    if (_servicioCerrado || _rankingSocket != null) return;
+
+    final socket = RankingWebSocketService.pusherDashboard();
+    _rankingSocket = socket;
+    _rankingSocketSubscription = socket.actualizaciones.listen((_) async {
+      if (_actualizandoDesdeSocket || _servicioCerrado) return;
+
+      _actualizandoDesdeSocket = true;
+      try {
+        await rankingProramas();
+        await verBusqueda();
+      } finally {
+        _actualizandoDesdeSocket = false;
+      }
+    });
+
+    await socket.conectar();
+  }
+
+  Future<void> _detenerEscuchaRanking() async {
+    await _rankingSocketSubscription?.cancel();
+    await _rankingSocket?.dispose();
+    _rankingSocketSubscription = null;
+    _rankingSocket = null;
+  }
+
+
+
+  //ranking
+  List getProgramas = [];
+  Future<void> rankingProramas()async{
+    try {
+      final url = Uri.parse("$_url/estadisticas/busquedas/programas");
+      final respuesta = await http.get(
+        url,
+        headers: {
+          "Authorization": "Bearer $_token",
+          "Content-Type": "application/json",
+        },
+      );
+      print("respuesta: ${respuesta.statusCode}\n ${respuesta.body}");
+      // final datosHistorial = jsonDecode(respuesta.body);
+      if (respuesta.statusCode == 200) {
+        final data = jsonDecode(respuesta.body)["programas"];
+        getProgramas = data is List ? data : [];
+        notifyListeners();
+      } else {
+        // await cargarHistorialGuardado();
+      }
+      // if(respuesta.statusCode==201 || respuesta.statusCode==200){
+      //  print("Dato agregado correctamente al historial ");
+      //  return;
+      // }
+    } catch (e) {
+      print("error\n$e");
+      await cargarHistorialGuardado();
+    }
+  }
+  //ranking/fichas/aprendices
+  List getFichas = [];
+  Future<int> rankingFichas(int id)async{
+    try {
+      final url = Uri.parse("$_url/estadisticas/busquedas/programas/$id/fichas");
+      final respuesta = await http.get(
+        url,
+        headers: {
+          "Authorization": "Bearer $_token",
+          "Content-Type": "application/json",
+        },
+      );
+      print("respuesta: ${respuesta.statusCode}\n ${respuesta.body}");
+      // final datosHistorial = jsonDecode(respuesta.body);
+      if (respuesta.statusCode == 200) {
+        final data = jsonDecode(respuesta.body)["fichas"];
+        getFichas = data is List ? data : [];
+        notifyListeners();
+        return 200;
+      } else {
+        // await cargarHistorialGuardado();
+        return 401;
+      }
+      // if(respuesta.statusCode==201 || respuesta.statusCode==200){
+      //  print("Dato agregado correctamente al historial ");
+      //  return;
+      // }
+    } catch (e) {
+      print("error\n$e");
+      await cargarHistorialGuardado();
+      return 404;
+    }
+  }
+
+  //ranking/fichas/aprendices
+  List getFichaAprendiz = [];
+  Map datosFicha = {};
+  Future<int> rankingFichaAprendiz(int id)async{
+    try {
+      final url = Uri.parse("$_url/estadisticas/busquedas/fichas/$id/aprendices");
+      final respuesta = await http.get(
+        url,
+        headers: {
+          "Authorization": "Bearer $_token",
+          "Content-Type": "application/json",
+        },
+      );
+      print("respuesta: ${respuesta.statusCode}\n ${respuesta.body}");
+      // final datosHistorial = jsonDecode(respuesta.body);
+      if (respuesta.statusCode == 200) {
+        final dataF = jsonDecode(respuesta.body)["ficha"];
+        final data = jsonDecode(respuesta.body)["aprendices"];
+        datosFicha = dataF is Map ? dataF : {};
+        getFichaAprendiz = data is List ? data : [];
+        notifyListeners();
+        return 200;
+      } else {
+        // await cargarHistorialGuardado();
+        return 401;
+      }
+      // if(respuesta.statusCode==201 || respuesta.statusCode==200){
+      //  print("Dato agregado correctamente al historial ");
+      //  return;
+      // }
+    } catch (e) {
+      print("error\n$e");
+      await cargarHistorialGuardado();
+      return 404;
+    }
+  }
+
+  @override
+  void dispose() {
+    _servicioCerrado = true;
+    unawaited(_detenerEscuchaRanking());
+    super.dispose();
   }
 }

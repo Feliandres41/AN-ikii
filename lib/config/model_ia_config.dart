@@ -14,7 +14,7 @@ class ModelIaConfig {
     apiKey: 'AQ.Ab8RN6I4vdTf3NK94l9ZNJmJUQUPO2zwbb-PdndpDL3h3nw_gQ',
   );
 
-  static Future<void> mandarImagen(
+  static Future<Map?> mandarImagen(
     Uint8List imagenBytes,
     BuildContext context,
   ) async {
@@ -35,11 +35,11 @@ class ModelIaConfig {
         print("Dato obtenido correctamente\n${response.text}");
         mapa = jsonDecode(respuesta!);
         await serviceApi.registrarBusqueda(mapa);
-        // return response.text;
+        return mapa is Map ? mapa : null;
       }
     } catch (e) {
       print("Error\n$e\n____________________________");
     }
-    // return "Error al mostrar";
+    return null;
   }
 }

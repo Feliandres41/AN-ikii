@@ -14,11 +14,13 @@ class BottomnavigationbarWidget extends StatefulWidget {
     required this.alto,
     required this.nombrePantalla,
     this.tomarFoto,
+    this.onResultado,
   });
   double ancho;
   double alto;
   String nombrePantalla;
   final Future<XFile?> Function()? tomarFoto;
+  final ValueChanged<Map?>? onResultado;
 
   @override
   State<BottomnavigationbarWidget> createState() =>
@@ -33,15 +35,21 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
 
   void animacion() {
     Timer(Duration(milliseconds: 100), () {
+      if (!mounted) return;
       setState(() {
         estado = true;
       });
     });
     Timer(Duration(seconds: 1), () {
+      if (!mounted) return;
       setState(() {
         estado = false;
       });
     });
+  }
+  @override
+  void initState(){
+    cargandoDatos = false;
   }
 
   @override
@@ -145,9 +153,9 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
 
                     GestureDetector(
                       onTap: () {
-                        // nombre!="ranking"
-                        // ?Navigator.pushReplacementNamed(context, "/ranking")
-                        // :null;
+                        nombre!="ranking"
+                        ?Navigator.pushReplacementNamed(context, "/ranking")
+                        :null;
                       },
                       child: Column(
                         children: [
@@ -229,17 +237,31 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
                   } else {
                     final foto = await widget.tomarFoto?.call();
                     if (foto == null) {
+                      if (context.mounted) {
+                        setState(() {
+                          cargandoDatos = false;
+                        });
+                      }
                       return;
                     }
 
                     final imagenBytes = await foto.readAsBytes();
                     if (!context.mounted) return;
 
-                    await ModelIaConfig.mandarImagen(imagenBytes, context);
+                    final resultado = await ModelIaConfig.mandarImagen(
+                      imagenBytes,
+                      context,
+                    );
+                    widget.onResultado?.call(resultado);
+                    if (!context.mounted) return;
                     setState(() {
                       cargandoDatos = false;
                     });
                   }
+                  if (!mounted) return;
+                  setState(() {
+                    cargandoDatos = false;
+                  });
                 },
                 child: Container(
                   width: tamanoCamara,

@@ -1,4 +1,3 @@
-import 'package:flutter_application_1/screens/home_screen.dart';
 
 import '../screens/screens.dart';
 class RouterApp {
@@ -6,6 +5,7 @@ class RouterApp {
 
   static final rutas = {
     "/":(context)=>SplashScreen(),
+    // "/block":(context)=>BlockScreen(),
     "/login":(context)=>LoginScreen(),
     "/home":(context)=>HomeScreen(),
     "/ranking":(context)=>RankingScreen(),

@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/voice_config.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:flutter_application_1/widget/app_bar_widget.dart';
 import 'package:flutter_application_1/widget/bottom_navigation_bar_widget.dart';
@@ -26,6 +27,28 @@ class _CameraScreenState extends State<CameraScreen> {
     }
 
     return controller.takePicture();
+  }
+
+  Future<void> _mostrarResultado(Map? resultado) async {
+    if (!mounted || resultado == null) return;
+
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 24,
+        ),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(dialogContext).height * 0.82,
+          ),
+          child: _ResultadoCamara(resultado: resultado),
+        ),
+      ),
+    );
   }
 
   @override
@@ -64,6 +87,7 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     final ancho = MediaQuery.of(context).size.width;
     final alto = MediaQuery.of(context).size.height;
+    AppBarWidget.info = false;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -111,7 +135,7 @@ class _CameraScreenState extends State<CameraScreen> {
                     child: Center(
                       child: Container(
                         width: ancho * 0.85,
-                        height: alto * 0.1,
+                        height: alto * 0.13,
                         decoration: BoxDecoration(
                           color: Provider.of<ThemeApk>(context).bordercardDesc,
                           border: Border.all(color: Colors.white, width: 0.2),
@@ -141,28 +165,26 @@ class _CameraScreenState extends State<CameraScreen> {
                               SizedBox(width: ancho * 0.04),
                               Flexible(
                                 flex: 3,
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: ancho * 0.04),
-                                  child: Column(
-                                    spacing: ancho * 0.01,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Molde de Escaneo Inteligente",
-                                        style: TextStyle(
-                                          fontSize: ancho * 0.035,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  spacing: ancho * 0.01,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Molde de Escaneo Inteligente",
+                                      style: TextStyle(
+                                        fontSize: ancho * 0.035,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      Text(
-                                        "Alinea el objeto al lente de la camara,  ANüikii te dara su nombre en ingles y más",
-                                        style: TextStyle(
-                                          fontSize: ancho * 0.027,
-                                        ),
+                                    ),
+                                    Text(
+                                      "Alinea el objeto al lente de la camara,  ANüikii te dara su nombre en ingles y más",
+                                      style: TextStyle(
+                                        fontSize: ancho * 0.027,
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -202,6 +224,7 @@ class _CameraScreenState extends State<CameraScreen> {
                   //   ],
                   // )
                 ),
+          SizedBox(width: ancho, height: alto),
         ],
       ),
 
@@ -210,6 +233,147 @@ class _CameraScreenState extends State<CameraScreen> {
         alto: alto,
         nombrePantalla: "camara",
         tomarFoto: tomarFoto,
+        onResultado: _mostrarResultado,
+      ),
+    );
+  }
+}
+
+class _ResultadoCamara extends StatelessWidget {
+  const _ResultadoCamara({required this.resultado});
+
+  final Map resultado;
+
+  @override
+  Widget build(BuildContext context) {
+    final temas = Provider.of<ThemeApk>(context);
+    final secciones = [
+      ("Pasado", resultado["oracion_pasado"], const Color(0xff916dcc)),
+      ("Presente", resultado["oracion_presente"], const Color(0xff4b91d8)),
+      ("Futuro", resultado["oracion_futuro"], const Color(0xffa9c516)),
+    ];
+
+    return Material(
+      color: temas.cardDesc,
+      child: Scrollbar(
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(18, 20, 18, 28),
+          child: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      '${resultado["objeto_esp"] ?? "Resultado"}',
+                      style: TextStyle(
+                        color: temas.letrasModoOscuro,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          "Texto en inglés: ${resultado["objeto_eng"] ?? "Sin información"}",
+                          style: TextStyle(
+                            color: ThemeApk.verdeModoOscuro,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        tooltip: "Escuchar término",
+                        onPressed: () => VoiceConfig.hablar(
+                          '${resultado["objeto_eng"] ?? ""}',
+                        ),
+                        icon: const Icon(Icons.volume_up_outlined),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Pronunciación: ${resultado["pronunciacion"] ?? "Sin información"}",
+                    style: TextStyle(
+                      color: temas.letrasModoOscuro,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              for (final seccion in secciones)
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(bottom: 18),
+                  decoration: BoxDecoration(
+                    color: temas.fondoCartaModo,
+                    border: Border.all(color: seccion.$3),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        color: seccion.$3,
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              seccion.$1,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            IconButton(
+                              tooltip: "Escuchar oración",
+                              visualDensity: VisualDensity.compact,
+                              onPressed: () => VoiceConfig.hablar(
+                                '${seccion.$2 ?? ""}',
+                              ),
+                              icon: const Icon(Icons.volume_up_outlined,color: Colors.white,),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(18, 20, 18, 20),
+                        child: Text(
+                          '${seccion.$2 ?? "Sin información"}',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: temas.letrasModoOscuro,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              const SizedBox(height: 4),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(Icons.close),
+                  label: const Text("Cerrar"),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

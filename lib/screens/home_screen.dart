@@ -60,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final ancho = MediaQuery.of(context).size.width;
     final alto = MediaQuery.of(context).size.height;
     final temas = Provider.of<ThemeApk>(context);
+    AppBarWidget.info =false;
 
     temas.coloresDeArranque();
 
