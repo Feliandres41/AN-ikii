@@ -42,7 +42,9 @@ dependencies:
   google_generative_ai: ^0.4.7
   flutter_tts: ^4.2.5
   flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.8
 
+#Icono
 flutter_launcher_icons:
   android: true
   ios: true
@@ -50,6 +52,11 @@ flutter_launcher_icons:
   remove_alpha_ios: true
   adaptive_icon_background: "#000000"
   color: "#000000"
+
+#Splash
+flutter_native_splash:
+  color: "#121212"
+  image: assets/logo.png
 
 dev_dependencies:
   flutter_test:
