@@ -58,16 +58,6 @@ class _IconoSplashState extends State<IconoSplash>
         );
       },
       child: Center(
-        // child:
-        // Text(
-        //   'SENA',
-        //   style: TextStyle(
-        //     color: Colors.white,
-        //     fontSize: widget.size * 0.16,
-        //     fontWeight: FontWeight.w800,
-        //     letterSpacing: widget.size * 0.012,
-        //   ),
-        // ),
       ),
     );
   }

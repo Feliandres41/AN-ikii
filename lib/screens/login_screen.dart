@@ -43,17 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
     _password.dispose();
     super.dispose();
   }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   Timer.periodic(Duration(seconds: 1, milliseconds: 200), (timer) {
-  //     setState(() {
-  //       fondo = !fondo;
-  //     });
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     final medidas = MediaQuery.of(context).size;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/router/router_app.dart';
-import 'package:flutter_application_1/screens/screens.dart';
 import 'package:flutter_application_1/services/service_api.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:provider/provider.dart';
@@ -10,20 +9,6 @@ void main(){
   
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-
-  // DateTime ahora = DateTime.now();
-
-  // DateTime limite = DateTime(2026, 9, 15, 14, 42);
-
-  // if (ahora.isAfter(limite) || ahora.isAtSameMomentAs(limite)) {
-  //   runApp(
-  //     MaterialApp(
-  //       debugShowCheckedModeBanner: false,
-  //       home: BlockScreen(),
-  //     )
-  //   );
-  //   return;
-  // }
   runApp(ProviderApi());
 }
 
