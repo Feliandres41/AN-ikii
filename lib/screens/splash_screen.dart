@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
       });
       if (a == 6) {
         timer.cancel();
-        Navigator.pushReplacementNamed(context, "/login");
+        // Navigator.pushReplacementNamed(context, "/login");
       }
     });
   }
@@ -40,36 +40,6 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       body:
-          // Stack(
-          //   children: [
-          //     Positioned(
-          //       key: ValueKey("Icono"),
-          //       top: alto * 0.1,
-          //       // right: ancho * 0.01,
-          //       child: GestureDetector(
-          //         onTap: () {
-          //           setState(() {
-          //             textEstado = !textEstado;
-          //           });
-          //         },
-          //         child: Image.asset(
-          //           'assets/sena_splash.gif',
-          //           // width: size.clamp(160.0, 320.0),
-          //           // height: size.clamp(160.0, 320.0),
-          //           width: ancho,
-          //           fit: BoxFit.contain,
-          //           errorBuilder: (context, error, stackTrace) =>
-          //               IconoSplash(size: size.clamp(160.0, 320.0)),
-          //         ),
-          //       ),
-          //     ),
-          //     AnimatedContainer(
-          //       duration: Duration(seconds: 1),
-          //       height: !textEstado ? 0 : alto * 0.02,
-          //       child: Text("PRUEBA INTERNA"),
-          //     ),
-          //   ],
-          // ),
           Stack(
             // fit: StackFit.loose,
             children: [
@@ -90,24 +60,6 @@ class _SplashScreenState extends State<SplashScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(height: alto * 0.4),
-                      // TweenAnimationBuilder<double>(
-                      //   tween: Tween(
-                      //     begin: 0,
-                      //     end: textEstado ? ancho * 0.1 : 0,
-                      //   ),
-                      //   duration: const Duration(milliseconds: 700),
-                      //   curve: Curves.easeOutBack,
-                      //   builder: (context, fontSize, child) {
-                      //     return Text(
-                      //       "ANüikii",
-                      //       style: TextStyle(
-                      //         fontSize: fontSize,
-                      //         fontWeight: FontWeight.w500,
-                      //       ),
-                      //     );
-                      //   },
-                      // ),
-
                       //ANüikii
                       Column(
                         spacing: 10,
