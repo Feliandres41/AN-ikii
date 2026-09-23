@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/themes/theme_apk.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -10,6 +12,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool logo = false;
   bool textEstado = false;
   int a = 0;
 
@@ -19,6 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 3), () {
       setState(() {
         textEstado = true;
+        logo = true;
       });
     });
     Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -26,8 +30,19 @@ class _SplashScreenState extends State<SplashScreen> {
         a++;
       });
       if (a == 6) {
+        setState(() {
+          logo = false;
+        });
         timer.cancel();
         // Navigator.pushReplacementNamed(context, "/login");
+      }else if(a==3){
+        setState(() {
+          logo = true;
+        });
+      }else if(a==5){
+        setState(() {
+          logo = false;
+        });
       }
     });
   }
@@ -37,29 +52,48 @@ class _SplashScreenState extends State<SplashScreen> {
     final medidas = MediaQuery.of(context).size;
     final ancho = medidas.width;
     final alto = medidas.height;
+    final temas = Provider.of<ThemeApk>(context);
+    print(temas.claro);
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: temas.claro ? temas.fondoClaro : Colors.black,
       body:
           Stack(
             // fit: StackFit.loose,
             children: [
-              Positioned(
-                top: alto * 0.2,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {});
-                    textEstado = !textEstado;
-                  },
-                  child: Image.asset("assets/splashs.gif", width: ancho),
-                ),
-              ),
+              // Positioned(
+              //   top: alto * 0.35,
+              //   left: ancho*0.26,
+              //   child: 
+              //   // Image.asset("assets/splashs.gif", width: ancho),
+              //   AnimatedSize(
+              //     duration: Duration(seconds: 3),
+              //     child: SizedBox(
+              //       child: Image.asset(
+              //         "assets/logo.png",
+              //         width: ancho*0.5,
+              //         fit: BoxFit.contain,
+              //       ),
+              //     ),
+              //   )
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: alto * 0.4),
+                      // SizedBox(height: alto * 0.05),
+                      AnimatedContainer(
+                        duration: Duration(seconds: 2),
+                        width: logo 
+                        ?ancho*0.45
+                        :ancho*0.5,
+                        child: Image.asset(
+                          "assets/logo.png",
+                          // width: ancho*0.5,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
                       //ANüikii
                       Column(
                         spacing: 10,
@@ -84,6 +118,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                     style: TextStyle(
                                       fontSize: ancho * 0.1,
                                       fontWeight: FontWeight.bold,
+                                      color: temas.moradoClaroFijo
                                     ),
                                   ),
                                 ),
@@ -110,15 +145,19 @@ class _SplashScreenState extends State<SplashScreen> {
                                   child: Text(
                                     'BILINGÜISMO TECNICO AGROPECUARIO',
                                     style: TextStyle(
-                                      fontSize: ancho * 0.04,
+                                      fontSize: ancho * 0.043,
                                       fontWeight: FontWeight.w300,
-                                      color: Colors.lightGreenAccent,
+                                      // color: Colors.lightGreenAccent,
+                                      color: temas.claro
+                                      ? Color.fromARGB(223, 116, 141, 6)
+                                      : Colors.black
                                     ),
                                   ),
                                 ),
                               );
                             },
                           ),
+                          
 
                           //sub-sub
                           TweenAnimationBuilder<double>(
@@ -139,7 +178,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                   child: Text(
                                     'SERVICIO NACIONAL DE APRENDIZAJE - COLOMBIA',
                                     style: TextStyle(
-                                      fontSize: ancho * 0.03,
+                                      fontSize: ancho * 0.032,
                                       fontWeight: FontWeight.w300,
                                       color: Colors.grey,
                                     ),

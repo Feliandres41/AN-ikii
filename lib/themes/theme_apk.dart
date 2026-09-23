@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ThemeApk extends ChangeNotifier{
   ThemeApk(){
-    modo(false);
+    modo(true);
     coloresDeArranque();
     notifyListeners();
   }
@@ -21,7 +21,7 @@ class ThemeApk extends ChangeNotifier{
     useMaterial3: true
   ).copyWith(
   );
-  var claro = false;
+  var claro = true;
 
   //modo oscuro(configuracion)
 
