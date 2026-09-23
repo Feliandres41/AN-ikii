@@ -12,13 +12,20 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool textPresentation = false;
   bool logo = false;
   bool textEstado = false;
   int a = 0;
 
+
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration(milliseconds: 100),() {
+      setState(() {
+        textPresentation = true;
+      });
+    },);
     Timer(Duration(seconds: 3), () {
       setState(() {
         textEstado = true;
@@ -34,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
           logo = false;
         });
         timer.cancel();
-        // Navigator.pushReplacementNamed(context, "/login");
+        Navigator.pushReplacementNamed(context, "/login");
       }else if(a==3){
         setState(() {
           logo = true;
@@ -58,24 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: temas.claro ? temas.fondoClaro : Colors.black,
       body:
           Stack(
-            // fit: StackFit.loose,
             children: [
-              // Positioned(
-              //   top: alto * 0.35,
-              //   left: ancho*0.26,
-              //   child: 
-              //   // Image.asset("assets/splashs.gif", width: ancho),
-              //   AnimatedSize(
-              //     duration: Duration(seconds: 3),
-              //     child: SizedBox(
-              //       child: Image.asset(
-              //         "assets/logo.png",
-              //         width: ancho*0.5,
-              //         fit: BoxFit.contain,
-              //       ),
-              //     ),
-              //   )
-              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -95,99 +85,104 @@ class _SplashScreenState extends State<SplashScreen> {
                         ),
                       ),
                       //ANüikii
-                      Column(
-                        spacing: 10,
-                        children: [
-                          TweenAnimationBuilder<double>(
-                            tween: Tween(
-                              begin: 0.0,
-                              end: textEstado ? 1.0 : 0.0,
-                            ),
-                            duration: const Duration(
-                              milliseconds: 500,
-                              seconds: 1,
-                            ),
-                            curve: Curves.easeOutBack,
-                            builder: (context, value, child) {
-                              return Transform.scale(
-                                scale: value,
-                                child: Opacity(
-                                  opacity: value.clamp(0.0, 1.0),
-                                  child: Text(
-                                    'ANüikii',
-                                    style: TextStyle(
-                                      fontSize: ancho * 0.1,
-                                      fontWeight: FontWeight.bold,
-                                      color: temas.moradoClaroFijo
+                      AnimatedContainer(
+                        duration: Duration(milliseconds: 500),
+                        child: textPresentation
+                        ?Column(
+                          spacing: 10,
+                          children: [
+                            TweenAnimationBuilder<double>(
+                              tween: Tween(
+                                begin: 0.0,
+                                end: textEstado ? 1.0 : 0.0,
+                              ),
+                              duration: const Duration(
+                                milliseconds: 500,
+                                seconds: 1,
+                              ),
+                              curve: Curves.easeOutBack,
+                              builder: (context, value, child) {
+                                return Transform.scale(
+                                  scale: value,
+                                  child: Opacity(
+                                    opacity: value.clamp(0.0, 1.0),
+                                    child: Text(
+                                      'ANüikii',
+                                      style: TextStyle(
+                                        fontSize: ancho * 0.1,
+                                        fontWeight: FontWeight.bold,
+                                        color: temas.moradoClaroFijo
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-
-                          //sub
-                          TweenAnimationBuilder<double>(
-                            tween: Tween(
-                              begin: 0.0,
-                              end: textEstado ? 0.9 : 0.0,
+                                );
+                              },
                             ),
-                            duration: const Duration(
-                              milliseconds: 800,
-                              seconds: 2,
-                            ),
-                            curve: Curves.easeOutBack,
-                            builder: (context, value, child) {
-                              return Transform.scale(
-                                scale: value,
-                                child: Opacity(
-                                  opacity: value.clamp(0.0, 1.0),
-                                  child: Text(
-                                    'BILINGÜISMO TECNICO AGROPECUARIO',
-                                    style: TextStyle(
-                                      fontSize: ancho * 0.043,
-                                      fontWeight: FontWeight.w300,
-                                      // color: Colors.lightGreenAccent,
-                                      color: temas.claro
-                                      ? Color.fromARGB(223, 116, 141, 6)
-                                      : Colors.black
+                        
+                            //sub
+                            TweenAnimationBuilder<double>(
+                              tween: Tween(
+                                begin: 0.0,
+                                end: textEstado ? 0.9 : 0.0,
+                              ),
+                              duration: const Duration(
+                                milliseconds: 800,
+                                seconds: 2,
+                              ),
+                              curve: Curves.easeOutBack,
+                              builder: (context, value, child) {
+                                return Transform.scale(
+                                  scale: value,
+                                  child: Opacity(
+                                    opacity: value.clamp(0.0, 1.0),
+                                    child: Text(
+                                      'BILINGÜISMO TECNICO AGROPECUARIO',
+                                      style: TextStyle(
+                                        fontSize: ancho * 0.043,
+                                        fontWeight: FontWeight.w300,
+                                        // color: Colors.lightGreenAccent,
+                                        color: temas.claro
+                                        ? Color.fromARGB(223, 116, 141, 6)
+                                        : Colors.black
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                          
-
-                          //sub-sub
-                          TweenAnimationBuilder<double>(
-                            tween: Tween(
-                              begin: 0.0,
-                              end: textEstado ? 0.9 : 0.0,
+                                );
+                              },
                             ),
-                            duration: const Duration(
-                              // milliseconds: 1000,
-                              seconds: 2,
-                            ),
-                            curve: Curves.easeOutBack,
-                            builder: (context, value, child) {
-                              return Transform.scale(
-                                scale: value,
-                                child: Opacity(
-                                  opacity: value.clamp(0.0, 1.0),
-                                  child: Text(
-                                    'SERVICIO NACIONAL DE APRENDIZAJE - COLOMBIA',
-                                    style: TextStyle(
-                                      fontSize: ancho * 0.032,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.grey,
+                            
+                        
+                            //sub-sub
+                            TweenAnimationBuilder<double>(
+                              tween: Tween(
+                                begin: 0.0,
+                                end: textEstado ? 0.9 : 0.0,
+                              ),
+                              duration: const Duration(
+                                // milliseconds: 1000,
+                                seconds: 2,
+                              ),
+                              curve: Curves.easeOutBack,
+                              builder: (context, value, child) {
+                                return Transform.scale(
+                                  scale: value,
+                                  child: Opacity(
+                                    opacity: value.clamp(0.0, 1.0),
+                                    child: Text(
+                                      'SERVICIO NACIONAL DE APRENDIZAJE - COLOMBIA',
+                                      style: TextStyle(
+                                        fontSize: ancho * 0.032,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.grey,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
+                                );
+                              },
+                            ),
+                          ],
+                        )
+                        : null,
                       ),
                     ],
                   ),
