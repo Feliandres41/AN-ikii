@@ -88,7 +88,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           spacing: ancho * 0.02,
-                          children: [Icon(Icons.menu_book), Text("Lista")],
+                          children: [Icon(Icons.menu_book), Text("Tabla")],
                         ),
                       ),
                     ],
@@ -579,68 +579,72 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   ),
                                 ),
                                 // Divider(),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top: alto * 0.033,
-                                    left: ancho * 0.05,
-                                    right: ancho * 0.05,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          if (cartaPrincipal > 0) {
-                                            setState(() {
-                                              cartaPrincipal--;
-                                            });
-                                          }
-                                        },
-                                        child: CardWidget(
-                                          ancho: ancho * 0.4,
-                                          alto: alto * 0.05,
-                                          decoracion: BoxDecoration(
-                                            border: Border.all(
-                                              color: Provider.of<ThemeApk>(
-                                                context,
-                                              ).bordercardDesc,
+                                Container(
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      top: alto * 0.033,
+                                      left: ancho * 0.05,
+                                      right: ancho * 0.05,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            if (cartaPrincipal > 0) {
+                                              setState(() {
+                                                cartaPrincipal--;
+                                              });
+                                            }
+                                          },
+                                          child: CardWidget(
+                                            ancho: ancho * 0.4,
+                                            alto: alto * 0.05,
+                                            decoracion: BoxDecoration(
+                                              border: Border.all(
+                                                color: Provider.of<ThemeApk>(
+                                                  context,
+                                                ).bordercardDesc,
+                                              ),
+                                              color: temas.fondoCartaModo,
                                             ),
-                                            color: temas.fondoCartaModo,
-                                          ),
-                                          contenido: Center(
-                                            child: Text("Anterior"),
+                                            contenido: Center(
+                                              child: Text("Anterior"),
+                                            ),
                                           ),
                                         ),
-                                      ),
-
-                                      GestureDetector(
-                                        onTap: () {
-                                          if (cartaPrincipal <
-                                              lista.length - 1) {
-                                            setState(() {
-                                              cartaPrincipal++;
-                                            });
-                                          }
-                                          print("siguiente\n $cartaPrincipal");
-                                        },
-                                        child: CardWidget(
-                                          ancho: ancho * 0.4,
-                                          alto: alto * 0.05,
-                                          decoracion: BoxDecoration(
-                                            border: Border.all(
-                                              color: Provider.of<ThemeApk>(
-                                                context,
-                                              ).bordercardDesc,
+                                  
+                                        GestureDetector(
+                                          onTap: () {
+                                            if (cartaPrincipal <
+                                                lista.length - 1) {
+                                              setState(() {
+                                                cartaPrincipal++;
+                                              });
+                                            }
+                                            print("siguiente\n $cartaPrincipal");
+                                          },
+                                          child: CardWidget(
+                                            ancho: ancho * 0.4,
+                                            alto: alto * 0.05,
+                                            decoracion: BoxDecoration(
+                                              border: Border.all(
+                                                color: Provider.of<ThemeApk>(
+                                                  context,
+                                                ).bordercardDesc,
+                                              ),
+                                              color: temas.fondoCartaModo,
                                             ),
-                                            color: temas.fondoCartaModo,
-                                          ),
-                                          contenido: Center(
-                                            child: Text("Siguiente"),
+                                            contenido: Center(
+                                              child: Text("Siguiente"),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
