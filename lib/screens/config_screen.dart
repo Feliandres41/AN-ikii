@@ -3,6 +3,8 @@ import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:flutter_application_1/services/service_api.dart';
 import 'package:flutter_application_1/widget/bottom_navigation_bar_widget.dart';
 import 'package:flutter_application_1/widget/card_widget.dart';
+import 'package:flutter_application_1/widget/politica_privacidad_widget.dart';
+import 'package:flutter_application_1/widget/terminos_condiciones_widget.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -20,18 +22,21 @@ class ConfigScreen extends StatefulWidget {
 class _ConfigScreenState extends State<ConfigScreen> {
   bool estado = false;
 
-  void _mostrarContenidoLegal(String titulo) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(titulo),
-        content: const Text('Contenido próximamente disponible.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cerrar'),
-          ),
-        ],
+  void _abrirLegal(String tipo) {
+    if (tipo == 'privacidad') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const PoliticaPrivacidadWidget(),
+        ),
+      );
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const TerminosCondicionesWidget(),
       ),
     );
   }
@@ -48,6 +53,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
         child: Row(
           children: [
             Container(
+              clipBehavior:  Clip.antiAlias,
               width: 36,
               height: 36,
               decoration: BoxDecoration(
@@ -93,6 +99,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
       // ),
       body: SingleChildScrollView(
         child: Container(
+          decoration: BoxDecoration(),
+          clipBehavior:  Clip.antiAlias,
           width: ancho,
           child: Stack(
             children: [
@@ -101,6 +109,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                 width: ancho,
                 height: alto * 0.22,
                 child: Container(
+                  clipBehavior:  Clip.antiAlias,
                   decoration: BoxDecoration(
                     color: ThemeApk.verdeModoOscuro,
                     borderRadius: BorderRadius.circular(30),
@@ -153,6 +162,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                 //   fontWeight: FontWeight.bold
                                 // ),),
                                 Container(
+                                  clipBehavior:  Clip.antiAlias,
                                   width: ancho * 0.425,
                                   decoration: BoxDecoration(
                                     // border: Border.all(
@@ -437,6 +447,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                               Padding(
                                 padding: EdgeInsets.only(right: ancho * 0.04),
                                 child: Container(
+                                  clipBehavior:  Clip.antiAlias,
                                   width: alto * 0.05,
                                   height: alto * 0.05,
 
@@ -524,6 +535,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                       SizedBox(height: alto * 0.02),
 
                       Container(
+                        clipBehavior:  Clip.antiAlias,
                         width: ancho * 0.9,
                         decoration: BoxDecoration(
                           // color: ThemeApk.fondoModoOscuro,
@@ -542,9 +554,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                               _filaLegal(
                                 icono: Icons.shield_outlined,
                                 titulo: "Política de privacidad",
-                                onTap: () => _mostrarContenidoLegal(
-                                  "Política de privacidad",
-                                ),
+                                onTap: () => _abrirLegal('privacidad'),
                               ),
                               Divider(
                                 height: 1,
@@ -553,9 +563,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                               _filaLegal(
                                 icono: Icons.description_outlined,
                                 titulo: "Términos y condiciones",
-                                onTap: () => _mostrarContenidoLegal(
-                                  "Términos y condiciones",
-                                ),
+                                onTap: () => _abrirLegal('terminos'),
                               ),
                             ],
                           ),
