@@ -98,7 +98,7 @@ class _CameraScreenState extends State<CameraScreen> {
         children: [
           Positioned.fill(
             child: _controller == null || !_controller!.value.isInitialized
-                ? Text("Hola")
+                ? Text("")
                 : CameraPreview(_controller!),
           ),
           Positioned(

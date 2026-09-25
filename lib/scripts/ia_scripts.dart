@@ -18,6 +18,7 @@ class IaScripts {
     - si no detecta ningun objeto ni nada solo devolver "" osea nulo
     - dame la respuesta en ingles (excepto en objeto_esp)
     - no quiero que en pronunciacion pongas nada como caracteres especiales, unicamente el texto a pronunciar
+    - la pronunciacion debe estar escrita correctamente para que el usuario pueda tratar de decirlo y que este de acorde a la palabra
 
   """;
 }
