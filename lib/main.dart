@@ -33,48 +33,7 @@ class Myapp extends StatelessWidget {
       initialRoute: RouterApp.rutaInicial,
       routes: RouterApp.rutas,
       debugShowCheckedModeBanner: false,
-      theme: Provider.of<ThemeApk>(context,).temaGeneral,
-      builder: (context, child) {
-        return PopScope(
-          canPop: false,
-
-          onPopInvokedWithResult: (didPop, result) async {
-            if (didPop) return;
-
-            final salir = await showDialog<bool>(
-              context: context,
-              builder: (dialogContext) {
-                return AlertDialog(
-                  title: const Text('Salir'),
-                  content: const Text(
-                    '¿Estás seguro de que quieres salir de la aplicación?',
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(dialogContext).pop(false);
-                      },
-                      child: const Text('Cancelar'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(dialogContext).pop(true);
-                      },
-                      child: const Text('Salir'),
-                    ),
-                  ],
-                );
-              },
-            );
-
-            if (salir == true) {
-              SystemNavigator.pop();
-            }
-          },
-
-          child: child!,
-        );
-      },
+      theme: Provider.of<ThemeApk>(context).temaGeneral,
     );
   }
 }
