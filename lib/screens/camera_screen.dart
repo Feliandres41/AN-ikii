@@ -134,6 +134,7 @@ class _CameraScreenState extends State<CameraScreen> {
                     ),
                     child: Center(
                       child: Container(
+                        clipBehavior: Clip.antiAlias,
                         width: ancho * 0.85,
                         height: alto * 0.13,
                         decoration: BoxDecoration(
