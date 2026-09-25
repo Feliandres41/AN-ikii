@@ -32,6 +32,16 @@ migrate_working_dir/
 .pub/
 /build/
 /coverage/
+#Ignorar archivos creados al momento de cargarlos
+**/generated/**
+**/GeneratedPluginRegistrant.*
+**/*.g.dart
+**/linux/flutter/generated/**
+**/windows/flutter/generated/**
+**/macos/Flutter/GeneratedPluginRegistrant.swift
+**/ios/Flutter/Generated.xcconfig
+**/linux/flutter/generated_plugin_registrant.*
+**/linux/flutter/generated_plugins.cmake
 
 # Symbolication related
 app.*.symbols
