@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/router/router_app.dart';
-import 'package:flutter_application_1/services/service_api.dart';
+import './services/services.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +19,8 @@ class ProviderApi extends StatelessWidget{
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (_)=>ServiceApi()),
-      ChangeNotifierProvider(create: (_)=>ThemeApk())
+      ChangeNotifierProvider(create: (_)=>ThemeApk()),
+      ChangeNotifierProvider(create: (_)=>NetworkService())
     ],child: Myapp(),);
   }
 }
