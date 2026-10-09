@@ -43,6 +43,8 @@ dependencies:
   flutter_tts: ^4.2.5
   flutter_launcher_icons: ^0.14.4
   flutter_native_splash: ^2.4.8
+  connectivity_plus: ^7.3.2
+  internet_connection_checker_plus: ^3.1.2
 
 #Icono
 flutter_launcher_icons:
