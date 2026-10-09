@@ -331,14 +331,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                           )
                                         );
                                       }else if(code==404){
-                                        print("____aa_");
+                                        setState(() {
+                                          login = false;
+                                        });
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(
                                             backgroundColor: const Color.fromARGB(255, 100, 24, 18),
                                             content: Container(
                                               child: Center(
                                                 child: Text(
-                                                  "Sin acceso a internet",style: TextStyle(
+                                                  "No hay internet",style: TextStyle(
                                                     color: Colors.white
                                                   ),
                                                 ),
