@@ -258,7 +258,15 @@ class ServiceApi extends ChangeNotifier {
 
     final socket = RankingWebSocketService.pusherDashboard();
     _rankingSocket = socket;
-    _rankingSocketSubscription = socket.actualizaciones.listen((_) async {
+    _rankingSocketSubscription = socket.actualizaciones.listen((mensaje) async {
+      final event = mensaje['event']?.toString() ?? '';
+      final data = mensaje['data'];
+
+      if (event.startsWith('pusher') ||
+          event.isEmpty && data is Map && data['programas'] == null && data['historial'] == null) {
+        return;
+      }
+
       if (_actualizandoDesdeSocket || _servicioCerrado) return;
 
       _actualizandoDesdeSocket = true;

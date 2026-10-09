@@ -15,7 +15,7 @@ class RankingWebSocketService {
   factory RankingWebSocketService.pusherDashboard() {
     return RankingWebSocketService(
       endpoint:
-          'wss://caa-fonseca.education/app/e2bcd40b49393d6486f5fc3bd65a374d?protocol=7&client=flutter&version=1.0',
+          'wss://caa-fonseca.education/app/5kyazwygzvm3uxftyjlv?protocol=7&client=flutter&version=1.0',
       token: null,
       protocols: const [],
       subscriptionMessage: const {
@@ -89,9 +89,27 @@ class RankingWebSocketService {
 
     try {
       final json = jsonDecode(texto);
-      if (json is Map) {
-        _actualizaciones.add(Map<String, dynamic>.from(json));
+      if (json is! Map) return;
+
+      final normalizado = <String, dynamic>{
+        ...Map<String, dynamic>.from(json),
+      };
+
+      final data = json['data'];
+      if (data is String) {
+        try {
+          final dataJson = jsonDecode(data);
+          if (dataJson is Map) {
+            normalizado['data'] = Map<String, dynamic>.from(dataJson);
+          }
+        } on FormatException {
+          // Ignora payloads de texto no JSON.
+        }
+      } else if (data is Map) {
+        normalizado['data'] = Map<String, dynamic>.from(data);
       }
+
+      _actualizaciones.add(normalizado);
     } on FormatException {
       // Ignora mensajes que no sean JSON.
     }

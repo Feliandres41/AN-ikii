@@ -12,12 +12,36 @@ class RankingScreen  extends StatefulWidget{
   @override
   State<RankingScreen> createState() => _RankingScreenState();
 }
-class _RankingScreenState extends State<RankingScreen> {
+class _RankingScreenState extends State<RankingScreen>
+    with WidgetsBindingObserver {
   @override
-  void dispose(){
-    super.dispose();
-    AppBarWidget.info =false;
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _recargarRanking();
   }
+
+  Future<void> _recargarRanking() async {
+    if (!mounted) return;
+
+    final service = Provider.of<ServiceApi>(context, listen: false);
+    await service.rankingProramas();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _recargarRanking();
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    AppBarWidget.info = false;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final ancho = MediaQuery.of(context).size.width;
