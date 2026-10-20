@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/responsive.dart';
 import 'package:flutter_application_1/config/voice_config.dart';
 import 'package:flutter_application_1/models/glosario_model.dart';
 import 'package:flutter_application_1/services/service_api.dart';
@@ -57,8 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
     final historial = Provider.of<ServiceApi>(context).historial;
     final listaHistorial = historial["historial"] as List? ?? [];
     final _cantidad = listaHistorial.length;
-    final ancho = MediaQuery.of(context).size.width;
+    final ancho = MediaQuery.sizeOf(context).width;
+    final anchoTexto = anchoDiseno(context);
     final alto = MediaQuery.of(context).size.height;
+    final altoTarjetaEstadistica = (alto * 0.09)
+        .clamp(80.0, 120.0)
+        .toDouble();
     final temas = Provider.of<ThemeApk>(context);
     AppBarWidget.info =false;
 
@@ -145,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           "¡Hola, ${dato["rol"]}!",
 
                                           style: TextStyle(
-                                            fontSize: (ancho * 0.05).clamp(
+                                            fontSize: (anchoTexto * 0.05).clamp(
                                               18.0,
                                               28.0,
                                             ),
@@ -158,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           "Ficha: ${dato["ficha"]}",
 
                                           style: TextStyle(
-                                            fontSize: (ancho * 0.03).clamp(
+                                            fontSize: (anchoTexto * 0.03).clamp(
                                               12.0,
                                               16.0,
                                             ),
@@ -175,11 +180,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(height: alto * 0.004),
 
                         // informacion general de la aplicacion
-                        CardWidget(
-                          ancho: ancho * 0.9,
-                          alto: alto * 0.28,
-
-                          decoracion: BoxDecoration(
+                        Container(
+                          width: ancho * 0.9,
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(
                               color: Provider.of<ThemeApk>(
@@ -189,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: temas.fondoCartaModo,
                           ),
 
-                          contenido: Padding(
+                          child: Padding(
                             padding: EdgeInsets.only(
                               left: ancho * 0.05,
                               top: alto * 0.01,
@@ -205,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                   style: TextStyle(
                                     color: temas.letrasModoOscuro,
-                                    fontSize: ancho * 0.055,
+                                    fontSize: anchoTexto * 0.055,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -215,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                   style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: ancho * 0.035,
+                                    fontSize: anchoTexto * 0.035,
                                   ),
 
                                   maxLines: 10,
@@ -225,12 +228,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 SizedBox(height: alto * 0.01),
 
                                 Row(
-                                  spacing: ancho * 0.03,
+                                  spacing: anchoTexto * 0.03,
 
                                   children: [
                                     CardWidget(
-                                      ancho: ancho * 0.08,
-                                      alto: ancho * 0.08,
+                                      ancho: anchoTexto * 0.08,
+                                      alto: anchoTexto * 0.08,
 
                                       decoracion: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
@@ -248,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                       style: TextStyle(
                                         color: temas.letrasModoOscuro,
-                                        fontSize: ancho * 0.035,
+                                        fontSize: anchoTexto * 0.035,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -258,12 +261,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 SizedBox(height: alto * 0.015),
 
                                 Row(
-                                  spacing: ancho * 0.03,
+                                  spacing: anchoTexto * 0.03,
 
                                   children: [
                                     CardWidget(
-                                      ancho: ancho * 0.08,
-                                      alto: ancho * 0.08,
+                                      ancho: anchoTexto * 0.08,
+                                      alto: anchoTexto * 0.08,
 
                                       decoracion: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
@@ -281,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                       style: TextStyle(
                                         color: temas.letrasModoOscuro,
-                                        fontSize: ancho * 0.035,
+                                        fontSize: anchoTexto * 0.035,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -300,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                   child: Center(
                                     child: CardWidget(
-                                      ancho: ancho * 0.9,
+                                      ancho: ancho * 0.8,
                                       alto: alto * 0.05,
 
                                       decoracion: BoxDecoration(
@@ -315,12 +318,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
 
-                                        spacing: ancho * 0.03,
+                                        spacing: anchoTexto * 0.03,
 
                                         children: [
                                           Icon(
                                             Icons.camera_alt_outlined,
-                                            size: ancho * 0.06,
+                                            size: anchoTexto * 0.06,
                                           ),
 
                                           Text(
@@ -328,7 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                             style: TextStyle(
                                               color: temas.letrasModoOscuro,
-                                              fontSize: ancho * 0.04,
+                                              fontSize: anchoTexto * 0.04,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -374,8 +377,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Padding(
                                 padding: EdgeInsets.only(
                                   top: alto * 0.015,
-                                  left: ancho * 0.08,
-                                  right: ancho * 0.08,
+                                  left: anchoTexto * 0.08,
+                                  right: anchoTexto * 0.08,
                                 ),
 
                                 child: Column(
@@ -395,7 +398,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               style: TextStyle(
                                                 color: temas.letrasModoOscuro,
-                                                fontSize: ancho * 0.055,
+                                                fontSize: anchoTexto * 0.055,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -405,7 +408,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               style: TextStyle(
                                                 color: Colors.grey,
-                                                fontSize: ancho * 0.035,
+                                                fontSize: anchoTexto * 0.035,
                                               ),
                                             ),
                                           ],
@@ -423,7 +426,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ? Icons.arrow_right_sharp
                                                 : Icons.arrow_drop_up_sharp,
 
-                                            size: ancho * 0.09,
+                                            size: anchoTexto * 0.075,
 
                                             color: temas.textcardDesc,
                                           ),
@@ -479,7 +482,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       .nombreEsp,
                                                                   style: TextStyle(
                                                                     fontSize:
-                                                                        ancho *
+                                                                        anchoTexto *
                                                                         0.038,
                                                                     fontWeight:
                                                                         FontWeight
@@ -492,7 +495,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       "EN: ",
                                                                       style: TextStyle(
                                                                         fontSize:
-                                                                            ancho *
+                                                                            anchoTexto *
                                                                             0.033,
                                                                         color: Colors
                                                                             .grey,
@@ -503,7 +506,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           .nombreEng,
                                                                       style: TextStyle(
                                                                         fontSize:
-                                                                            ancho *
+                                                                            anchoTexto *
                                                                             0.035,
                                                                         color: temas
                                                                             .verdeModoOscuroProvider,
@@ -693,14 +696,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         //   ),
                         // )
                         Padding(
-                          padding: EdgeInsets.only(top: ancho * 0.02),
+                          padding: EdgeInsets.only(top: anchoTexto * 0.02),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            spacing: ancho * 0.2,
+                            spacing: anchoTexto * 0.2,
                             children: [
                               CardWidget(
                                 ancho: ancho * 0.35,
-                                alto: alto * 0.09,
+                                alto: altoTarjetaEstadistica,
 
                                 decoracion: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
@@ -716,11 +719,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     Icon(
                                       Icons.history_sharp,
-                                      size: ancho * 0.09,
+                                      size: anchoTexto * 0.075,
                                     ),
                                     Text(
                                       "$_cantidad",
-                                      style: TextStyle(fontSize: ancho * 0.05),
+                                      style: TextStyle(fontSize: anchoTexto * 0.05),
                                     ),
                                   ],
                                 ),
@@ -728,7 +731,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                               CardWidget(
                                 ancho: ancho * 0.35,
-                                alto: alto * 0.09,
+                                alto: altoTarjetaEstadistica,
 
                                 decoracion: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
@@ -744,11 +747,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     Icon(
                                       Icons.leaderboard_outlined,
-                                      size: ancho * 0.09,
+                                      size: anchoTexto * 0.075,
                                     ),
                                     Text(
                                       "0",
-                                      style: TextStyle(fontSize: ancho * 0.05),
+                                      style: TextStyle(fontSize: anchoTexto * 0.05),
                                     ),
                                   ],
                                 ),

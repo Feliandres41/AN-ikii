@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/responsive.dart';
 import 'package:flutter_application_1/screens/ranking_ficha_screen.dart';
 import 'package:flutter_application_1/services/service_api.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
@@ -44,7 +45,8 @@ class _RankingScreenState extends State<RankingScreen>
 
   @override
   Widget build(BuildContext context) {
-    final ancho = MediaQuery.of(context).size.width;
+    final ancho = MediaQuery.sizeOf(context).width;
+    final anchoTexto = anchoDiseno(context);
     final alto = MediaQuery.of(context).size.height;
     final temas = Provider.of<ThemeApk>(context);
     return Scaffold(
@@ -76,7 +78,7 @@ class _RankingScreenState extends State<RankingScreen>
                   child: Text(
                     "Ranking de programas",
                     style: TextStyle(
-                      fontSize: ancho * 0.055,
+                      fontSize: anchoTexto * 0.055,
                       fontWeight: FontWeight.bold,
                       color: temas.letrasModoOscuro,
                     ),
@@ -126,7 +128,7 @@ class _RankingScreenState extends State<RankingScreen>
                                 "$posicion",
                                 style: TextStyle(
                                   color: color,
-                                  fontSize: ancho * 0.045,
+                                  fontSize: anchoTexto * 0.045,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -139,7 +141,7 @@ class _RankingScreenState extends State<RankingScreen>
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: temas.letrasModoOscuro,
-                                  fontSize: ancho * 0.038,
+                                  fontSize: anchoTexto * 0.038,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -152,7 +154,7 @@ class _RankingScreenState extends State<RankingScreen>
                                   "${datos["total_busquedas"]}",
                                   style: TextStyle(
                                     color: color,
-                                    fontSize: ancho * 0.055,
+                                    fontSize: anchoTexto * 0.055,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -160,7 +162,7 @@ class _RankingScreenState extends State<RankingScreen>
                                   "búsquedas",
                                   style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: ancho * 0.027,
+                                    fontSize: anchoTexto * 0.027,
                                   ),
                                 ),
                               ],

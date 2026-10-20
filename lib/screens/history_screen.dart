@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/responsive.dart';
 import 'package:flutter_application_1/config/voice_config.dart';
 import 'package:flutter_application_1/services/service_api.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
@@ -28,7 +29,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ancho = MediaQuery.of(context).size.width;
+    final ancho = MediaQuery.sizeOf(context).width;
+    final anchoTexto = anchoDiseno(context);
     final alto = MediaQuery.of(context).size.height;
     final temas = Provider.of<ThemeApk>(context);
     //paginacion
@@ -60,7 +62,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               "Historial de Términos",
                               style: TextStyle(
                                 color: temas.letrasModoOscuro,
-                                fontSize: ancho * 0.055,
+                                fontSize: anchoTexto * 0.055,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -77,7 +79,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       Tab(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          spacing: ancho * 0.02,
+                          spacing: anchoTexto * 0.02,
                           children: [
                             Icon(Icons.layers_outlined),
                             Text("Lista"),
@@ -87,7 +89,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       Tab(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          spacing: ancho * 0.02,
+                          spacing: anchoTexto * 0.02,
                           children: [Icon(Icons.menu_book), Text("Tabla")],
                         ),
                       ),
@@ -147,28 +149,30 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  Column(
+                                                  Expanded(
+                                                    child: Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
                                                       Text(
                                                         '${busqueda["objeto_esp"]}',
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
                                                         style: TextStyle(
                                                           fontSize:
-                                                              ancho * 0.05,
+                                                              anchoTexto * 0.05,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
                                                       ),
                                                       Row(
-                                                        spacing: ancho * 0.04,
                                                         children: [
                                                           Text(
                                                             "EN",
                                                             style: TextStyle(
                                                               fontSize:
-                                                                  ancho * 0.04,
+                                                                  anchoTexto * 0.04,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
@@ -176,33 +180,40 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                                   .moradoClaroFijo,
                                                             ),
                                                           ),
-                                                          Text(
-                                                            busqueda["objeto_eng"],
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  ancho * 0.04,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: temas
-                                                                  .verdeClaroTranslucidoFijo,
+                                                          SizedBox(
+                                                            width: anchoTexto * 0.015,
+                                                          ),
+                                                          Expanded(
+                                                            child: Text(
+                                                              busqueda["objeto_eng"],
+                                                              maxLines: 1,
+                                                              overflow: TextOverflow.ellipsis,
+                                                              style: TextStyle(
+                                                                fontSize: anchoTexto * 0.04,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: temas.verdeClaroTranslucidoFijo,
+                                                              ),
                                                             ),
                                                           ),
-                                                          Text(
-                                                            "${busqueda["pronunciacion"]}",
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  ancho * 0.04,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              color:
-                                                                  Colors.grey,
+                                                          SizedBox(
+                                                            width: anchoTexto * 0.015,
+                                                          ),
+                                                          Flexible(
+                                                            child: Text(
+                                                              "${busqueda["pronunciacion"]}",
+                                                              maxLines: 1,
+                                                              overflow: TextOverflow.ellipsis,
+                                                              style: TextStyle(
+                                                                fontSize: anchoTexto * 0.04,
+                                                                fontWeight: FontWeight.w400,
+                                                                color: Colors.grey,
+                                                              ),
                                                             ),
                                                           ),
                                                         ],
                                                       ),
                                                     ],
+                                                    ),
                                                   ),
                                                   GestureDetector(
                                                     onTap: () async {
@@ -214,8 +225,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                       );
                                                     },
                                                     child: CardWidget(
-                                                      ancho: ancho * 0.08,
-                                                      alto: ancho * 0.08,
+                                                      ancho: anchoTexto * 0.08,
+                                                      alto: anchoTexto * 0.08,
 
                                                       decoracion: BoxDecoration(
                                                         borderRadius:
@@ -264,7 +275,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             "Tarjeta ${cartaPrincipal + 1} de ${lista.length}",
                                             style: TextStyle(
                                               color: temas.letrasModoOscuro,
-                                              fontSize: ancho * 0.05,
+                                              fontSize: anchoTexto * 0.05,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -279,7 +290,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             },
                                             icon: Icon(
                                               Icons.volume_up_outlined,
-                                              size: ancho * 0.08,
+                                              size: anchoTexto * 0.08,
                                             ),
                                           ),
                                         ],
@@ -304,19 +315,19 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                               lista[cartaPrincipal]["busqueda"]["objeto_esp"],
                                               style: TextStyle(
                                                 color: temas.letrasModoOscuro,
-                                                fontSize: ancho * 0.055,
+                                                fontSize: anchoTexto * 0.055,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                              spacing: ancho * 0.02,
+                                              spacing: anchoTexto * 0.02,
                                               children: [
                                                 Text(
                                                   lista[cartaPrincipal]["busqueda"]["objeto_eng"],
                                                   style: TextStyle(
-                                                    fontSize: ancho * 0.055,
+                                                    fontSize: anchoTexto * 0.055,
                                                     fontWeight: FontWeight.bold,
                                                     color: temas
                                                         .verdeClaroTranslucidoFijo,
@@ -326,7 +337,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                 Text(
                                                   lista[cartaPrincipal]["busqueda"]["pronunciacion"],
                                                   style: TextStyle(
-                                                    fontSize: ancho * 0.055,
+                                                    fontSize: anchoTexto * 0.055,
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.grey,
                                                   ),
@@ -367,13 +378,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .center,
-                                                      spacing: ancho * 0.02,
+                                                      spacing: anchoTexto * 0.02,
                                                       children: [
                                                         Text(
                                                           "Pasado",
                                                           style: TextStyle(
                                                             fontSize:
-                                                                ancho * 0.038,
+                                                                anchoTexto * 0.038,
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             color: const Color(
@@ -384,7 +395,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                         Icon(
                                                           Icons
                                                               .volume_up_outlined,
-                                                          size: ancho * 0.058,
+                                                          size: anchoTexto * 0.058,
                                                           color: Color.fromARGB(
                                                             255,
                                                             40,
@@ -403,7 +414,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
-                                                    fontSize: ancho * 0.036,
+                                                    fontSize: anchoTexto * 0.036,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
@@ -449,13 +460,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .center,
-                                                      spacing: ancho * 0.02,
+                                                      spacing: anchoTexto * 0.02,
                                                       children: [
                                                         Text(
                                                           "Presente",
                                                           style: TextStyle(
                                                             fontSize:
-                                                                ancho * 0.038,
+                                                                anchoTexto * 0.038,
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             color:
@@ -470,7 +481,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                         Icon(
                                                           Icons
                                                               .volume_up_outlined,
-                                                          size: ancho * 0.058,
+                                                          size: anchoTexto * 0.058,
                                                           color: Color.fromARGB(
                                                             255,
                                                             13,
@@ -491,7 +502,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
-                                                    fontSize: ancho * 0.036,
+                                                    fontSize: anchoTexto * 0.036,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
@@ -533,13 +544,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .center,
-                                                      spacing: ancho * 0.02,
+                                                      spacing: anchoTexto * 0.02,
                                                       children: [
                                                         Text(
                                                           "Futuro",
                                                           style: TextStyle(
                                                             fontSize:
-                                                                ancho * 0.038,
+                                                                anchoTexto * 0.038,
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             color: const Color(
@@ -550,7 +561,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                         Icon(
                                                           Icons
                                                               .volume_up_outlined,
-                                                          size: ancho * 0.058,
+                                                          size: anchoTexto * 0.058,
                                                           color: Color(
                                                             0xFF14361C,
                                                           ),
@@ -566,7 +577,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
-                                                    fontSize: ancho * 0.036,
+                                                    fontSize: anchoTexto * 0.036,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),

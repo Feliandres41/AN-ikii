@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/responsive.dart';
 import 'package:flutter_application_1/config/voice_config.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:flutter_application_1/widget/app_bar_widget.dart';
@@ -85,7 +86,8 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ancho = MediaQuery.of(context).size.width;
+    final ancho = MediaQuery.sizeOf(context).width;
+    final anchoDisenoPantalla = anchoDiseno(context);
     final alto = MediaQuery.of(context).size.height;
     AppBarWidget.info = false;
     return Scaffold(
@@ -111,8 +113,8 @@ class _CameraScreenState extends State<CameraScreen> {
                 });
               },
               child: Container(
-                width: ancho * 0.1,
-                height: ancho * 0.1,
+                width: anchoDisenoPantalla * 0.1,
+                height: anchoDisenoPantalla * 0.1,
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(104, 0, 0, 0),
                   borderRadius: BorderRadius.circular(1000),
@@ -153,8 +155,8 @@ class _CameraScreenState extends State<CameraScreen> {
                                 flex: 1,
                                 child: Container(
                                   alignment: Alignment.center,
-                                  width: ancho * 0.15,
-                                  height: ancho * 0.15,
+                                  width: anchoDisenoPantalla * 0.15,
+                                  height: anchoDisenoPantalla * 0.15,
                                   decoration: BoxDecoration(
                                     color: Color.fromARGB(68, 178, 160, 212),
                                     borderRadius: BorderRadius.circular(20),
@@ -163,7 +165,7 @@ class _CameraScreenState extends State<CameraScreen> {
                                   child: Icon(Icons.filter_center_focus_sharp),
                                 ),
                               ),
-                              SizedBox(width: ancho * 0.04),
+                              SizedBox(width: anchoDisenoPantalla * 0.04),
                               Flexible(
                                 flex: 3,
                                 child: Column(
@@ -175,14 +177,14 @@ class _CameraScreenState extends State<CameraScreen> {
                                     Text(
                                       "Molde de Escaneo Inteligente",
                                       style: TextStyle(
-                                        fontSize: ancho * 0.035,
+                                        fontSize: anchoDisenoPantalla * 0.035,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     Text(
                                       "Alinea el objeto al lente de la camara,  ANüikii te dara su nombre en ingles y más",
                                       style: TextStyle(
-                                        fontSize: ancho * 0.027,
+                                        fontSize: anchoDisenoPantalla * 0.027,
                                       ),
                                     ),
                                   ],

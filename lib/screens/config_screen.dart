@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/responsive.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:flutter_application_1/services/service_api.dart';
 import 'package:flutter_application_1/widget/bottom_navigation_bar_widget.dart';
@@ -26,18 +27,14 @@ class _ConfigScreenState extends State<ConfigScreen> {
     if (tipo == 'privacidad') {
       Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (_) => const PoliticaPrivacidadWidget(),
-        ),
+        MaterialPageRoute(builder: (_) => const PoliticaPrivacidadWidget()),
       );
       return;
     }
 
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => const TerminosCondicionesWidget(),
-      ),
+      MaterialPageRoute(builder: (_) => const TerminosCondicionesWidget()),
     );
   }
 
@@ -45,30 +42,34 @@ class _ConfigScreenState extends State<ConfigScreen> {
     required IconData icono,
     required String titulo,
     required VoidCallback onTap,
+    required double tamanoTexto,
   }) {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         child: Row(
           children: [
             Container(
-              clipBehavior:  Clip.antiAlias,
-              width: 36,
-              height: 36,
+              clipBehavior: Clip.antiAlias,
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
                 color: const Color(0xff3979BD),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icono, color: Colors.white, size: 21),
+              child: Icon(icono, color: Colors.white, size: 23),
             ),
-            const SizedBox(width: 14),
+            const SizedBox(width: 16),
             Expanded(
               child: Text(
                 titulo,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  fontSize: tamanoTexto,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             const Icon(Icons.chevron_right, color: Colors.grey),
@@ -78,15 +79,57 @@ class _ConfigScreenState extends State<ConfigScreen> {
     );
   }
 
+  Widget _filaDatoInstitucional({
+    required String etiqueta,
+    required String valor,
+    required double tamanoEtiqueta,
+    required double tamanoValor,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            etiqueta,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: tamanoEtiqueta, color: Colors.grey),
+          ),
+          Text(
+            valor,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: tamanoValor,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var temas = Provider.of<ThemeApk>(context);
-    final ancho = MediaQuery.of(context).size.width;
+    final ancho = MediaQuery.sizeOf(context).width;
+    final anchoContenido = anchoDiseno(context);
+    final anchoTarjeta = anchoContenido * 0.9;
+    final anchoTexto = anchoContenido;
     final alto = MediaQuery.of(context).size.height;
-    final tamanoEtiqueta = (ancho * 0.035).clamp(14.0, 18.0).toDouble();
-    final tamanoValor = (ancho * 0.028).clamp(12.0, 16.0).toDouble();
+    final espacioSeccion = (alto * 0.026).clamp(20.0, 24.0).toDouble();
+    final espacioBotonSalir = (alto * 0.045).clamp(26.0, 34.0).toDouble();
+    final margenInferiorContenido = (alto * 0.04).clamp(24.0, 32.0).toDouble();
+    final tamanoEtiqueta = (anchoTexto * 0.035).clamp(14.0, 18.0).toDouble();
+    final tamanoValor = (anchoTexto * 0.028).clamp(12.0, 16.0).toDouble();
     Map? dato = Provider.of<ServiceApi>(context).datos;
     final esAprendiz = '${dato?['rol']}'.trim().toLowerCase() == 'aprendiz';
+    final altoTarjetaSecundaria = (alto * 0.15).clamp(122.0, 138.0).toDouble();
+    final tamanoTextoLegal = (anchoTexto * 0.04).clamp(14.0, 17.0).toDouble();
     return Scaffold(
       backgroundColor: !temas.claro ? Color(0xff1F1A38) : temas.fondoClaro,
       extendBodyBehindAppBar: true,
@@ -97,19 +140,23 @@ class _ConfigScreenState extends State<ConfigScreen> {
       //   ),),
       //   backgroundColor: Colors.transparent,
       // ),
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: BoxDecoration(),
-          clipBehavior:  Clip.antiAlias,
-          width: ancho,
-          child: Stack(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final parteInferiorVerde = alto * 0.22 - 50;
+          final parteInferiorRol = alto * 0.1 + alto * 0.05;
+          final inicioContenido =
+              (parteInferiorVerde > parteInferiorRol
+                  ? parteInferiorVerde
+                  : parteInferiorRol) +
+              24;
+          return Stack(
             children: [
               Positioned(
                 top: -50,
-                width: ancho,
+                left: 0,
+                right: 0,
                 height: alto * 0.22,
                 child: Container(
-                  clipBehavior:  Clip.antiAlias,
                   decoration: BoxDecoration(
                     color: ThemeApk.verdeModoOscuro,
                     borderRadius: BorderRadius.circular(30),
@@ -117,504 +164,392 @@ class _ConfigScreenState extends State<ConfigScreen> {
                 ),
               ),
               Positioned(
-                child: Padding(
-                  padding: EdgeInsets.only(top: alto * 0.04),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Mi perfil",
-                        style: TextStyle(
-                          fontSize: ancho * 0.075,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                top: (alto * 0.04).clamp(24.0, 32.0).toDouble(),
+                left: 0,
+                right: 0,
+                child: Text(
+                  "Mi perfil",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: anchoTexto * 0.075,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-
-              Padding(
-                padding: EdgeInsets.only(top: alto * 0.1),
-                child: SizedBox(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CardWidget(
-                            ancho: ancho * 0.9,
-                            alto: alto * 0.05,
-                            decoracion: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: ThemeApk.fondoModoOscuro,
-                              // color: Provider.of<ThemeApk>(context).cardDesc,
-                              border: Border.all(
-                                color: ThemeApk.bordeModoOscuro,
-                                width: 0.5,
-                              ),
-                            ),
-                            contenido: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              spacing: alto * 0.0075,
-                              children: [
-                                // Text(dato?["nombre"],style: TextStyle(
-                                //   fontWeight: FontWeight.bold
-                                // ),),
-                                Container(
-                                  clipBehavior:  Clip.antiAlias,
-                                  width: ancho * 0.425,
-                                  decoration: BoxDecoration(
-                                    // border: Border.all(
-                                    //   color: ThemeApk.verdeModoOscuro,
-                                    //   width: 0.5,
-                                    // ),
-                                    // borderRadius: BorderRadius.circular(20),
-                                    // color: Color.fromARGB(47, 170, 202, 25),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 10,
-                                      top: 3,
-                                      bottom: 3,
-                                      right: 10,
-                                    ),
-                                    child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: Text(
-                                        "${dato?['rol']} - SENA",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          // temas
-                                          //     .verdeModoOscuroProvider, //Modo claro/Modo oscuro
-                                          fontSize: (ancho * 0.05).clamp(
-                                            14.0,
-                                            20.0,
-                                          ),
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+              Positioned(
+                top: alto * 0.1,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: CardWidget(
+                    ancho: anchoTarjeta,
+                    alto: alto * 0.05,
+                    decoracion: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: ThemeApk.fondoModoOscuro,
+                      border: Border.all(
+                        color: ThemeApk.bordeModoOscuro,
+                        width: 0.5,
+                      ),
+                    ),
+                    contenido: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            "${dato?['rol']} - SENA",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: (anchoTexto * 0.05).clamp(14.0, 20.0),
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                        ],
-                      ),
-                      SizedBox(height: alto * 0.035),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: ancho * 0.06),
-                            child: Text(
-                              "Datos institucionales SENA",
-                              style: TextStyle(
-                                fontSize: ancho * 0.04,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: alto * 0.02),
-
-                      CardWidget(
-                        ancho: ancho * 0.9,
-                        alto: esAprendiz
-                            ?
-                              //fisico
-                              alto * 0.22
-                            //emulador
-                            // (alto * 0.19).clamp(156.0, 184.0).toDouble()
-                            : 88.0,
-                        decoracion: BoxDecoration(
-                          // color: ThemeApk.fondoModoOscuro,
-                          color: temas.cardDesc,
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border.all(color: temas.bordercardDesc),
                         ),
-                        contenido: Padding(
-                          padding: const EdgeInsets.only(top: 10),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned.fill(
+                top: inicioContenido,
+                child: LayoutBuilder(
+                  builder: (context, contentConstraints) => SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: contentConstraints.maxHeight,
+                      ),
+                      child: Center(
+                        child: SizedBox(
+                          width: ancho,
                           child: Column(
-                            children: [
-                              if (esAprendiz)
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: ancho * 0.04,
-                                    right: ancho * 0.04,
-                                    bottom: 8,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        // mainAxisAlignment:
-                                        //     MainAxisAlignment.center,
-                                        children: [
-                                          // Expanded(
-                                          //   flex: 5,
-                                          //   child: Text(
-                                          //     "Nombre completo",
-                                          //     maxLines: 1,
-                                          //     overflow: TextOverflow.ellipsis,
-                                          //     style: TextStyle(
-                                          //       fontSize: tamanoEtiqueta,
-                                          //       color: Colors.grey,
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                          // const SizedBox(width: 8),
-                                          Text(
-                                            "Nombre completo",
-                                            style: TextStyle(
-                                              fontSize: tamanoEtiqueta,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                          Text(
-                                            '${dato?["nombre"] ?? "Sin nombre"}',
-                                            style: TextStyle(
-                                              fontSize: tamanoValor,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              else
-                                Expanded(
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          "Nombre completo",
-                                          style: TextStyle(
-                                            fontSize: tamanoEtiqueta,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                          ),
-                                          child: Text(
-                                            '${dato?["nombre"] ?? "Sin nombre"}',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: tamanoValor,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              if (esAprendiz) ...[
-                                Divider(),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: ancho * 0.04,
-                                    // right: ancho * 0.04,
-                                    // bottom: 8,
-                                    // top: 6,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        // mainAxisAlignment:
-                                        //     MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Programa",
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: tamanoEtiqueta,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                            '${dato?["programa"] ?? "Sin programa"}',
-                                            style: TextStyle(
-                                              fontSize: tamanoValor,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.right,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Divider(),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: ancho * 0.04,
-                                    // right: ancho * 0.04,
-                                    // bottom: 8,
-                                    // top: 4,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        // mainAxisAlignment:
-                                        //     MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Ficha de caracterización",
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: tamanoEtiqueta,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                          // const SizedBox(width: 8),
-                                          Text(
-                                            '${dato?["ficha"]}',
-                                            style: TextStyle(
-                                              fontSize: tamanoValor,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.right,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: alto * 0.02),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: ancho * 0.06),
-                            child: Text(
-                              "Preferencias",
-                              style: TextStyle(
-                                fontSize: ancho * 0.04,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: alto * 0.02),
-                      CardWidget(
-                        ancho: ancho * 0.9,
-                        alto: alto * 0.1,
-                        decoracion: BoxDecoration(
-                          // color: ThemeApk.fondoModoOscuro,
-                          color: temas.cardDesc,
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border.all(color: temas.bordercardDesc),
-                        ),
-                        contenido: Padding(
-                          padding: EdgeInsets.only(left: ancho * 0.04),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
-                                padding: EdgeInsets.only(right: ancho * 0.04),
-                                child: Container(
-                                  clipBehavior:  Clip.antiAlias,
-                                  width: alto * 0.05,
-                                  height: alto * 0.05,
-
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    color: !estado
-                                        ? const Color.fromARGB(
-                                            135,
-                                            104,
-                                            58,
-                                            183,
-                                          )
-                                        : Colors.white,
-                                  ),
-                                  child: Icon(
-                                    !estado
-                                        ? Icons.nightlight_outlined
-                                        : Icons.sunny,
-                                    color: !estado
-                                        ? Colors.white
-                                        : Colors.amber,
-                                  ),
+                                padding: EdgeInsets.only(
+                                  // top: (alto * 0.001)
+                                  //     .clamp(12.0, 18.0)
+                                  //     .toDouble(),
                                 ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: alto * 0.025),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        !estado ? "Modo oscuro" : "Modo claro",
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(
+                                      width: anchoTarjeta,
+                                      child: Text(
+                                        "Datos institucionales SENA",
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          fontSize: ancho * 0.04,
+                                          fontSize: anchoTexto * 0.04,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      Text(
-                                        "Alterna entre tema claro y oscuro",
-                                        style: TextStyle(
-                                          fontSize: ancho * 0.028,
-                                          color: Colors.grey,
+                                    ),
+                                    SizedBox(height: espacioSeccion),
+
+                                    Container(
+                                      clipBehavior: Clip.antiAlias,
+                                      width: anchoTarjeta,
+                                      decoration: BoxDecoration(
+                                        color: temas.cardDesc,
+                                        borderRadius: BorderRadius.circular(22),
+                                        border: Border.all(
+                                          color: temas.bordercardDesc,
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(right: ancho * 0.02),
-                                child: Switch(
-                                  value: Provider.of<ThemeApk>(context).claro,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      estado = value;
-                                      Provider.of<ThemeApk>(
-                                        context,
-                                        listen: false,
-                                      ).modo(value);
-                                    });
-                                  },
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          _filaDatoInstitucional(
+                                            etiqueta: "Nombre completo",
+                                            valor:
+                                                '${dato?["nombre"] ?? "Sin nombre"}',
+                                            tamanoEtiqueta: tamanoEtiqueta,
+                                            tamanoValor: tamanoValor,
+                                          ),
+                                          if (esAprendiz) ...[
+                                            Divider(
+                                              height: 1,
+                                              color: temas.bordercardDesc,
+                                            ),
+                                            _filaDatoInstitucional(
+                                              etiqueta: "Programa",
+                                              valor:
+                                                  '${dato?["programa"] ?? "Sin programa"}',
+                                              tamanoEtiqueta: tamanoEtiqueta,
+                                              tamanoValor: tamanoValor,
+                                            ),
+                                            Divider(
+                                              height: 1,
+                                              color: temas.bordercardDesc,
+                                            ),
+                                            _filaDatoInstitucional(
+                                              etiqueta:
+                                                  "Ficha de caracterización",
+                                              valor:
+                                                  '${dato?["ficha"] ?? "Sin ficha"}',
+                                              tamanoEtiqueta: tamanoEtiqueta,
+                                              tamanoValor: tamanoValor,
+                                            ),
+                                          ],
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: espacioSeccion),
+                                    SizedBox(
+                                      width: anchoTarjeta,
+                                      child: Text(
+                                        "Preferencias",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: anchoTexto * 0.04,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: espacioSeccion),
+                                    CardWidget(
+                                      ancho: anchoTarjeta,
+                                      alto: altoTarjetaSecundaria,
+                                      decoracion: BoxDecoration(
+                                        // color: ThemeApk.fondoModoOscuro,
+                                        color: temas.cardDesc,
+                                        borderRadius: BorderRadius.circular(22),
+                                        border: Border.all(
+                                          color: temas.bordercardDesc,
+                                        ),
+                                      ),
+                                      contenido: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: anchoContenido * 0.04,
+                                          vertical: 8,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              clipBehavior: Clip.antiAlias,
+                                              width: (anchoTexto * 0.08)
+                                                  .clamp(38.0, 48.0)
+                                                  .toDouble(),
+                                              height: (anchoTexto * 0.08)
+                                                  .clamp(38.0, 48.0)
+                                                  .toDouble(),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(22),
+                                                color: !estado
+                                                    ? const Color.fromARGB(
+                                                        135,
+                                                        104,
+                                                        58,
+                                                        183,
+                                                      )
+                                                    : Colors.white,
+                                              ),
+                                              child: Icon(
+                                                !estado
+                                                    ? Icons.nightlight_outlined
+                                                    : Icons.sunny,
+                                                color: !estado
+                                                    ? Colors.white
+                                                    : Colors.amber,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: anchoContenido * 0.04,
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Modo claro",
+                                                    style: TextStyle(
+                                                      fontSize:
+                                                          anchoTexto * 0.04,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "Alterna entre tema claro y oscuro",
+                                                    style: TextStyle(
+                                                      fontSize:
+                                                          anchoTexto * 0.028,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Switch(
+                                              value: Provider.of<ThemeApk>(
+                                                context,
+                                              ).claro,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  estado = value;
+                                                  Provider.of<ThemeApk>(
+                                                    context,
+                                                    listen: false,
+                                                  ).modo(value);
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: espacioSeccion),
+                                    SizedBox(
+                                      width: anchoTarjeta,
+                                      child: Text(
+                                        "Ayuda y legal",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: anchoTexto * 0.04,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: espacioSeccion),
+
+                                    Container(
+                                      clipBehavior: Clip.antiAlias,
+                                      width: anchoTarjeta,
+                                      height: altoTarjetaSecundaria,
+                                      decoration: BoxDecoration(
+                                        // color: ThemeApk.fondoModoOscuro,
+                                        color: temas.cardDesc,
+                                        borderRadius: BorderRadius.circular(22),
+                                        border: Border.all(
+                                          // color: ThemeApk.bordeModoOscuro
+                                          color: temas.bordercardDesc,
+                                        ),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(22),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                              child: _filaLegal(
+                                                icono: Icons.shield_outlined,
+                                                titulo:
+                                                    "Política de privacidad",
+                                                onTap: () =>
+                                                    _abrirLegal('privacidad'),
+                                                tamanoTexto: tamanoTextoLegal,
+                                              ),
+                                            ),
+                                            Divider(
+                                              height: 1,
+                                              color: ThemeApk.bordeModoOscuro,
+                                            ),
+                                            Expanded(
+                                              child: _filaLegal(
+                                                icono:
+                                                    Icons.description_outlined,
+                                                titulo:
+                                                    "Términos y condiciones",
+                                                onTap: () =>
+                                                    _abrirLegal('terminos'),
+                                                tamanoTexto: tamanoTextoLegal,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    SizedBox(height: espacioBotonSalir),
+
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom: margenInferiorContenido,
+                                      ),
+                                      child: SizedBox(
+                                        width: anchoTarjeta,
+                                        height: 58,
+                                        child: ElevatedButton.icon(
+                                          onPressed: () async {
+                                            final serviceApi =
+                                                Provider.of<ServiceApi>(
+                                                  context,
+                                                  listen: false,
+                                                );
+                                            if (!context.mounted) return;
+                                            final cierreSesion = serviceApi
+                                                .logout();
+                                            Navigator.pushReplacementNamed(
+                                              context,
+                                              "/login",
+                                            );
+                                            await cierreSesion;
+                                          },
+                                          icon: const Icon(
+                                            Icons.logout,
+                                            size: 21,
+                                          ),
+                                          label: const Text("Cerrar sesión"),
+                                          style: ElevatedButton.styleFrom(
+                                            foregroundColor:
+                                                const Color.fromARGB(
+                                                  255,
+                                                  255,
+                                                  255,
+                                                  255,
+                                                ),
+                                            backgroundColor: const Color(
+                                              0xff3979BD,
+                                            ),
+                                            elevation: 0,
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 14,
+                                            ),
+                                            side: const BorderSide(
+                                              color: Color.fromARGB(
+                                                255,
+                                                1,
+                                                33,
+                                                68,
+                                              ),
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                            ),
+                                            textStyle: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    // SizedBox(
+                                    //   // height: alto*0.02,
+                                    // ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
                       ),
-                      SizedBox(height: alto * 0.02),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: ancho * 0.06),
-                            child: Text(
-                              "Ayuda y legal",
-                              style: TextStyle(
-                                fontSize: ancho * 0.04,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: alto * 0.02),
-
-                      Container(
-                        clipBehavior:  Clip.antiAlias,
-                        width: ancho * 0.9,
-                        decoration: BoxDecoration(
-                          // color: ThemeApk.fondoModoOscuro,
-                          color: temas.cardDesc,
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border.all(
-                            // color: ThemeApk.bordeModoOscuro
-                            color: temas.bordercardDesc,
-                          ),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              _filaLegal(
-                                icono: Icons.shield_outlined,
-                                titulo: "Política de privacidad",
-                                onTap: () => _abrirLegal('privacidad'),
-                              ),
-                              Divider(
-                                height: 1,
-                                color: ThemeApk.bordeModoOscuro,
-                              ),
-                              _filaLegal(
-                                icono: Icons.description_outlined,
-                                titulo: "Términos y condiciones",
-                                onTap: () => _abrirLegal('terminos'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(height: alto * 0.04),
-
-                      Padding(
-                        padding: EdgeInsets.only(bottom: alto * 0.04),
-                        child: SizedBox(
-                          width: ancho * 0.9,
-                          height: 50,
-                          child: ElevatedButton.icon(
-                            onPressed: () async {
-                              final serviceApi = Provider.of<ServiceApi>(
-                                context,
-                                listen: false,
-                              );
-                              if (!context.mounted) return;
-                              final cierreSesion = serviceApi.logout();
-                              Navigator.pushReplacementNamed(context, "/login");
-                              await cierreSesion;
-                            },
-                            icon: const Icon(Icons.logout, size: 20),
-                            label: const Text("Cerrar sesión"),
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: const Color.fromARGB(255, 255, 255, 255),
-                              backgroundColor: const Color(0xff3979BD),
-                              elevation: 0,
-                              side: const BorderSide(color: Color.fromARGB(255, 1, 33, 68)),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              textStyle: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // SizedBox(
-                      //   // height: alto*0.02,
-                      // ),
-                    ],
+                    ),
                   ),
                 ),
               ),
             ],
-          ),
-        ),
+          );
+        },
       ),
       bottomNavigationBar: BottomnavigationbarWidget(
         alto: alto,
