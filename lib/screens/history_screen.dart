@@ -122,10 +122,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                           : null;
                                       return Column(
                                         children: [
-                                          CardWidget(
-                                            alto: alto * 0.09,
-                                            ancho: ancho * 0.9,
-                                            decoracion: BoxDecoration(
+                                          Container(
+                                            width: ancho * 0.9,
+                                            constraints: BoxConstraints(
+                                              minHeight: (alto * 0.09)
+                                                  .clamp(72.0, 88.0)
+                                                  .toDouble(),
+                                            ),
+                                            decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(15),
                                               border: Border.all(
@@ -135,7 +139,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                               ),
                                               color: temas.fondoCartaModo,
                                             ),
-                                            contenido: Padding(
+                                            child: Padding(
                                               padding: EdgeInsets.only(
                                                 left: ancho * 0.05,
                                                 top: alto * 0.01,
@@ -259,406 +263,410 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 ),
                               ],
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: alto * 0.01),
-                                  child: Column(
-                                    children: [
-                                      SizedBox(height: alto * 0.02),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Tarjeta ${cartaPrincipal + 1} de ${lista.length}",
-                                            style: TextStyle(
-                                              color: temas.letrasModoOscuro,
-                                              fontSize: anchoTexto * 0.05,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          IconButton(
-                                            onPressed: () async {
-                                              await Future.delayed(
-                                                Duration(seconds: 1),
-                                              );
-                                              VoiceConfig.hablar(
-                                                lista[cartaPrincipal]["busqueda"]["objeto_eng"],
-                                              );
-                                            },
-                                            icon: Icon(
-                                              Icons.volume_up_outlined,
-                                              size: anchoTexto * 0.08,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: alto * 0.02),
-                                      CardWidget(
-                                        ancho: ancho * 0.9,
-                                        alto: alto * 0.46,
-                                        decoracion: BoxDecoration(
-                                          border: Border.all(
-                                            color: Provider.of<ThemeApk>(
-                                              context,
-                                            ).bordercardDesc,
-                                          ),
-                                          color: temas.fondoCartaModo,
-                                        ),
-                                        //lista[0]["busqueda"]
-                                        contenido: Column(
+                            SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(top: alto * 0.01),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: alto * 0.02),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
-                                            SizedBox(height: alto * 0.01),
                                             Text(
-                                              lista[cartaPrincipal]["busqueda"]["objeto_esp"],
+                                              "Tarjeta ${cartaPrincipal + 1} de ${lista.length}",
                                               style: TextStyle(
                                                 color: temas.letrasModoOscuro,
-                                                fontSize: anchoTexto * 0.055,
+                                                fontSize: anchoTexto * 0.05,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              spacing: anchoTexto * 0.02,
-                                              children: [
-                                                Text(
+                                            IconButton(
+                                              onPressed: () async {
+                                                await Future.delayed(
+                                                  Duration(seconds: 1),
+                                                );
+                                                VoiceConfig.hablar(
                                                   lista[cartaPrincipal]["busqueda"]["objeto_eng"],
-                                                  style: TextStyle(
-                                                    fontSize: anchoTexto * 0.055,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: temas
-                                                        .verdeClaroTranslucidoFijo,
-                                                  ),
-                                                ),
-
-                                                Text(
-                                                  lista[cartaPrincipal]["busqueda"]["pronunciacion"],
-                                                  style: TextStyle(
-                                                    fontSize: anchoTexto * 0.055,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.grey,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Divider(
-                                              // height: 3.5,
-                                              height: alto * 0.03,
-                                              color: Colors.transparent,
-                                            ),
-                                            // SizedBox(
-                                            //   height: alto*0.02,
-                                            // ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    await Future.delayed(
-                                                      Duration(seconds: 1),
-                                                    );
-                                                    VoiceConfig.hablar(
-                                                      lista[cartaPrincipal]["busqueda"]["oracion_pasado"],
-                                                    );
-                                                  },
-                                                  child: CardWidget(
-                                                    ancho: ancho * 0.9,
-                                                    alto: alto * 0.05,
-                                                    decoracion: BoxDecoration(
-                                                      color:
-                                                          temas.moradoClaroFijo,
-                                                      // borderRadius: BorderRadius.circular(10)
-                                                    ),
-                                                    contenido: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      spacing: anchoTexto * 0.02,
-                                                      children: [
-                                                        Text(
-                                                          "Pasado",
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                anchoTexto * 0.038,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: const Color(
-                                                              0xFF3C295C,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Icon(
-                                                          Icons
-                                                              .volume_up_outlined,
-                                                          size: anchoTexto * 0.058,
-                                                          color: Color.fromARGB(
-                                                            255,
-                                                            40,
-                                                            16,
-                                                            82,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(height: alto * 0.015),
-                                                Text(
-                                                  lista[cartaPrincipal]["busqueda"]["oracion_pasado"],
-                                                  maxLines: 10,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: anchoTexto * 0.036,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            //presente
-                                            Divider(
-                                              // height: 3.5,
-                                              height: alto * 0.03,
-                                              color: Colors.transparent,
-                                            ),
-                                            // SizedBox(
-                                            //   height: alto*0.02,
-                                            // ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    await Future.delayed(
-                                                      Duration(seconds: 1),
-                                                    );
-                                                    VoiceConfig.hablar(
-                                                      lista[cartaPrincipal]["busqueda"]["oracion_presente"],
-                                                    );
-                                                  },
-                                                  child: CardWidget(
-                                                    ancho: ancho * 0.9,
-                                                    alto: alto * 0.05,
-                                                    decoracion: BoxDecoration(
-                                                      color:
-                                                          const Color.fromARGB(
-                                                            255,
-                                                            76,
-                                                            143,
-                                                            214,
-                                                          ),
-                                                      // borderRadius: BorderRadius.circular(10)
-                                                    ),
-                                                    contenido: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      spacing: anchoTexto * 0.02,
-                                                      children: [
-                                                        Text(
-                                                          "Presente",
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                anchoTexto * 0.038,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                const Color.fromARGB(
-                                                                  255,
-                                                                  13,
-                                                                  31,
-                                                                  51,
-                                                                ),
-                                                          ),
-                                                        ),
-                                                        Icon(
-                                                          Icons
-                                                              .volume_up_outlined,
-                                                          size: anchoTexto * 0.058,
-                                                          color: Color.fromARGB(
-                                                            255,
-                                                            13,
-                                                            38,
-                                                            65,
-                                                          ),
-                                                        ),
-
-                                                        //0xFF3C295C
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(height: alto * 0.015),
-                                                Text(
-                                                  lista[cartaPrincipal]["busqueda"]["oracion_presente"],
-                                                  maxLines: 10,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: anchoTexto * 0.036,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            //futuro
-                                            Divider(
-                                              // height: 3.5,
-                                              height: alto * 0.03,
-                                              color: Colors.transparent,
-                                            ),
-                                            // SizedBox(
-                                            //   height: alto*0.02,
-                                            // ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    await Future.delayed(
-                                                      Duration(seconds: 1),
-                                                    );
-                                                    VoiceConfig.hablar(
-                                                      lista[cartaPrincipal]["busqueda"]["oracion_futuro"],
-                                                    );
-                                                  },
-                                                  child: CardWidget(
-                                                    ancho: ancho * 0.9,
-                                                    alto: alto * 0.05,
-                                                    decoracion: BoxDecoration(
-                                                      // color: const Color(0xff3979BD)
-                                                      color: temas
-                                                          .verdeClaroTranslucidoFijo,
-                                                      // borderRadius: BorderRadius.circular(10)
-                                                    ),
-                                                    contenido: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      spacing: anchoTexto * 0.02,
-                                                      children: [
-                                                        Text(
-                                                          "Futuro",
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                anchoTexto * 0.038,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: const Color(
-                                                              0xFF14361C,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Icon(
-                                                          Icons
-                                                              .volume_up_outlined,
-                                                          size: anchoTexto * 0.058,
-                                                          color: Color(
-                                                            0xFF14361C,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(height: alto * 0.015),
-                                                Text(
-                                                  lista[cartaPrincipal]["busqueda"]["oracion_futuro"],
-                                                  maxLines: 10,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: anchoTexto * 0.036,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
+                                                );
+                                              },
+                                              icon: Icon(
+                                                Icons.volume_up_outlined,
+                                                size: anchoTexto * 0.08,
+                                              ),
                                             ),
                                           ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                // Divider(),
-                                Container(
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(),
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      top: alto * 0.033,
-                                      left: ancho * 0.05,
-                                      right: ancho * 0.05,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            if (cartaPrincipal > 0) {
-                                              setState(() {
-                                                cartaPrincipal--;
-                                              });
-                                            }
-                                          },
-                                          child: CardWidget(
-                                            ancho: ancho * 0.4,
-                                            alto: alto * 0.05,
-                                            decoracion: BoxDecoration(
-                                              border: Border.all(
-                                                color: Provider.of<ThemeApk>(
-                                                  context,
-                                                ).bordercardDesc,
-                                              ),
-                                              color: temas.fondoCartaModo,
-                                            ),
-                                            contenido: Center(
-                                              child: Text("Anterior"),
-                                            ),
+                                        SizedBox(height: alto * 0.02),
+                                        Container(
+                                          width: ancho * 0.9,
+                                          constraints: BoxConstraints(
+                                            minHeight: alto * 0.46,
                                           ),
-                                        ),
-                                  
-                                        GestureDetector(
-                                          onTap: () {
-                                            if (cartaPrincipal <
-                                                lista.length - 1) {
-                                              setState(() {
-                                                cartaPrincipal++;
-                                              });
-                                            }
-                                            print("siguiente\n $cartaPrincipal");
-                                          },
-                                          child: CardWidget(
-                                            ancho: ancho * 0.4,
-                                            alto: alto * 0.05,
-                                            decoracion: BoxDecoration(
-                                              border: Border.all(
-                                                color: Provider.of<ThemeApk>(
-                                                  context,
-                                                ).bordercardDesc,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Provider.of<ThemeApk>(
+                                                context,
+                                              ).bordercardDesc,
+                                            ),
+                                            color: temas.fondoCartaModo,
+                                          ),
+                                          //lista[0]["busqueda"]
+                                          child: Column(
+                                            children: [
+                                              SizedBox(height: alto * 0.01),
+                                              Text(
+                                                lista[cartaPrincipal]["busqueda"]["objeto_esp"],
+                                                style: TextStyle(
+                                                  color: temas.letrasModoOscuro,
+                                                  fontSize: anchoTexto * 0.055,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
-                                              color: temas.fondoCartaModo,
-                                            ),
-                                            contenido: Center(
-                                              child: Text("Siguiente"),
-                                            ),
+                                              Wrap(
+                                                alignment: WrapAlignment.center,
+                                                spacing: anchoTexto * 0.02,
+                                                runSpacing: 2,
+                                                children: [
+                                                  Text(
+                                                    lista[cartaPrincipal]["busqueda"]["objeto_eng"],
+                                                    style: TextStyle(
+                                                      fontSize: anchoTexto * 0.055,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: temas
+                                                          .verdeClaroTranslucidoFijo,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    lista[cartaPrincipal]["busqueda"]["pronunciacion"],
+                                                    style: TextStyle(
+                                                      fontSize: anchoTexto * 0.055,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Divider(
+                                                // height: 3.5,
+                                                height: alto * 0.03,
+                                                color: Colors.transparent,
+                                              ),
+                                              // SizedBox(
+                                              //   height: alto*0.02,
+                                              // ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      await Future.delayed(
+                                                        Duration(seconds: 1),
+                                                      );
+                                                      VoiceConfig.hablar(
+                                                        lista[cartaPrincipal]["busqueda"]["oracion_pasado"],
+                                                      );
+                                                    },
+                                                    child: CardWidget(
+                                                      ancho: ancho * 0.9,
+                                                      alto: alto * 0.05,
+                                                      decoracion: BoxDecoration(
+                                                        color:
+                                                            temas.moradoClaroFijo,
+                                                        // borderRadius: BorderRadius.circular(10)
+                                                      ),
+                                                      contenido: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        spacing: anchoTexto * 0.02,
+                                                        children: [
+                                                          Text(
+                                                            "Pasado",
+                                                            style: TextStyle(
+                                                              fontSize:
+                                                                  anchoTexto * 0.038,
+                                                              fontWeight:
+                                                                  FontWeight.bold,
+                                                              color: const Color(
+                                                                0xFF3C295C,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Icon(
+                                                            Icons
+                                                                .volume_up_outlined,
+                                                            size: anchoTexto * 0.058,
+                                                            color: Color.fromARGB(
+                                                              255,
+                                                              40,
+                                                              16,
+                                                              82,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: alto * 0.015),
+                                                  Text(
+                                                    lista[cartaPrincipal]["busqueda"]["oracion_pasado"],
+                                                    maxLines: 10,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: anchoTexto * 0.036,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              //presente
+                                              Divider(
+                                                // height: 3.5,
+                                                height: alto * 0.03,
+                                                color: Colors.transparent,
+                                              ),
+                                              // SizedBox(
+                                              //   height: alto*0.02,
+                                              // ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      await Future.delayed(
+                                                        Duration(seconds: 1),
+                                                      );
+                                                      VoiceConfig.hablar(
+                                                        lista[cartaPrincipal]["busqueda"]["oracion_presente"],
+                                                      );
+                                                    },
+                                                    child: CardWidget(
+                                                      ancho: ancho * 0.9,
+                                                      alto: alto * 0.05,
+                                                      decoracion: BoxDecoration(
+                                                        color:
+                                                            const Color.fromARGB(
+                                                              255,
+                                                              76,
+                                                              143,
+                                                              214,
+                                                            ),
+                                                        // borderRadius: BorderRadius.circular(10)
+                                                      ),
+                                                      contenido: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        spacing: anchoTexto * 0.02,
+                                                        children: [
+                                                          Text(
+                                                            "Presente",
+                                                            style: TextStyle(
+                                                              fontSize:
+                                                                  anchoTexto * 0.038,
+                                                              fontWeight:
+                                                                  FontWeight.bold,
+                                                              color:
+                                                                  const Color.fromARGB(
+                                                                    255,
+                                                                    13,
+                                                                    31,
+                                                                    51,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                          Icon(
+                                                            Icons
+                                                                .volume_up_outlined,
+                                                            size: anchoTexto * 0.058,
+                                                            color: Color.fromARGB(
+                                                              255,
+                                                              13,
+                                                              38,
+                                                              65,
+                                                            ),
+                                                          ),
+                              
+                                                          //0xFF3C295C
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: alto * 0.015),
+                                                  Text(
+                                                    lista[cartaPrincipal]["busqueda"]["oracion_presente"],
+                                                    maxLines: 10,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: anchoTexto * 0.036,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              //futuro
+                                              Divider(
+                                                // height: 3.5,
+                                                height: alto * 0.03,
+                                                color: Colors.transparent,
+                                              ),
+                                              // SizedBox(
+                                              //   height: alto*0.02,
+                                              // ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      await Future.delayed(
+                                                        Duration(seconds: 1),
+                                                      );
+                                                      VoiceConfig.hablar(
+                                                        lista[cartaPrincipal]["busqueda"]["oracion_futuro"],
+                                                      );
+                                                    },
+                                                    child: CardWidget(
+                                                      ancho: ancho * 0.9,
+                                                      alto: alto * 0.05,
+                                                      decoracion: BoxDecoration(
+                                                        // color: const Color(0xff3979BD)
+                                                        color: temas
+                                                            .verdeClaroTranslucidoFijo,
+                                                        // borderRadius: BorderRadius.circular(10)
+                                                      ),
+                                                      contenido: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        spacing: anchoTexto * 0.02,
+                                                        children: [
+                                                          Text(
+                                                            "Futuro",
+                                                            style: TextStyle(
+                                                              fontSize:
+                                                                  anchoTexto * 0.038,
+                                                              fontWeight:
+                                                                  FontWeight.bold,
+                                                              color: const Color(
+                                                                0xFF14361C,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Icon(
+                                                            Icons
+                                                                .volume_up_outlined,
+                                                            size: anchoTexto * 0.058,
+                                                            color: Color(
+                                                              0xFF14361C,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: alto * 0.015),
+                                                  Text(
+                                                    lista[cartaPrincipal]["busqueda"]["oracion_futuro"],
+                                                    maxLines: 10,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: anchoTexto * 0.036,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ),
-                              ],
+                                  // Divider(),
+                                  Container(
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: BoxDecoration(),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        top: alto * 0.033,
+                                        left: ancho * 0.05,
+                                        right: ancho * 0.05,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              if (cartaPrincipal > 0) {
+                                                setState(() {
+                                                  cartaPrincipal--;
+                                                });
+                                              }
+                                            },
+                                            child: CardWidget(
+                                              ancho: ancho * 0.4,
+                                              alto: alto * 0.05,
+                                              decoracion: BoxDecoration(
+                                                border: Border.all(
+                                                  color: Provider.of<ThemeApk>(
+                                                    context,
+                                                  ).bordercardDesc,
+                                                ),
+                                                color: temas.fondoCartaModo,
+                                              ),
+                                              contenido: Center(
+                                                child: Text("Anterior"),
+                                              ),
+                                            ),
+                                          ),
+                                    
+                                          GestureDetector(
+                                            onTap: () {
+                                              if (cartaPrincipal <
+                                                  lista.length - 1) {
+                                                setState(() {
+                                                  cartaPrincipal++;
+                                                });
+                                              }
+                                              print("siguiente\n $cartaPrincipal");
+                                            },
+                                            child: CardWidget(
+                                              ancho: ancho * 0.4,
+                                              alto: alto * 0.05,
+                                              decoracion: BoxDecoration(
+                                                border: Border.all(
+                                                  color: Provider.of<ThemeApk>(
+                                                    context,
+                                                  ).bordercardDesc,
+                                                ),
+                                                color: temas.fondoCartaModo,
+                                              ),
+                                              contenido: Center(
+                                                child: Text("Siguiente"),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
