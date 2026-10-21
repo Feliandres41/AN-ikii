@@ -121,14 +121,23 @@ class _ConfigScreenState extends State<ConfigScreen> {
     final anchoTarjeta = anchoContenido * 0.9;
     final anchoTexto = anchoContenido;
     final alto = MediaQuery.of(context).size.height;
-    final espacioSeccion = (alto * 0.026).clamp(20.0, 24.0).toDouble();
-    final espacioBotonSalir = (alto * 0.045).clamp(26.0, 34.0).toDouble();
-    final margenInferiorContenido = (alto * 0.04).clamp(24.0, 32.0).toDouble();
+    final esHorizontal = ancho > alto;
+    final espacioSeccion = esHorizontal
+        ? 10.0
+        : (alto * 0.026).clamp(20.0, 24.0).toDouble();
+    final espacioBotonSalir = esHorizontal
+        ? 14.0
+        : (alto * 0.045).clamp(26.0, 34.0).toDouble();
+    final margenInferiorContenido = esHorizontal
+        ? 12.0
+        : (alto * 0.04).clamp(24.0, 32.0).toDouble();
     final tamanoEtiqueta = (anchoTexto * 0.035).clamp(14.0, 18.0).toDouble();
     final tamanoValor = (anchoTexto * 0.028).clamp(12.0, 16.0).toDouble();
     Map? dato = Provider.of<ServiceApi>(context).datos;
     final esAprendiz = '${dato?['rol']}'.trim().toLowerCase() == 'aprendiz';
-    final altoTarjetaSecundaria = (alto * 0.15).clamp(122.0, 138.0).toDouble();
+    final altoTarjetaSecundaria = esHorizontal
+        ? 116.0
+        : (alto * 0.15).clamp(122.0, 138.0).toDouble();
     final tamanoTextoLegal = (anchoTexto * 0.04).clamp(14.0, 17.0).toDouble();
     return Scaffold(
       backgroundColor: !temas.claro ? Color(0xff1F1A38) : temas.fondoClaro,
@@ -236,7 +245,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Transform.translate(
-                                      offset: const Offset(0, -15),
+                                      offset: Offset(0, esHorizontal ? 0 : -15),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
@@ -251,7 +260,11 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(height: espacioSeccion+22),
+                                          SizedBox(
+                                            height: esHorizontal
+                                                ? espacioSeccion
+                                                : espacioSeccion + 22,
+                                          ),
                                           Container(
                                             clipBehavior: Clip.antiAlias,
                                             width: anchoTarjeta,
