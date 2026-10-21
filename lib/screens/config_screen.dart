@@ -235,64 +235,75 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    SizedBox(
-                                      width: anchoTarjeta,
-                                      child: Text(
-                                        "Datos institucionales SENA",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: anchoTexto * 0.04,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: espacioSeccion),
-
-                                    Container(
-                                      clipBehavior: Clip.antiAlias,
-                                      width: anchoTarjeta,
-                                      decoration: BoxDecoration(
-                                        color: temas.cardDesc,
-                                        borderRadius: BorderRadius.circular(22),
-                                        border: Border.all(
-                                          color: temas.bordercardDesc,
-                                        ),
-                                      ),
+                                    Transform.translate(
+                                      offset: const Offset(0, -15),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          _filaDatoInstitucional(
-                                            etiqueta: "Nombre completo",
-                                            valor:
-                                                '${dato?["nombre"] ?? "Sin nombre"}',
-                                            tamanoEtiqueta: tamanoEtiqueta,
-                                            tamanoValor: tamanoValor,
+                                          SizedBox(
+                                            width: anchoTarjeta,
+                                            child: Text(
+                                              "Datos institucionales SENA",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: anchoTexto * 0.04,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                           ),
-                                          if (esAprendiz) ...[
-                                            Divider(
-                                              height: 1,
-                                              color: temas.bordercardDesc,
+                                          SizedBox(height: espacioSeccion+22),
+                                          Container(
+                                            clipBehavior: Clip.antiAlias,
+                                            width: anchoTarjeta,
+                                            decoration: BoxDecoration(
+                                              color: temas.cardDesc,
+                                              borderRadius:
+                                                  BorderRadius.circular(22),
+                                              border: Border.all(
+                                                color: temas.bordercardDesc,
+                                              ),
                                             ),
-                                            _filaDatoInstitucional(
-                                              etiqueta: "Programa",
-                                              valor:
-                                                  '${dato?["programa"] ?? "Sin programa"}',
-                                              tamanoEtiqueta: tamanoEtiqueta,
-                                              tamanoValor: tamanoValor,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                _filaDatoInstitucional(
+                                                  etiqueta: "Nombre completo",
+                                                  valor:
+                                                      '${dato?["nombre"] ?? "Sin nombre"}',
+                                                  tamanoEtiqueta:
+                                                      tamanoEtiqueta,
+                                                  tamanoValor: tamanoValor,
+                                                ),
+                                                if (esAprendiz) ...[
+                                                  Divider(
+                                                    height: 1,
+                                                    color: temas.bordercardDesc,
+                                                  ),
+                                                  _filaDatoInstitucional(
+                                                    etiqueta: "Programa",
+                                                    valor:
+                                                        '${dato?["programa"] ?? "Sin programa"}',
+                                                    tamanoEtiqueta:
+                                                        tamanoEtiqueta,
+                                                    tamanoValor: tamanoValor,
+                                                  ),
+                                                  Divider(
+                                                    height: 1,
+                                                    color: temas.bordercardDesc,
+                                                  ),
+                                                  _filaDatoInstitucional(
+                                                    etiqueta:
+                                                        "Ficha de caracterización",
+                                                    valor:
+                                                        '${dato?["ficha"] ?? "Sin ficha"}',
+                                                    tamanoEtiqueta:
+                                                        tamanoEtiqueta,
+                                                    tamanoValor: tamanoValor,
+                                                  ),
+                                                ],
+                                              ],
                                             ),
-                                            Divider(
-                                              height: 1,
-                                              color: temas.bordercardDesc,
-                                            ),
-                                            _filaDatoInstitucional(
-                                              etiqueta:
-                                                  "Ficha de caracterización",
-                                              valor:
-                                                  '${dato?["ficha"] ?? "Sin ficha"}',
-                                              tamanoEtiqueta: tamanoEtiqueta,
-                                              tamanoValor: tamanoValor,
-                                            ),
-                                          ],
+                                          ),
                                         ],
                                       ),
                                     ),
