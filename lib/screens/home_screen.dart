@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: !temas.claro ? Color(0xff1F1A38) : temas.fondoClaro,
 
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
+        preferredSize: const Size.fromHeight(AppBarWidget.altura),
         child: AppBarWidget(),
       ),
 
@@ -197,6 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               left: ancho * 0.05,
                               top: alto * 0.01,
                               right: ancho * 0.05,
+                              bottom: alto * 0.02,
                             ),
 
                             child: Column(

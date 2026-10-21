@@ -66,7 +66,7 @@ class _CameraScreenState extends State<CameraScreen> {
       return;
     }
 
-    final controller = CameraController(cameras[0], ResolutionPreset.medium);
+    final controller = CameraController(cameras[0], ResolutionPreset.ultraHigh);
     _controller = controller;
 
     await controller.initialize();
@@ -92,7 +92,7 @@ class _CameraScreenState extends State<CameraScreen> {
     AppBarWidget.info = false;
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
+        preferredSize: const Size.fromHeight(AppBarWidget.altura),
         child: AppBarWidget(),
       ),
       body: Stack(

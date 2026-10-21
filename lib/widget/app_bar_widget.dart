@@ -4,6 +4,8 @@ import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:provider/provider.dart';
 
 class AppBarWidget extends StatefulWidget {
+  static const double altura = 68;
+
   AppBarWidget({
     super.key,
   });
@@ -36,14 +38,18 @@ class _AppBarWidgetState extends State<AppBarWidget> {
     final temas = Provider.of<ThemeApk>(context);
     // iconoEstado(providerNet);
     return PreferredSize(
-      preferredSize: const Size.fromHeight(kToolbarHeight),
+      preferredSize: const Size.fromHeight(AppBarWidget.altura),
       child: AppBar(
+        toolbarHeight: AppBarWidget.altura,
         leading: !AppBarWidget.info 
         ?Container(
-          width: ancho * 0.2,
-          height: ancho * 0.2,
+          width: 48,
+          height: 48,
           decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage("assets/logo.png")),
+            image: const DecorationImage(
+              image: AssetImage("assets/logo.png"),
+              fit: BoxFit.contain,
+            ),
           ),
         )
         : IconButton(onPressed: () {

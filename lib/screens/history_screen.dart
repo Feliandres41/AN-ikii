@@ -40,7 +40,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(kToolbarHeight),
+          preferredSize: const Size.fromHeight(AppBarWidget.altura),
           child: AppBarWidget(),
         ),
         body: Column(

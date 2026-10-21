@@ -34,7 +34,7 @@ class _RankingFichaScreenState extends State<RankingFichaScreen> {
     final temas = Provider.of<ThemeApk>(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
+        preferredSize: const Size.fromHeight(AppBarWidget.altura),
         child: AppBarWidget(),
       ),
       body: Consumer<ServiceApi>(
