@@ -38,6 +38,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final tamanoTextoPronunciacion = (anchoTexto * 0.032)
         .clamp(13.0, 16.0)
         .toDouble();
+    final espacioBloqueTermino = (anchoTexto * 0.03)
+        .clamp(12.0, 18.0)
+        .toDouble();
     final temas = Provider.of<ThemeApk>(context);
     //paginacion
 
@@ -307,9 +310,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                           //lista[0]["busqueda"]
                                           child: Column(
                                             children: [
-                                              SizedBox(height: alto * 0.01),
+                                              SizedBox(
+                                                height: espacioBloqueTermino,
+                                              ),
                                               Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
                                                 children: [
                                                   Text(
                                                     "Texto en inglés: ${lista[cartaPrincipal]["busqueda"]["objeto_eng"]}",
@@ -353,8 +359,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                 ],
                                               ),
                                               Divider(
-                                                // height: 3.5,
-                                                height: alto * 0.03,
+                                                height: espacioBloqueTermino,
                                                 color: Colors.transparent,
                                               ),
                                               // SizedBox(
