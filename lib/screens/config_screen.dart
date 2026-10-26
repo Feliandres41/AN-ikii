@@ -138,6 +138,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
     final altoTarjetaSecundaria = esHorizontal
         ? 116.0
         : (alto * 0.15).clamp(122.0, 138.0).toDouble();
+    final altoMinimoDatosInstitucionales =
+        altoTarjetaSecundaria * (esAprendiz ? 1.5 : 1);
     final tamanoTextoLegal = (anchoTexto * 0.04).clamp(14.0, 17.0).toDouble();
     return Scaffold(
       backgroundColor: !temas.claro ? Color(0xff1F1A38) : temas.fondoClaro,
@@ -265,56 +267,67 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                                 ? espacioSeccion
                                                 : espacioSeccion + 22,
                                           ),
-                                          Container(
-                                            clipBehavior: Clip.antiAlias,
-                                            width: anchoTarjeta,
-                                            decoration: BoxDecoration(
-                                              color: temas.cardDesc,
-                                              borderRadius:
-                                                  BorderRadius.circular(22),
-                                              border: Border.all(
-                                                color: temas.bordercardDesc,
-                                              ),
+                                          ConstrainedBox(
+                                            constraints: BoxConstraints(
+                                              minHeight:
+                                                  altoMinimoDatosInstitucionales,
                                             ),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                _filaDatoInstitucional(
-                                                  etiqueta: "Nombre completo",
-                                                  valor:
-                                                      '${dato?["nombre"] ?? "Sin nombre"}',
-                                                  tamanoEtiqueta:
-                                                      tamanoEtiqueta,
-                                                  tamanoValor: tamanoValor,
+                                            child: Container(
+                                              clipBehavior: Clip.antiAlias,
+                                              width: anchoTarjeta,
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                color: temas.cardDesc,
+                                                borderRadius:
+                                                    BorderRadius.circular(22),
+                                                border: Border.all(
+                                                  color: temas.bordercardDesc,
                                                 ),
-                                                if (esAprendiz) ...[
-                                                  Divider(
-                                                    height: 1,
-                                                    color: temas.bordercardDesc,
-                                                  ),
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
                                                   _filaDatoInstitucional(
-                                                    etiqueta: "Programa",
+                                                    etiqueta: "Nombre completo",
                                                     valor:
-                                                        '${dato?["programa"] ?? "Sin programa"}',
+                                                        '${dato?["nombre"] ?? "Sin nombre"}',
                                                     tamanoEtiqueta:
                                                         tamanoEtiqueta,
                                                     tamanoValor: tamanoValor,
                                                   ),
-                                                  Divider(
-                                                    height: 1,
-                                                    color: temas.bordercardDesc,
-                                                  ),
-                                                  _filaDatoInstitucional(
-                                                    etiqueta:
-                                                        "Ficha de caracterización",
-                                                    valor:
-                                                        '${dato?["ficha"] ?? "Sin ficha"}',
-                                                    tamanoEtiqueta:
-                                                        tamanoEtiqueta,
-                                                    tamanoValor: tamanoValor,
-                                                  ),
+                                                  if (esAprendiz) ...[
+                                                    Divider(
+                                                      height: 1,
+                                                      color:
+                                                          temas.bordercardDesc,
+                                                    ),
+                                                    _filaDatoInstitucional(
+                                                      etiqueta: "Programa",
+                                                      valor:
+                                                          '${dato?["programa"] ?? "Sin programa"}',
+                                                      tamanoEtiqueta:
+                                                          tamanoEtiqueta,
+                                                      tamanoValor: tamanoValor,
+                                                    ),
+                                                    Divider(
+                                                      height: 1,
+                                                      color:
+                                                          temas.bordercardDesc,
+                                                    ),
+                                                    _filaDatoInstitucional(
+                                                      etiqueta:
+                                                          "Ficha de caracterización",
+                                                      valor:
+                                                          '${dato?["ficha"] ?? "Sin ficha"}',
+                                                      tamanoEtiqueta:
+                                                          tamanoEtiqueta,
+                                                      tamanoValor: tamanoValor,
+                                                    ),
+                                                  ],
                                                 ],
-                                              ],
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -333,99 +346,108 @@ class _ConfigScreenState extends State<ConfigScreen> {
                                       ),
                                     ),
                                     SizedBox(height: espacioSeccion),
-                                    CardWidget(
-                                      ancho: anchoTarjeta,
-                                      alto: altoTarjetaSecundaria,
-                                      decoracion: BoxDecoration(
-                                        // color: ThemeApk.fondoModoOscuro,
-                                        color: temas.cardDesc,
-                                        borderRadius: BorderRadius.circular(22),
-                                        border: Border.all(
-                                          color: temas.bordercardDesc,
-                                        ),
+                                    ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        minHeight: altoTarjetaSecundaria,
                                       ),
-                                      contenido: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: anchoContenido * 0.04,
-                                          vertical: 8,
+                                      child: Container(
+                                        width: anchoTarjeta,
+                                        decoration: BoxDecoration(
+                                          color: temas.cardDesc,
+                                          borderRadius: BorderRadius.circular(
+                                            22,
+                                          ),
+                                          border: Border.all(
+                                            color: temas.bordercardDesc,
+                                          ),
                                         ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              clipBehavior: Clip.antiAlias,
-                                              width: (anchoTexto * 0.08)
-                                                  .clamp(38.0, 48.0)
-                                                  .toDouble(),
-                                              height: (anchoTexto * 0.08)
-                                                  .clamp(38.0, 48.0)
-                                                  .toDouble(),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(22),
-                                                color: !estado
-                                                    ? const Color.fromARGB(
-                                                        135,
-                                                        104,
-                                                        58,
-                                                        183,
-                                                      )
-                                                    : Colors.white,
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: anchoContenido * 0.04,
+                                            vertical: 12,
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                clipBehavior: Clip.antiAlias,
+                                                width: (anchoTexto * 0.08)
+                                                    .clamp(38.0, 48.0)
+                                                    .toDouble(),
+                                                height: (anchoTexto * 0.08)
+                                                    .clamp(38.0, 48.0)
+                                                    .toDouble(),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(22),
+                                                  color: !estado
+                                                      ? const Color.fromARGB(
+                                                          135,
+                                                          104,
+                                                          58,
+                                                          183,
+                                                        )
+                                                      : Colors.white,
+                                                ),
+                                                child: Icon(
+                                                  !estado
+                                                      ? Icons
+                                                            .nightlight_outlined
+                                                      : Icons.sunny,
+                                                  color: !estado
+                                                      ? Colors.white
+                                                      : Colors.amber,
+                                                ),
                                               ),
-                                              child: Icon(
-                                                !estado
-                                                    ? Icons.nightlight_outlined
-                                                    : Icons.sunny,
-                                                color: !estado
-                                                    ? Colors.white
-                                                    : Colors.amber,
+                                              SizedBox(
+                                                width: anchoContenido * 0.04,
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: anchoContenido * 0.04,
-                                            ),
-                                            Expanded(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Modo claro",
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          anchoTexto * 0.04,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Modo claro",
+                                                      style: TextStyle(
+                                                        fontSize:
+                                                            anchoTexto * 0.04,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Text(
-                                                    "Alterna entre tema claro y oscuro",
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          anchoTexto * 0.028,
-                                                      color: Colors.grey,
+                                                    Text(
+                                                      "Alterna entre tema claro y oscuro",
+                                                      style: TextStyle(
+                                                        fontSize:
+                                                            anchoTexto * 0.028,
+                                                        color: Colors.grey,
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Switch(
-                                              value: Provider.of<ThemeApk>(
-                                                context,
-                                              ).claro,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  estado = value;
-                                                  Provider.of<ThemeApk>(
-                                                    context,
-                                                    listen: false,
-                                                  ).modo(value);
-                                                });
-                                              },
-                                            ),
-                                          ],
+                                              Switch(
+                                                value: Provider.of<ThemeApk>(
+                                                  context,
+                                                ).claro,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    estado = value;
+                                                    Provider.of<ThemeApk>(
+                                                      context,
+                                                      listen: false,
+                                                    ).modo(value);
+                                                  });
+                                                },
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
