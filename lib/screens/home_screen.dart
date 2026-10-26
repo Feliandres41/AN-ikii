@@ -148,6 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             spacing: alto * 0.02,
 
                             children: [
+                              SizedBox(height: alto * 0.004),
                         CardWidget(
                           ancho: ancho * 0.9,
                           alto: 90,
