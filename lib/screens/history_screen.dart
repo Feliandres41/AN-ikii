@@ -32,6 +32,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final ancho = MediaQuery.sizeOf(context).width;
     final anchoTexto = anchoDiseno(context);
     final alto = MediaQuery.of(context).size.height;
+    final tamanoTextoTermino = (anchoTexto * 0.045)
+        .clamp(18.0, 24.0)
+        .toDouble();
+    final tamanoTextoPronunciacion = (anchoTexto * 0.032)
+        .clamp(13.0, 16.0)
+        .toDouble();
     final temas = Provider.of<ThemeApk>(context);
     //paginacion
 
@@ -155,68 +161,51 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                 children: [
                                                   Expanded(
                                                     child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        '${busqueda["objeto_esp"]}',
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: TextStyle(
-                                                          fontSize:
-                                                              anchoTexto * 0.05,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "Inglés: ${busqueda["objeto_eng"]}",
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                            fontSize:
+                                                                anchoTexto *
+                                                                0.04,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: temas
+                                                                .verdeClaroTranslucidoFijo,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            "EN",
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  anchoTexto * 0.04,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: temas
-                                                                  .moradoClaroFijo,
-                                                            ),
+                                                        Text(
+                                                          "Pronunciación: ${busqueda["pronunciacion"]}",
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                            fontSize:
+                                                                anchoTexto *
+                                                                0.035,
+                                                            color: Colors.grey,
                                                           ),
-                                                          SizedBox(
-                                                            width: anchoTexto * 0.015,
+                                                        ),
+                                                        Text(
+                                                          "Español: ${busqueda["objeto_esp"]}",
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                            fontSize:
+                                                                anchoTexto *
+                                                                0.04,
+                                                            fontWeight:
+                                                                FontWeight.bold,
                                                           ),
-                                                          Expanded(
-                                                            child: Text(
-                                                              busqueda["objeto_eng"],
-                                                              maxLines: 1,
-                                                              overflow: TextOverflow.ellipsis,
-                                                              style: TextStyle(
-                                                                fontSize: anchoTexto * 0.04,
-                                                                fontWeight: FontWeight.bold,
-                                                                color: temas.verdeClaroTranslucidoFijo,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            width: anchoTexto * 0.015,
-                                                          ),
-                                                          Flexible(
-                                                            child: Text(
-                                                              "${busqueda["pronunciacion"]}",
-                                                              maxLines: 1,
-                                                              overflow: TextOverflow.ellipsis,
-                                                              style: TextStyle(
-                                                                fontSize: anchoTexto * 0.04,
-                                                                fontWeight: FontWeight.w400,
-                                                                color: Colors.grey,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                   GestureDetector(
@@ -319,34 +308,46 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                           child: Column(
                                             children: [
                                               SizedBox(height: alto * 0.01),
-                                              Text(
-                                                lista[cartaPrincipal]["busqueda"]["objeto_esp"],
-                                                style: TextStyle(
-                                                  color: temas.letrasModoOscuro,
-                                                  fontSize: anchoTexto * 0.055,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              Wrap(
-                                                alignment: WrapAlignment.center,
-                                                spacing: anchoTexto * 0.02,
-                                                runSpacing: 2,
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    lista[cartaPrincipal]["busqueda"]["objeto_eng"],
+                                                    "Texto en inglés: ${lista[cartaPrincipal]["busqueda"]["objeto_eng"]}",
+                                                    textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                      fontSize: anchoTexto * 0.055,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontSize:
+                                                          tamanoTextoTermino +
+                                                          5,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       color: temas
                                                           .verdeClaroTranslucidoFijo,
                                                     ),
                                                   ),
                                                   Text(
-                                                    lista[cartaPrincipal]["busqueda"]["pronunciacion"],
+                                                    "Pronunciación: ${lista[cartaPrincipal]["busqueda"]["pronunciacion"]}",
+                                                    textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                      fontSize: anchoTexto * 0.055,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.grey,
+                                                      fontSize:
+                                                          tamanoTextoPronunciacion +
+                                                          5,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: temas
+                                                          .letrasModoOscuro,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "Texto en español: ${lista[cartaPrincipal]["busqueda"]["objeto_esp"]}",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: temas
+                                                          .letrasModoOscuro,
+                                                      fontSize:
+                                                          tamanoTextoPronunciacion +
+                                                          5,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
@@ -377,52 +378,63 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                       ancho: ancho * 0.9,
                                                       alto: alto * 0.05,
                                                       decoracion: BoxDecoration(
-                                                        color:
-                                                            temas.moradoClaroFijo,
+                                                        color: temas
+                                                            .moradoClaroFijo,
                                                         // borderRadius: BorderRadius.circular(10)
                                                       ),
                                                       contenido: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .center,
-                                                        spacing: anchoTexto * 0.02,
+                                                        spacing:
+                                                            anchoTexto * 0.02,
                                                         children: [
                                                           Text(
                                                             "Pasado",
                                                             style: TextStyle(
                                                               fontSize:
-                                                                  anchoTexto * 0.038,
+                                                                  anchoTexto *
+                                                                  0.038,
                                                               fontWeight:
-                                                                  FontWeight.bold,
-                                                              color: const Color(
-                                                                0xFF3C295C,
-                                                              ),
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  const Color(
+                                                                    0xFF3C295C,
+                                                                  ),
                                                             ),
                                                           ),
                                                           Icon(
                                                             Icons
                                                                 .volume_up_outlined,
-                                                            size: anchoTexto * 0.058,
-                                                            color: Color.fromARGB(
-                                                              255,
-                                                              40,
-                                                              16,
-                                                              82,
-                                                            ),
+                                                            size:
+                                                                anchoTexto *
+                                                                0.058,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                  255,
+                                                                  40,
+                                                                  16,
+                                                                  82,
+                                                                ),
                                                           ),
                                                         ],
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(height: alto * 0.015),
+                                                  SizedBox(
+                                                    height: alto * 0.015,
+                                                  ),
                                                   Text(
                                                     lista[cartaPrincipal]["busqueda"]["oracion_pasado"],
                                                     maxLines: 10,
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
-                                                      fontSize: anchoTexto * 0.036,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontSize:
+                                                          anchoTexto * 0.036,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
@@ -467,15 +479,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .center,
-                                                        spacing: anchoTexto * 0.02,
+                                                        spacing:
+                                                            anchoTexto * 0.02,
                                                         children: [
                                                           Text(
                                                             "Presente",
                                                             style: TextStyle(
                                                               fontSize:
-                                                                  anchoTexto * 0.038,
+                                                                  anchoTexto *
+                                                                  0.038,
                                                               fontWeight:
-                                                                  FontWeight.bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                               color:
                                                                   const Color.fromARGB(
                                                                     255,
@@ -488,29 +503,36 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                           Icon(
                                                             Icons
                                                                 .volume_up_outlined,
-                                                            size: anchoTexto * 0.058,
-                                                            color: Color.fromARGB(
-                                                              255,
-                                                              13,
-                                                              38,
-                                                              65,
-                                                            ),
+                                                            size:
+                                                                anchoTexto *
+                                                                0.058,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                  255,
+                                                                  13,
+                                                                  38,
+                                                                  65,
+                                                                ),
                                                           ),
-                              
+
                                                           //0xFF3C295C
                                                         ],
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(height: alto * 0.015),
+                                                  SizedBox(
+                                                    height: alto * 0.015,
+                                                  ),
                                                   Text(
                                                     lista[cartaPrincipal]["busqueda"]["oracion_presente"],
                                                     maxLines: 10,
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
-                                                      fontSize: anchoTexto * 0.036,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontSize:
+                                                          anchoTexto * 0.036,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
@@ -551,24 +573,30 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .center,
-                                                        spacing: anchoTexto * 0.02,
+                                                        spacing:
+                                                            anchoTexto * 0.02,
                                                         children: [
                                                           Text(
                                                             "Futuro",
                                                             style: TextStyle(
                                                               fontSize:
-                                                                  anchoTexto * 0.038,
+                                                                  anchoTexto *
+                                                                  0.038,
                                                               fontWeight:
-                                                                  FontWeight.bold,
-                                                              color: const Color(
-                                                                0xFF14361C,
-                                                              ),
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  const Color(
+                                                                    0xFF14361C,
+                                                                  ),
                                                             ),
                                                           ),
                                                           Icon(
                                                             Icons
                                                                 .volume_up_outlined,
-                                                            size: anchoTexto * 0.058,
+                                                            size:
+                                                                anchoTexto *
+                                                                0.058,
                                                             color: Color(
                                                               0xFF14361C,
                                                             ),
@@ -577,15 +605,19 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(height: alto * 0.015),
+                                                  SizedBox(
+                                                    height: alto * 0.015,
+                                                  ),
                                                   Text(
                                                     lista[cartaPrincipal]["busqueda"]["oracion_futuro"],
                                                     maxLines: 10,
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
-                                                      fontSize: anchoTexto * 0.036,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontSize:
+                                                          anchoTexto * 0.036,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
@@ -634,7 +666,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                               ),
                                             ),
                                           ),
-                                    
+
                                           GestureDetector(
                                             onTap: () {
                                               if (cartaPrincipal <
@@ -643,7 +675,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                   cartaPrincipal++;
                                                 });
                                               }
-                                              print("siguiente\n $cartaPrincipal");
+                                              print(
+                                                "siguiente\n $cartaPrincipal",
+                                              );
                                             },
                                             child: CardWidget(
                                               ancho: ancho * 0.4,
