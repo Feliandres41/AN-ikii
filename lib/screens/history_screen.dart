@@ -272,9 +272,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             Text(
                                               "Tarjeta ${cartaPrincipal + 1} de ${lista.length}",
                                               style: TextStyle(
-                                                color: temas.letrasModoOscuro,
-                                                fontSize: anchoTexto * 0.05,
-                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey.shade700,
+                                                fontSize: (anchoTexto * 0.038)
+                                                    .clamp(15.0, 20.0)
+                                                    .toDouble(),
+                                                fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                             IconButton(
@@ -288,7 +290,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                               },
                                               icon: Icon(
                                                 Icons.volume_up_outlined,
-                                                size: anchoTexto * 0.08,
+                                                size: (anchoTexto * 0.065)
+                                                    .clamp(24.0, 34.0)
+                                                    .toDouble(),
+                                                color: Colors.grey.shade700,
                                               ),
                                             ),
                                           ],
