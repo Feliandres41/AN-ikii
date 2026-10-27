@@ -85,6 +85,20 @@ flutter pub get
 flutter run
 ```
 
+## Preparar iOS con Xcode
+
+En un Mac con Flutter, Xcode y CocoaPods instalados, desde la raíz del proyecto:
+
+```bash
+flutter pub get
+cd ios
+pod install
+```
+
+Abre `ios/Runner.xcworkspace` en Xcode (no `Runner.xcodeproj`) para que CocoaPods
+pueda enlazar los plugins iOS, incluido `flutter_tts`. La dependencia de voz ya
+está declarada en `pubspec.yaml`; no es necesario agregarla manualmente en Xcode.
+
 ## Configuración
 Asegúrate de verificar y configurar correctamente:
 
