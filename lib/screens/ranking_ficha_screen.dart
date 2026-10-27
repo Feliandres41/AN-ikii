@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/responsive.dart';
 import 'package:flutter_application_1/screens/ranking_ficha_aprendices.dart';
 import 'package:flutter_application_1/services/service_api.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
@@ -27,12 +28,13 @@ class _RankingFichaScreenState extends State<RankingFichaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ancho = MediaQuery.of(context).size.width;
+    final ancho = MediaQuery.sizeOf(context).width;
+    final anchoTexto = anchoDiseno(context);
     final alto = MediaQuery.of(context).size.height;
     final temas = Provider.of<ThemeApk>(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
+        preferredSize: const Size.fromHeight(AppBarWidget.altura),
         child: AppBarWidget(),
       ),
       body: Consumer<ServiceApi>(
@@ -49,7 +51,7 @@ class _RankingFichaScreenState extends State<RankingFichaScreen> {
                     "Ranking de fichas",
                     style: TextStyle(
                       color: temas.letrasModoOscuro,
-                      fontSize: ancho * 0.055,
+                      fontSize: anchoTexto * 0.055,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -59,7 +61,7 @@ class _RankingFichaScreenState extends State<RankingFichaScreen> {
                   "Fichas con más búsquedas",
                   style: TextStyle(
                     color: Colors.grey,
-                    fontSize: ancho * 0.033,
+                    fontSize: anchoTexto * 0.033,
                   ),
                 ),
                 Expanded(
@@ -106,7 +108,7 @@ class _RankingFichaScreenState extends State<RankingFichaScreen> {
                           "$posicion",
                           style: TextStyle(
                             color: color,
-                            fontSize: ancho * 0.045,
+                            fontSize: anchoTexto * 0.045,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -117,7 +119,7 @@ class _RankingFichaScreenState extends State<RankingFichaScreen> {
                           "Ficha ${datos["number_cohort"]}",
                           style: TextStyle(
                             color: temas.letrasModoOscuro,
-                            fontSize: ancho * 0.042,
+                            fontSize: anchoTexto * 0.042,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -129,7 +131,7 @@ class _RankingFichaScreenState extends State<RankingFichaScreen> {
                             "${datos["total_busquedas"]}",
                             style: TextStyle(
                               color: color,
-                              fontSize: ancho * 0.055,
+                              fontSize: anchoTexto * 0.055,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -137,7 +139,7 @@ class _RankingFichaScreenState extends State<RankingFichaScreen> {
                             "búsquedas",
                             style: TextStyle(
                               color: Colors.grey,
-                              fontSize: ancho * 0.027,
+                              fontSize: anchoTexto * 0.027,
                             ),
                           ),
                         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/responsive.dart';
 import 'package:flutter_application_1/services/service_api.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:flutter_application_1/widget/app_bar_widget.dart';
@@ -20,12 +21,13 @@ class _RankingFichaAprendicesState extends State<RankingFichaAprendices> {
   }
   @override
   Widget build(BuildContext context) {
-    final ancho = MediaQuery.of(context).size.width;
+    final ancho = MediaQuery.sizeOf(context).width;
+    final anchoTexto = anchoDiseno(context);
     final alto = MediaQuery.of(context).size.height;
     final temas = Provider.of<ThemeApk>(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
+        preferredSize: const Size.fromHeight(AppBarWidget.altura),
         child: AppBarWidget(),
       ),
       body: Consumer<ServiceApi>(
@@ -47,7 +49,7 @@ class _RankingFichaAprendicesState extends State<RankingFichaAprendices> {
                   Text(
                     "Ranking de aprendices",
                     style: TextStyle(
-                      fontSize: ancho * 0.055,
+                      fontSize: anchoTexto * 0.055,
                       fontWeight: FontWeight.bold,
                       color: temas.letrasModoOscuro,
                     ),
@@ -56,7 +58,7 @@ class _RankingFichaAprendicesState extends State<RankingFichaAprendices> {
                   Text(
                     "Ficha ${ficha["numero"]}",
                     style: TextStyle(
-                      fontSize: ancho * 0.038,
+                      fontSize: anchoTexto * 0.038,
                       color: Colors.grey,
                     ),
                   ),
@@ -100,7 +102,7 @@ class _RankingFichaAprendicesState extends State<RankingFichaAprendices> {
                                 "$posicion",
                                 style: TextStyle(
                                   color: color,
-                                  fontSize: ancho * 0.045,
+                                  fontSize: anchoTexto * 0.045,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -113,7 +115,7 @@ class _RankingFichaAprendicesState extends State<RankingFichaAprendices> {
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: temas.letrasModoOscuro,
-                                  fontSize: ancho * 0.038,
+                                  fontSize: anchoTexto * 0.038,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -126,7 +128,7 @@ class _RankingFichaAprendicesState extends State<RankingFichaAprendices> {
                                   "${datos["total_busquedas"]}",
                                   style: TextStyle(
                                     color: color,
-                                    fontSize: ancho * 0.055,
+                                    fontSize: anchoTexto * 0.055,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -134,7 +136,7 @@ class _RankingFichaAprendicesState extends State<RankingFichaAprendices> {
                                   "búsquedas",
                                   style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: ancho * 0.027,
+                                    fontSize: anchoTexto * 0.027,
                                   ),
                                 ),
                               ],

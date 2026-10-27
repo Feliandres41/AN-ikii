@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/responsive.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:provider/provider.dart';
 
@@ -58,6 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     final medidas = MediaQuery.of(context).size;
     final ancho = medidas.width;
+    final anchoTexto = anchoDiseno(context);
     final alto = medidas.height;
     final temas = Provider.of<ThemeApk>(context);
     print(temas.claro);
@@ -109,7 +111,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                     child: Text(
                                       'ANüikii',
                                       style: TextStyle(
-                                        fontSize: ancho * 0.1,
+                                        fontSize: anchoTexto * 0.1,
                                         fontWeight: FontWeight.bold,
                                         color: temas.moradoClaroFijo
                                       ),
@@ -138,7 +140,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                     child: Text(
                                       'BILINGÜISMO TECNICO AGROPECUARIO',
                                       style: TextStyle(
-                                        fontSize: ancho * 0.043,
+                                        fontSize: anchoTexto * 0.043,
                                         fontWeight: FontWeight.w300,
                                         // color: Colors.lightGreenAccent,
                                         color: temas.claro
@@ -171,7 +173,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                     child: Text(
                                       'SERVICIO NACIONAL DE APRENDIZAJE - COLOMBIA',
                                       style: TextStyle(
-                                        fontSize: ancho * 0.032,
+                                        fontSize: anchoTexto * 0.032,
                                         fontWeight: FontWeight.w300,
                                         color: Colors.grey,
                                       ),

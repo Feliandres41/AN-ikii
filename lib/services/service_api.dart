@@ -354,6 +354,49 @@ class ServiceApi extends ChangeNotifier {
     }
   }
 
+  Future<int?> puestoFichaEnPrograma({
+    required String programa,
+    required String numeroFicha,
+  }) async {
+    if (getProgramas.isEmpty) {
+      await rankingProramas();
+    }
+
+    final programaBuscado = programa.trim().toLowerCase();
+    Map? programaDatos;
+    for (final item in getProgramas) {
+      if (item is Map &&
+          '${item["name"]}'.trim().toLowerCase() == programaBuscado) {
+        programaDatos = item;
+        break;
+      }
+    }
+    if (programaDatos == null) return null;
+
+    final idPrograma = int.tryParse('${programaDatos["id"]}');
+    if (idPrograma == null || await rankingFichas(idPrograma) != 200) {
+      return null;
+    }
+
+    final fichasOrdenadas = [...getFichas]
+      ..sort((a, b) {
+        final busquedasA = a is Map && a["total_busquedas"] is num
+            ? a["total_busquedas"] as num
+            : 0;
+        final busquedasB = b is Map && b["total_busquedas"] is num
+            ? b["total_busquedas"] as num
+            : 0;
+        return busquedasB.compareTo(busquedasA);
+      });
+
+    final indice = fichasOrdenadas.indexWhere(
+      (ficha) =>
+          ficha is Map &&
+          '${ficha["number_cohort"]}'.trim() == numeroFicha.trim(),
+    );
+    return indice < 0 ? null : indice + 1;
+  }
+
   //ranking/fichas/aprendices
   List getFichaAprendiz = [];
   Map datosFicha = {};

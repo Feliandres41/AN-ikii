@@ -55,11 +55,12 @@ class _BottomnavigationbarWidgetState extends State<BottomnavigationbarWidget> {
   @override
   Widget build(BuildContext context) {
     var nombre = widget.nombrePantalla;
-    var ancho = widget.ancho;
+    var ancho = MediaQuery.sizeOf(context).width;
+    var anchoDiseno = widget.ancho;
     var alto = widget.alto;
     var temas = Provider.of<ThemeApk>(context);
     final altoBarra = (alto * 0.09).clamp(64.0, 76.0).toDouble();
-    final tamanoCamara = (ancho * 0.15).clamp(56.0, 72.0).toDouble();
+    final tamanoCamara = (anchoDiseno * 0.15).clamp(56.0, 72.0).toDouble();
     final tamanoIconoCamara = (tamanoCamara * 0.6).clamp(28.0, 40.0).toDouble();
     final altoBarraConCamara = altoBarra + tamanoCamara / 2;
     return Container(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/responsive.dart';
 import 'package:flutter_application_1/services/service_api.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:provider/provider.dart';
@@ -48,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final medidas = MediaQuery.of(context).size;
     final ancho = medidas.width;
+    final anchoTexto = anchoDiseno(context);
     final alto = medidas.height;
     final temas = Provider.of<ThemeApk>(context);
     return Scaffold(
@@ -122,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Text(
                             "ANüikii",
                             style: TextStyle(
-                              fontSize: ancho * 0.07,
+                              fontSize: anchoTexto * 0.07,
                               color: Color.fromARGB(255, 164, 122, 243),
                               fontWeight: FontWeight.bold,
                             ),
@@ -294,7 +296,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     "Ingresar con tus credenciales asignadas del sena",
                                     style: TextStyle(
                                       color: Colors.grey,
-                                      fontSize: ancho * 0.03,
+                                      fontSize: anchoTexto * 0.03,
                                     ),
                                   ),
                                 ),
@@ -423,7 +425,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             size: ancho*0.05,
                                           ),
                                           Text("Acceso seguro Institucional Sena",style: TextStyle(
-                                            fontSize: ancho*0.03
+                                            fontSize: anchoTexto*0.03
                                           ),)
                                         ],
                                       )

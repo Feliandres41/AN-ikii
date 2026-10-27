@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/config/responsive.dart';
 import 'package:flutter_application_1/config/voice_config.dart';
 import 'package:flutter_application_1/models/glosario_model.dart';
 import 'package:flutter_application_1/services/service_api.dart';
@@ -17,6 +18,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String? _claveConsultaPuestoFicha;
+  int? _puestoFicha;
+  bool _consultandoPuestoFicha = false;
+
   /*
   Datos del servidor
   */
@@ -52,13 +57,37 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Map? datosG;
 
+  Future<void> _consultarPuestoFicha(
+    ServiceApi servicio,
+    String programa,
+    String numeroFicha,
+  ) async {
+    if (_consultandoPuestoFicha) return;
+    _consultandoPuestoFicha = true;
+
+    final puesto = await servicio.puestoFichaEnPrograma(
+      programa: programa,
+      numeroFicha: numeroFicha,
+    );
+
+    if (!mounted) return;
+    setState(() {
+      _puestoFicha = puesto;
+      _consultandoPuestoFicha = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final historial = Provider.of<ServiceApi>(context).historial;
     final listaHistorial = historial["historial"] as List? ?? [];
     final _cantidad = listaHistorial.length;
-    final ancho = MediaQuery.of(context).size.width;
+    final ancho = MediaQuery.sizeOf(context).width;
+    final anchoTexto = anchoDiseno(context);
     final alto = MediaQuery.of(context).size.height;
+    final altoTarjetaEstadistica = (alto * 0.09)
+        .clamp(80.0, 120.0)
+        .toDouble();
     final temas = Provider.of<ThemeApk>(context);
     AppBarWidget.info =false;
 
@@ -68,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: !temas.claro ? Color(0xff1F1A38) : temas.fondoClaro,
 
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
+        preferredSize: const Size.fromHeight(AppBarWidget.altura),
         child: AppBarWidget(),
       ),
 
@@ -80,6 +109,21 @@ class _HomeScreenState extends State<HomeScreen> {
               '${dato?['rol']}'.trim().toLowerCase() == 'aprendiz';
 
           datosG = dato;
+          final programa = '${dato?["programa"] ?? ""}'.trim();
+          final numeroFicha = '${dato?["ficha"] ?? ""}'.trim();
+          final claveFicha = '$programa|$numeroFicha';
+          if (esAprendiz &&
+              programa.isNotEmpty &&
+              numeroFicha.isNotEmpty &&
+              _claveConsultaPuestoFicha != claveFicha) {
+            _claveConsultaPuestoFicha = claveFicha;
+            _puestoFicha = null;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) {
+                _consultarPuestoFicha(value, programa, numeroFicha);
+              }
+            });
+          }
 
           return dato == null || dato.isEmpty
               ? Center(
@@ -87,17 +131,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: ThemeApk.fondoModoOscuro,
                   ),
                 )
-              : SingleChildScrollView(
-                  physics: ScrollPhysics(),
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 24),
+              : LayoutBuilder(
+                  builder: (context, constraints) => SingleChildScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: (constraints.maxHeight - 44)
+                            .clamp(0.0, double.infinity),
+                      ),
+                      child: IntrinsicHeight(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 24),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            spacing: alto * 0.02,
 
-                  child: Center(
-                    child: Column(
-                      spacing: alto * 0.02,
-
-                      children: [
-                        SizedBox(),
-
+                            children: [
+                              SizedBox(height: alto * 0.004),
                         CardWidget(
                           ancho: ancho * 0.9,
                           alto: 90,
@@ -145,12 +196,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                           "¡Hola, ${dato["rol"]}!",
 
                                           style: TextStyle(
-                                            fontSize: (ancho * 0.05).clamp(
+                                            fontSize: (anchoTexto * 0.05).clamp(
                                               18.0,
                                               28.0,
-                                            ),
                                           ),
                                         ),
+                                      ),
                                       ),
 
                                       if (esAprendiz)
@@ -158,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           "Ficha: ${dato["ficha"]}",
 
                                           style: TextStyle(
-                                            fontSize: (ancho * 0.03).clamp(
+                                            fontSize: (anchoTexto * 0.03).clamp(
                                               12.0,
                                               16.0,
                                             ),
@@ -175,11 +226,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(height: alto * 0.004),
 
                         // informacion general de la aplicacion
-                        CardWidget(
-                          ancho: ancho * 0.9,
-                          alto: alto * 0.28,
-
-                          decoracion: BoxDecoration(
+                        Container(
+                          width: ancho * 0.9,
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(
                               color: Provider.of<ThemeApk>(
@@ -189,11 +238,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: temas.fondoCartaModo,
                           ),
 
-                          contenido: Padding(
+                          child: Padding(
                             padding: EdgeInsets.only(
                               left: ancho * 0.05,
                               top: alto * 0.01,
                               right: ancho * 0.05,
+                              bottom: alto * 0.02,
                             ),
 
                             child: Column(
@@ -205,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                   style: TextStyle(
                                     color: temas.letrasModoOscuro,
-                                    fontSize: ancho * 0.055,
+                                    fontSize: anchoTexto * 0.055,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -215,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                   style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: ancho * 0.035,
+                                    fontSize: anchoTexto * 0.035,
                                   ),
 
                                   maxLines: 10,
@@ -225,12 +275,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 SizedBox(height: alto * 0.01),
 
                                 Row(
-                                  spacing: ancho * 0.03,
+                                  spacing: anchoTexto * 0.03,
 
                                   children: [
                                     CardWidget(
-                                      ancho: ancho * 0.08,
-                                      alto: ancho * 0.08,
+                                      ancho: anchoTexto * 0.08,
+                                      alto: anchoTexto * 0.08,
 
                                       decoracion: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
@@ -248,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                       style: TextStyle(
                                         color: temas.letrasModoOscuro,
-                                        fontSize: ancho * 0.035,
+                                        fontSize: anchoTexto * 0.035,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -258,12 +308,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 SizedBox(height: alto * 0.015),
 
                                 Row(
-                                  spacing: ancho * 0.03,
+                                  spacing: anchoTexto * 0.03,
 
                                   children: [
                                     CardWidget(
-                                      ancho: ancho * 0.08,
-                                      alto: ancho * 0.08,
+                                      ancho: anchoTexto * 0.08,
+                                      alto: anchoTexto * 0.08,
 
                                       decoracion: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
@@ -281,7 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                       style: TextStyle(
                                         color: temas.letrasModoOscuro,
-                                        fontSize: ancho * 0.035,
+                                        fontSize: anchoTexto * 0.035,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -300,7 +350,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                   child: Center(
                                     child: CardWidget(
-                                      ancho: ancho * 0.9,
+                                      ancho: ancho * 0.8,
                                       alto: alto * 0.05,
 
                                       decoracion: BoxDecoration(
@@ -315,12 +365,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
 
-                                        spacing: ancho * 0.03,
+                                        spacing: anchoTexto * 0.03,
 
                                         children: [
                                           Icon(
                                             Icons.camera_alt_outlined,
-                                            size: ancho * 0.06,
+                                            size: anchoTexto * 0.06,
                                           ),
 
                                           Text(
@@ -328,7 +378,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                             style: TextStyle(
                                               color: temas.letrasModoOscuro,
-                                              fontSize: ancho * 0.04,
+                                              fontSize: anchoTexto * 0.04,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -351,8 +401,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: AnimatedSize(
                             duration: Duration(seconds: 1),
                             curve: Curves.decelerate,
-
-                            child: Container(
+                            child: DecoratedBox(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
                                 border: Border.all(
@@ -362,25 +411,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 color: temas.fondoCartaModo,
                               ),
-
-                              width: ancho * 0.9,
-
-                              // CAMBIO:
-                              // cerrado mantiene tu altura original.
-                              // abierto deja que el contenido determine
-                              // la altura para evitar overflow.
-                              height: glosario ? null : alto * 0.09,
-
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  top: alto * 0.015,
-                                  left: ancho * 0.08,
-                                  right: ancho * 0.08,
-                                ),
-
-                                child: Column(
-                                  children: [
-                                    Row(
+                              child: SizedBox(
+                                width: ancho * 0.9,
+                                child: Flex(
+                                direction: Axis.vertical,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      top: alto * 0.015,
+                                      left: anchoTexto * 0.08,
+                                      right: anchoTexto * 0.08,
+                                      bottom: glosario ? 0 : alto * 0.015,
+                                    ),
+                                    child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
 
@@ -395,7 +439,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               style: TextStyle(
                                                 color: temas.letrasModoOscuro,
-                                                fontSize: ancho * 0.055,
+                                                fontSize: anchoTexto * 0.055,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -405,7 +449,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                               style: TextStyle(
                                                 color: Colors.grey,
-                                                fontSize: ancho * 0.035,
+                                                fontSize: anchoTexto * 0.035,
                                               ),
                                             ),
                                           ],
@@ -423,16 +467,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ? Icons.arrow_right_sharp
                                                 : Icons.arrow_drop_up_sharp,
 
-                                            size: ancho * 0.09,
+                                            size: anchoTexto * 0.075,
 
                                             color: temas.textcardDesc,
                                           ),
                                         ),
                                       ],
                                     ),
-
-                                    glosario
-                                        ? Column(
+                                  ),
+                                  if (glosario)
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left: anchoTexto * 0.08,
+                                        right: anchoTexto * 0.08,
+                                        bottom: alto * 0.015,
+                                      ),
+                                      child: Column(
                                             children: [
                                               SizedBox(height: alto * 0.02),
                                               ...glosarioTecnico.map((
@@ -479,7 +529,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       .nombreEsp,
                                                                   style: TextStyle(
                                                                     fontSize:
-                                                                        ancho *
+                                                                        anchoTexto *
                                                                         0.038,
                                                                     fontWeight:
                                                                         FontWeight
@@ -492,7 +542,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       "EN: ",
                                                                       style: TextStyle(
                                                                         fontSize:
-                                                                            ancho *
+                                                                            anchoTexto *
                                                                             0.033,
                                                                         color: Colors
                                                                             .grey,
@@ -503,7 +553,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           .nombreEng,
                                                                       style: TextStyle(
                                                                         fontSize:
-                                                                            ancho *
+                                                                            anchoTexto *
                                                                             0.035,
                                                                         color: temas
                                                                             .verdeModoOscuroProvider,
@@ -511,7 +561,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                             FontWeight.w600,
                                                                       ),
                                                                     ),
-                                                                  ],
+                                                              ],
                                                                 ),
                                                               ],
                                                             ),
@@ -543,223 +593,228 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ),
                                                   ],
                                                 );
-                                              }),
-                                            ],
-                                          )
-                                        : SizedBox.shrink(),
+                                                }),
+                                              ],
+                                        ),
+                                      ),
                                   ],
                                 ),
                               ),
                             ),
-                          ),
+                            ),
                         ),
 
                         // SizedBox(
                         //   // height: alto * 0.00,
                         // ),
                         Divider(),
-
-                        // SizedBox(
-                        //   height: alto * 0.00,
-                        // ),
-
-                        // historial
-                        // CardWidget(
-                        //   ancho: ancho * 0.9,
-                        //   alto: alto * 0.09,
-
-                        //   decoracion: BoxDecoration(
-                        //     borderRadius: BorderRadius.circular(15),
-                        //     border: Border.all(
-                        //       color: Provider.of<ThemeApk>(
-                        //         context,
-                        //       ).bordercardDesc,
-                        //     ),
-                        //     color: temas.fondoCartaModo
-                        //   ),
-
-                        //   contenido: Padding(
-                        //     padding: EdgeInsets.only(
-                        //       top: alto * 0.015
-                        //     ),
-
-                        //     child: Column(
-                        //       children: [
-                        //         Row(
-                        //           spacing: ancho * 0.07,
-                        //           mainAxisAlignment:
-                        //               MainAxisAlignment.center,
-
-                        //           children: [
-                        //             Column(
-                        //               crossAxisAlignment:
-                        //                   CrossAxisAlignment.center,
-
-                        //               children: [
-                        //                 Text(
-                        //                   "Historial de Escaneos",
-
-                        //                   style: TextStyle(
-                        //                     color:
-                        //                         temas.letrasModoOscuro,
-                        //                     fontSize: ancho * 0.055,
-                        //                     fontWeight: FontWeight.bold
-                        //                   ),
-                        //                 ),
-
-                        //                 Text(
-                        //                   "$cantidad términos guardados",
-
-                        //                   style: TextStyle(
-                        //                     color: Colors.grey,
-                        //                     fontSize: ancho * 0.035,
-                        //                   )
-                        //                 )
-                        //               ],
-                        //             )
-                        //           ],
-                        //         )
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-
-                        // // ranking
-                        // SizedBox(
-                        //   height: alto * 0.004,
-                        // ),
-
-                        // CardWidget(
-                        //   ancho: ancho * 0.9,
-                        //   alto: alto * 0.09,
-
-                        //   decoracion: BoxDecoration(
-                        //     borderRadius: BorderRadius.circular(15),
-                        //     border: Border.all(
-                        //       color: Provider.of<ThemeApk>(
-                        //         context,
-                        //       ).bordercardDesc,
-                        //     ),
-                        //     color: temas.fondoCartaModo
-                        //   ),
-
-                        //   contenido: Padding(
-                        //     padding: EdgeInsets.only(
-                        //       top: alto * 0.015
-                        //     ),
-
-                        //     child: Column(
-                        //       children: [
-                        //         Row(
-                        //           mainAxisAlignment:
-                        //               MainAxisAlignment.center,
-
-                        //           children: [
-                        //             Column(
-                        //               crossAxisAlignment:
-                        //                   CrossAxisAlignment.center,
-
-                        //               children: [
-                        //                 Text(
-                        //                   "Ranking ANüikii",
-
-                        //                   style: TextStyle(
-                        //                     color:
-                        //                         temas.letrasModoOscuro,
-                        //                     fontSize: ancho * 0.055,
-                        //                     fontWeight: FontWeight.bold
-                        //                   ),
-                        //                 ),
-
-                        //                 Text(
-                        //                   "Proximamente",
-
-                        //                   style: TextStyle(
-                        //                     color: const Color.fromARGB(
-                        //                       255,
-                        //                       233,
-                        //                       217,
-                        //                       72
-                        //                     ),
-                        //                     fontSize: ancho * 0.035,
-                        //                   )
-                        //                 )
-                        //               ],
-                        //             ),
-                        //           ],
-                        //         )
-                        //       ],
-                        //     ),
-                        //   ),
-                        // )
                         Padding(
-                          padding: EdgeInsets.only(top: ancho * 0.02),
+                          padding: EdgeInsets.only(top: alto * 0.02),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            spacing: ancho * 0.2,
+                            spacing: anchoTexto * 0.1,
                             children: [
                               CardWidget(
-                                ancho: ancho * 0.35,
-                                alto: alto * 0.09,
-
+                                ancho: ancho * 0.399,
+                                alto: altoTarjetaEstadistica,
                                 decoracion: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
+                                  borderRadius: BorderRadius.circular(18),
                                   border: Border.all(
-                                    color: Provider.of<ThemeApk>(
-                                      context,
-                                    ).bordercardDesc,
+                                    color: temas.bordercardDesc,
                                   ),
                                   color: temas.fondoCartaModo,
-                                ),
-                                contenido: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.history_sharp,
-                                      size: ancho * 0.09,
-                                    ),
-                                    Text(
-                                      "$_cantidad",
-                                      style: TextStyle(fontSize: ancho * 0.05),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withValues(
+                                        alpha: 0.05,
+                                      ),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 4),
                                     ),
                                   ],
+                                ),
+                                contenido: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: (ancho * 0.025).clamp(
+                                      8.0,
+                                      14.0,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    spacing: anchoTexto * 0.025,
+                                    children: [
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color:
+                                              temas.verdeClaroTranslucidoFijo,
+                                          borderRadius:
+                                              BorderRadius.circular(13),
+                                        ),
+                                        child: Icon(
+                                          Icons.history_rounded,
+                                          color: temas.letrasModoOscuro,
+                                          size: 22,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Historial",
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: (anchoTexto * 0.03)
+                                                    .clamp(11.0, 14.0),
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            Text(
+                                              "$_cantidad",
+                                              style: TextStyle(
+                                                color: temas.letrasModoOscuro,
+                                                fontSize: (anchoTexto * 0.05)
+                                                    .clamp(20.0, 26.0),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
 
                               CardWidget(
-                                ancho: ancho * 0.35,
-                                alto: alto * 0.09,
-
+                                ancho: ancho * 0.399,
+                                alto: altoTarjetaEstadistica,
                                 decoracion: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
+                                  borderRadius: BorderRadius.circular(18),
                                   border: Border.all(
-                                    color: Provider.of<ThemeApk>(
-                                      context,
-                                    ).bordercardDesc,
+                                    color: temas.bordercardDesc,
                                   ),
                                   color: temas.fondoCartaModo,
-                                ),
-                                contenido: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.leaderboard_outlined,
-                                      size: ancho * 0.09,
-                                    ),
-                                    Text(
-                                      "0",
-                                      style: TextStyle(fontSize: ancho * 0.05),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withValues(
+                                        alpha: 0.05,
+                                      ),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 4),
                                     ),
                                   ],
+                                ),
+                                contenido: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: (ancho * 0.025).clamp(
+                                      8.0,
+                                      14.0,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    spacing: anchoTexto * 0.025,
+                                    children: [
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color:
+                                              temas.verdeClaroTranslucidoFijo,
+                                          borderRadius:
+                                              BorderRadius.circular(13),
+                                        ),
+                                        child: Icon(
+                                          Icons.leaderboard_rounded,
+                                          color: temas.letrasModoOscuro,
+                                          size: 22,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Puesto ficha",
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: (anchoTexto * 0.03)
+                                                    .clamp(11.0, 14.0),
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            Text(
+                                              _puestoFicha == null
+                                                  ? "—"
+                                                  : "#$_puestoFicha",
+                                              style: TextStyle(
+                                                color: temas.letrasModoOscuro,
+                                                fontSize: (anchoTexto * 0.05)
+                                                    .clamp(20.0, 26.0),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ],
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: ancho * 0.08,
+                            right: ancho * 0.08,
+                            bottom: alto * 0.01,
+                            top: alto * 0.01,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.auto_stories_outlined,
+                                size: anchoTexto * 0.04,
+                                color: temas.verdeClaroTranslucidoFijo,
+                              ),
+                              SizedBox(width: anchoTexto * 0.02),
+                              Flexible(
+                                child: Text(
+                                  "Sigue aprendiendo paso a paso",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: (anchoTexto * 0.03).clamp(
+                                      11.0,
+                                      14.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                );
+                  );
         },
       ),
 
