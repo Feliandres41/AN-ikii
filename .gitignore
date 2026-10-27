@@ -38,6 +38,8 @@ migrate_working_dir/
 **/*.g.dart
 **/linux/flutter/generated/**
 **/windows/flutter/generated/**
+**/windows/flutter/generated_plugin_registrant.*
+**/windows/flutter/generated_plugins.cmake
 **/macos/Flutter/GeneratedPluginRegistrant.swift
 **/ios/Flutter/Generated.xcconfig
 **/linux/flutter/generated_plugin_registrant.*
