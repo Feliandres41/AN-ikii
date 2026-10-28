@@ -5,7 +5,6 @@ import 'package:flutter_application_1/config/voice_config.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:flutter_application_1/widget/app_bar_widget.dart';
 import 'package:flutter_application_1/widget/bottom_navigation_bar_widget.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -15,12 +14,17 @@ class CameraScreen extends StatefulWidget {
   State<CameraScreen> createState() => _CameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class _CameraScreenState extends State<CameraScreen>
+    with WidgetsBindingObserver {
   bool ayuda = true;
   bool cargando = false;
   //camara
   CameraController? _controller;
   List<CameraDescription> cameras = [];
+  bool _isInitializingCamera = false;
+  bool _cameraPaused = false;
+  bool _disposeAfterInitialization = false;
+  Future<void>? _cameraDisposal;
 
   Future<XFile?> tomarFoto() async {
     final controller = _controller;
@@ -53,59 +57,57 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _initializeCamera();
   }
 
-  Future<void> _initializeCamera() async {
-    final cameraPermission = await Permission.camera.request();
-
-    if (!mounted) return;
-
-    if (!cameraPermission.isGranted) {
-      if (cameraPermission.isPermanentlyDenied) {
-        await showDialog<void>(
-          context: context,
-          builder: (dialogContext) => AlertDialog(
-            title: const Text('Permiso de cámara requerido'),
-            content: const Text(
-              'Para usar la cámara, habilita el permiso en Ajustes de la aplicación.',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(),
-                child: const Text('Cancelar'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(dialogContext).pop();
-                  openAppSettings();
-                },
-                child: const Text('Ajustes'),
-              ),
-            ],
-          ),
-        );
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      _cameraPaused = true;
+      if (_isInitializingCamera) {
+        _disposeAfterInitialization = true;
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Necesitamos permiso para usar la cámara.'),
-          ),
-        );
+        _cameraDisposal = _disposeCameraController();
       }
-      return;
+    } else if (state == AppLifecycleState.resumed) {
+      _cameraPaused = false;
+      _disposeAfterInitialization = false;
+      if (_controller == null) {
+        _initializeCamera();
+      }
     }
+  }
+
+  Future<void> _disposeCameraController() async {
+    final controller = _controller;
+    _controller = null;
+    if (mounted) setState(() {});
+    await controller?.dispose();
+  }
+
+  Future<void> _initializeCamera() async {
+    if (_isInitializingCamera || _controller != null || _cameraPaused) return;
+    _isInitializingCamera = true;
+    CameraController? controller;
 
     try {
+      await _cameraDisposal;
+      _cameraDisposal = null;
+      if (!mounted || _cameraPaused) return;
+
       cameras = await availableCameras();
-      if (!mounted) return;
+      if (!mounted || _cameraPaused) return;
 
       if (cameras.isEmpty) {
         return;
       }
 
-      final controller = CameraController(
+      controller = CameraController(
         cameras[0],
         ResolutionPreset.ultraHigh,
+        enableAudio: false,
       );
       _controller = controller;
 
@@ -114,16 +116,46 @@ class _CameraScreenState extends State<CameraScreen> {
       if (!mounted) return;
 
       setState(() {});
+    } on CameraException catch (error) {
+      if (identical(_controller, controller)) {
+        _controller = null;
+        await controller?.dispose();
+      }
+      if (!mounted) return;
+      final mensaje = switch (error.code) {
+        'CameraAccessDenied' =>
+          'Se denegó el permiso de cámara. Vuelve a intentarlo y selecciona Permitir.',
+        'CameraAccessDeniedWithoutPrompt' =>
+          'El acceso a la cámara está desactivado. Habilítalo en Ajustes del iPhone.',
+        'CameraAccessRestricted' =>
+          'El acceso a la cámara está restringido en este dispositivo.',
+        _ =>
+          'No se pudo acceder a la cámara: ${error.description ?? error.code}',
+      };
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(mensaje)));
     } catch (e) {
+      if (identical(_controller, controller)) {
+        _controller = null;
+        await controller?.dispose();
+      }
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('No se pudo inicializar la cámara: $e')),
       );
+    } finally {
+      _isInitializingCamera = false;
+      if (_disposeAfterInitialization && _cameraPaused) {
+        _disposeAfterInitialization = false;
+        await _disposeCameraController();
+      }
     }
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     final controller = _controller;
     _controller = null;
     controller?.dispose();
