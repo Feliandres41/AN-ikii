@@ -5,6 +5,7 @@ import 'package:flutter_application_1/config/voice_config.dart';
 import 'package:flutter_application_1/themes/theme_apk.dart';
 import 'package:flutter_application_1/widget/app_bar_widget.dart';
 import 'package:flutter_application_1/widget/bottom_navigation_bar_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -56,21 +57,69 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Future<void> _initializeCamera() async {
-    cameras = await availableCameras();
+    final cameraPermission = await Permission.camera.request();
+
     if (!mounted) return;
 
-    if (cameras.isEmpty) {
+    if (!cameraPermission.isGranted) {
+      if (cameraPermission.isPermanentlyDenied) {
+        await showDialog<void>(
+          context: context,
+          builder: (dialogContext) => AlertDialog(
+            title: const Text('Permiso de cámara requerido'),
+            content: const Text(
+              'Para usar la cámara, habilita el permiso en Ajustes de la aplicación.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: const Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                  openAppSettings();
+                },
+                child: const Text('Ajustes'),
+              ),
+            ],
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Necesitamos permiso para usar la cámara.'),
+          ),
+        );
+      }
       return;
     }
 
-    final controller = CameraController(cameras[0], ResolutionPreset.ultraHigh);
-    _controller = controller;
+    try {
+      cameras = await availableCameras();
+      if (!mounted) return;
 
-    await controller.initialize();
+      if (cameras.isEmpty) {
+        return;
+      }
 
-    if (!mounted) return;
+      final controller = CameraController(
+        cameras[0],
+        ResolutionPreset.ultraHigh,
+      );
+      _controller = controller;
 
-    setState(() {});
+      await controller.initialize();
+
+      if (!mounted) return;
+
+      setState(() {});
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No se pudo inicializar la cámara: $e')),
+      );
+    }
   }
 
   @override
@@ -275,7 +324,7 @@ class _ResultadoCamara extends StatelessWidget {
                       "Texto en inglés: ${resultado["objeto_eng"] ?? "Sin información"}",
                       style: TextStyle(
                         color: ThemeApk.verdeModoOscuro,
-                        fontSize: tamanoTextoTermino+5,
+                        fontSize: tamanoTextoTermino + 5,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -294,7 +343,7 @@ class _ResultadoCamara extends StatelessWidget {
                   "Pronunciación: ${resultado["pronunciacion"] ?? "Sin información"}",
                   style: TextStyle(
                     color: temas.letrasModoOscuro,
-                    fontSize: tamanoTextoPronunciacion+5,
+                    fontSize: tamanoTextoPronunciacion + 5,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -306,7 +355,7 @@ class _ResultadoCamara extends StatelessWidget {
                   "Texto en español: ${resultado["objeto_esp"] ?? "Sin información"}",
                   style: TextStyle(
                     color: temas.letrasModoOscuro,
-                    fontSize: tamanoTextoPronunciacion+5,
+                    fontSize: tamanoTextoPronunciacion + 5,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
