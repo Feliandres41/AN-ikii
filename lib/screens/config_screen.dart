@@ -178,12 +178,15 @@ class _ConfigScreenState extends State<ConfigScreen> {
                 top: (alto * 0.04).clamp(24.0, 32.0).toDouble(),
                 left: 0,
                 right: 0,
-                child: Text(
-                  "Mi perfil",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: anchoTexto * 0.075,
-                    fontWeight: FontWeight.bold,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Text(
+                    "Mi perfil",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: anchoTexto * 0.075,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),

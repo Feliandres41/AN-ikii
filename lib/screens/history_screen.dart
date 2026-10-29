@@ -170,9 +170,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                       children: [
                                                         Text(
                                                           "Inglés: ${busqueda["objeto_eng"]}",
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
+                                                          softWrap: true,
                                                           style: TextStyle(
                                                             fontSize:
                                                                 anchoTexto *
@@ -197,9 +195,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                                         ),
                                                         Text(
                                                           "Español: ${busqueda["objeto_esp"]}",
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
+                                                          softWrap: true,
                                                           style: TextStyle(
                                                             fontSize:
                                                                 anchoTexto *
