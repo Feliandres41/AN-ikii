@@ -85,11 +85,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final ancho = MediaQuery.sizeOf(context).width;
     final anchoTexto = anchoDiseno(context);
     final alto = MediaQuery.of(context).size.height;
-    final altoTarjetaEstadistica = (alto * 0.09)
-        .clamp(80.0, 120.0)
-        .toDouble();
+    final altoTarjetaEstadistica = (alto * 0.09).clamp(80.0, 120.0).toDouble();
     final temas = Provider.of<ThemeApk>(context);
-    AppBarWidget.info =false;
+    AppBarWidget.info = false;
 
     temas.coloresDeArranque();
 
@@ -136,8 +134,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     physics: const ClampingScrollPhysics(),
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
-                        minHeight: (constraints.maxHeight - 44)
-                            .clamp(0.0, double.infinity),
+                        minHeight: (constraints.maxHeight - 44).clamp(
+                          0.0,
+                          double.infinity,
+                        ),
                       ),
                       child: IntrinsicHeight(
                         child: Padding(
@@ -149,672 +149,717 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             children: [
                               SizedBox(height: alto * 0.004),
-                        CardWidget(
-                          ancho: ancho * 0.9,
-                          alto: 90,
+                              CardWidget(
+                                ancho: ancho * 0.9,
+                                alto: 90,
 
-                          decoracion: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(
-                              color: Provider.of<ThemeApk>(
-                                context,
-                              ).bordercardDesc,
-                            ),
-                            color: temas.fondoCartaModo,
-                          ),
-
-                          contenido: Padding(
-                            padding: const EdgeInsets.only(left: 15),
-
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                              children: [
-                                SizedBox(
-                                  width: 50,
-                                  height: 50,
-
-                                  child: DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      color: ThemeApk.verdeModoOscuro,
-                                      borderRadius: BorderRadius.circular(1000),
-                                    ),
-
-                                    child: const Icon(Icons.person_3_rounded),
+                                decoracion: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  border: Border.all(
+                                    color: Provider.of<ThemeApk>(
+                                      context,
+                                    ).bordercardDesc,
                                   ),
+                                  color: temas.fondoCartaModo,
                                 ),
 
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                contenido: Padding(
+                                  padding: const EdgeInsets.only(left: 15),
+
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
 
                                     children: [
-                                      FittedBox(
-                                        fit: BoxFit.scaleDown,
+                                      SizedBox(
+                                        width: 50,
+                                        height: 50,
 
-                                        child: Text(
-                                          "¡Hola, ${dato["rol"]}!",
-
-                                          style: TextStyle(
-                                            fontSize: (anchoTexto * 0.05).clamp(
-                                              18.0,
-                                              28.0,
-                                          ),
-                                        ),
-                                      ),
-                                      ),
-
-                                      if (esAprendiz)
-                                        Text(
-                                          "Ficha: ${dato["ficha"]}",
-
-                                          style: TextStyle(
-                                            fontSize: (anchoTexto * 0.03).clamp(
-                                              12.0,
-                                              16.0,
+                                        child: DecoratedBox(
+                                          decoration: BoxDecoration(
+                                            color: ThemeApk.verdeModoOscuro,
+                                            borderRadius: BorderRadius.circular(
+                                              1000,
                                             ),
                                           ),
+
+                                          child: const Icon(
+                                            Icons.person_3_rounded,
+                                          ),
                                         ),
+                                      ),
+
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+
+                                          children: [
+                                            FittedBox(
+                                              fit: BoxFit.scaleDown,
+
+                                              child: Text(
+                                                "¡Hola, ${dato["rol"]}!",
+
+                                                style: TextStyle(
+                                                  fontSize: (anchoTexto * 0.05)
+                                                      .clamp(18.0, 28.0),
+                                                ),
+                                              ),
+                                            ),
+
+                                            if (esAprendiz)
+                                              Text(
+                                                "Ficha: ${dato["ficha"]}",
+
+                                                style: TextStyle(
+                                                  fontSize: (anchoTexto * 0.03)
+                                                      .clamp(12.0, 16.0),
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
+                              ),
 
-                        SizedBox(height: alto * 0.004),
+                              SizedBox(height: alto * 0.004),
 
-                        // informacion general de la aplicacion
-                        Container(
-                          width: ancho * 0.9,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(
-                              color: Provider.of<ThemeApk>(
-                                context,
-                              ).bordercardDesc,
-                            ),
-                            color: temas.fondoCartaModo,
-                          ),
-
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              left: ancho * 0.05,
-                              top: alto * 0.01,
-                              right: ancho * 0.05,
-                              bottom: alto * 0.02,
-                            ),
-
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-
-                              children: [
-                                Text(
-                                  "¿Qué tienes frente a ti?",
-
-                                  style: TextStyle(
-                                    color: temas.letrasModoOscuro,
-                                    fontSize: anchoTexto * 0.055,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-
-                                Text(
-                                  "Aprende su nombre técnico, término en inglés y pronunciación.",
-
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: anchoTexto * 0.035,
-                                  ),
-
-                                  maxLines: 10,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-
-                                SizedBox(height: alto * 0.01),
-
-                                Row(
-                                  spacing: anchoTexto * 0.03,
-
-                                  children: [
-                                    CardWidget(
-                                      ancho: anchoTexto * 0.08,
-                                      alto: anchoTexto * 0.08,
-
-                                      decoracion: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Color(0xFFA47AF3),
-                                      ),
-
-                                      contenido: Icon(
-                                        Icons.volume_up_outlined,
-                                        color: temas.blanco,
-                                      ),
-                                    ),
-
-                                    Text(
-                                      "Audio nativo y pronunciación",
-
-                                      style: TextStyle(
-                                        color: temas.letrasModoOscuro,
-                                        fontSize: anchoTexto * 0.035,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                SizedBox(height: alto * 0.015),
-
-                                Row(
-                                  spacing: anchoTexto * 0.03,
-
-                                  children: [
-                                    CardWidget(
-                                      ancho: anchoTexto * 0.08,
-                                      alto: anchoTexto * 0.08,
-
-                                      decoracion: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: temas.verdeClaroTranslucidoFijo,
-                                      ),
-
-                                      contenido: Icon(
-                                        Icons.menu_book_outlined,
-                                        color: temas.blanco,
-                                      ),
-                                    ),
-
-                                    Text(
-                                      "Normas técnicas y SENA",
-
-                                      style: TextStyle(
-                                        color: temas.letrasModoOscuro,
-                                        fontSize: anchoTexto * 0.035,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                SizedBox(height: alto * 0.015),
-
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushReplacementNamed(
+                              // informacion general de la aplicacion
+                              Container(
+                                width: ancho * 0.9,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  border: Border.all(
+                                    color: Provider.of<ThemeApk>(
                                       context,
-                                      "/camera",
-                                    );
-                                  },
+                                    ).bordercardDesc,
+                                  ),
+                                  color: temas.fondoCartaModo,
+                                ),
 
-                                  child: Center(
-                                    child: CardWidget(
-                                      ancho: ancho * 0.8,
-                                      alto: alto * 0.05,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: ancho * 0.05,
+                                    top: alto * 0.01,
+                                    right: ancho * 0.05,
+                                    bottom: alto * 0.02,
+                                  ),
 
-                                      decoracion: BoxDecoration(
-                                        border: Border.all(
-                                          color: temas.bordeModerado,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+
+                                    children: [
+                                      Text(
+                                        "¿Qué tienes frente a ti?",
+
+                                        style: TextStyle(
+                                          color: temas.letrasModoOscuro,
+                                          fontSize: anchoTexto * 0.055,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        color: temas.verdeClaroTranslucidoFijo,
-                                        borderRadius: BorderRadius.circular(10),
                                       ),
 
-                                      contenido: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                      Text(
+                                        "Aprende su nombre técnico, término en inglés y pronunciación.",
 
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: anchoTexto * 0.035,
+                                        ),
+
+                                        maxLines: 10,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+
+                                      SizedBox(height: alto * 0.01),
+
+                                      Row(
                                         spacing: anchoTexto * 0.03,
 
                                         children: [
-                                          Icon(
-                                            Icons.camera_alt_outlined,
-                                            size: anchoTexto * 0.06,
+                                          CardWidget(
+                                            ancho: anchoTexto * 0.08,
+                                            alto: anchoTexto * 0.08,
+
+                                            decoracion: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: Color(0xFFA47AF3),
+                                            ),
+
+                                            contenido: Icon(
+                                              Icons.volume_up_outlined,
+                                              color: temas.blanco,
+                                            ),
                                           ),
 
-                                          Text(
-                                            "Probar escaner",
-
-                                            style: TextStyle(
-                                              color: temas.letrasModoOscuro,
-                                              fontSize: anchoTexto * 0.04,
-                                              fontWeight: FontWeight.w600,
+                                          Expanded(
+                                            child: Text(
+                                              "Audio nativo y pronunciación",
+                                              softWrap: true,
+                                              style: TextStyle(
+                                                color: temas.letrasModoOscuro,
+                                                fontSize: anchoTexto * 0.035,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
 
-                        // glosario
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: alto * 0.02,
-                            bottom: alto * 0.02,
-                          ),
-                          child: AnimatedSize(
-                            duration: Duration(seconds: 1),
-                            curve: Curves.decelerate,
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(
-                                  color: Provider.of<ThemeApk>(
-                                    context,
-                                  ).bordercardDesc,
-                                ),
-                                color: temas.fondoCartaModo,
-                              ),
-                              child: SizedBox(
-                                width: ancho * 0.9,
-                                child: Flex(
-                                direction: Axis.vertical,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: alto * 0.015,
-                                      left: anchoTexto * 0.08,
-                                      right: anchoTexto * 0.08,
-                                      bottom: glosario ? 0 : alto * 0.015,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      SizedBox(height: alto * 0.015),
 
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                      Row(
+                                        spacing: anchoTexto * 0.03,
 
-                                          children: [
-                                            Text(
-                                              "Glosario Técnico",
+                                        children: [
+                                          CardWidget(
+                                            ancho: anchoTexto * 0.08,
+                                            alto: anchoTexto * 0.08,
 
+                                            decoracion: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: temas
+                                                  .verdeClaroTranslucidoFijo,
+                                            ),
+
+                                            contenido: Icon(
+                                              Icons.menu_book_outlined,
+                                              color: temas.blanco,
+                                            ),
+                                          ),
+
+                                          Expanded(
+                                            child: Text(
+                                              "Normas técnicas y SENA",
+                                              softWrap: true,
                                               style: TextStyle(
                                                 color: temas.letrasModoOscuro,
-                                                fontSize: anchoTexto * 0.055,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-
-                                            Text(
-                                              "$cantidadGlosario términos",
-
-                                              style: TextStyle(
-                                                color: Colors.grey,
                                                 fontSize: anchoTexto * 0.035,
+                                                fontWeight: FontWeight.w500,
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
+                                      ),
 
-                                        IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              glosario = !glosario;
-                                            });
-                                          },
+                                      SizedBox(height: alto * 0.015),
 
-                                          icon: Icon(
-                                            !glosario
-                                                ? Icons.arrow_right_sharp
-                                                : Icons.arrow_drop_up_sharp,
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushReplacementNamed(
+                                            context,
+                                            "/camera",
+                                          );
+                                        },
 
-                                            size: anchoTexto * 0.075,
+                                        child: Center(
+                                          child: CardWidget(
+                                            ancho: ancho * 0.8,
+                                            alto: alto * 0.05,
 
-                                            color: temas.textcardDesc,
+                                            decoracion: BoxDecoration(
+                                              border: Border.all(
+                                                color: temas.bordeModerado,
+                                              ),
+                                              color: temas
+                                                  .verdeClaroTranslucidoFijo,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+
+                                            contenido: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+
+                                              spacing: anchoTexto * 0.03,
+
+                                              children: [
+                                                Icon(
+                                                  Icons.camera_alt_outlined,
+                                                  size: anchoTexto * 0.06,
+                                                ),
+
+                                                Text(
+                                                  "Probar escaner",
+
+                                                  style: TextStyle(
+                                                    color:
+                                                        temas.letrasModoOscuro,
+                                                    fontSize: anchoTexto * 0.04,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  if (glosario)
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: anchoTexto * 0.08,
-                                        right: anchoTexto * 0.08,
-                                        bottom: alto * 0.015,
                                       ),
-                                      child: Column(
-                                            children: [
-                                              SizedBox(height: alto * 0.02),
-                                              ...glosarioTecnico.map((
-                                                elemento,
-                                              ) {
-                                                return Column(
-                                                  children: [
-                                                    CardWidget(
-                                                      ancho: double.infinity,
-                                                      alto: alto * 0.07,
-                                                      decoracion: BoxDecoration(
-                                                        color: temas.cardDesc,
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              30,
-                                                            ),
-                                                        border: Border.all(
-                                                          color: temas
-                                                              .bordercardDesc,
-                                                        ),
-                                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
 
-                                                      contenido: Padding(
+                              // glosario
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: alto * 0.02,
+                                  bottom: alto * 0.02,
+                                ),
+                                child: AnimatedSize(
+                                  duration: Duration(seconds: 1),
+                                  curve: Curves.decelerate,
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      border: Border.all(
+                                        color: Provider.of<ThemeApk>(
+                                          context,
+                                        ).bordercardDesc,
+                                      ),
+                                      color: temas.fondoCartaModo,
+                                    ),
+                                    child: SizedBox(
+                                      width: ancho * 0.9,
+                                      child: Flex(
+                                        direction: Axis.vertical,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              top: alto * 0.015,
+                                              left: anchoTexto * 0.08,
+                                              right: anchoTexto * 0.08,
+                                              bottom: glosario
+                                                  ? 0
+                                                  : alto * 0.015,
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+
+                                                  children: [
+                                                    Text(
+                                                      "Glosario Técnico",
+
+                                                      style: TextStyle(
+                                                        color: temas
+                                                            .letrasModoOscuro,
+                                                        fontSize:
+                                                            anchoTexto * 0.055,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+
+                                                    Text(
+                                                      "$cantidadGlosario términos",
+
+                                                      style: TextStyle(
+                                                        color: Colors.grey,
+                                                        fontSize:
+                                                            anchoTexto * 0.035,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+
+                                                IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      glosario = !glosario;
+                                                    });
+                                                  },
+
+                                                  icon: Icon(
+                                                    !glosario
+                                                        ? Icons
+                                                              .arrow_right_sharp
+                                                        : Icons
+                                                              .arrow_drop_up_sharp,
+
+                                                    size: anchoTexto * 0.075,
+
+                                                    color: temas.textcardDesc,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          if (glosario)
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                left: (anchoTexto * 0.04).clamp(
+                                                  12.0,
+                                                  24.0,
+                                                ),
+                                                right: (anchoTexto * 0.04)
+                                                    .clamp(12.0, 24.0),
+                                                bottom: alto * 0.015,
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(height: alto * 0.02),
+                                                  ...glosarioTecnico.map((
+                                                    elemento,
+                                                  ) {
+                                                    return Padding(
+                                                      padding: EdgeInsets.only(
+                                                        bottom: alto * 0.02,
+                                                      ),
+                                                      child: Container(
+                                                        width: double.infinity,
                                                         padding:
-                                                            EdgeInsets.only(
-                                                              left:
-                                                                  ancho * 0.05,
-                                                              top: alto * 0.01,
-                                                              right:
-                                                                  ancho * 0.05,
+                                                            const EdgeInsets.symmetric(
+                                                              horizontal: 14,
+                                                              vertical: 10,
                                                             ),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                  elemento
-                                                                      .nombreEsp,
-                                                                  style: TextStyle(
-                                                                    fontSize:
-                                                                        anchoTexto *
-                                                                        0.038,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ),
-                                                                ),
-                                                                Row(
-                                                                  children: [
-                                                                    Text(
-                                                                      "EN: ",
-                                                                      style: TextStyle(
-                                                                        fontSize:
-                                                                            anchoTexto *
-                                                                            0.033,
-                                                                        color: Colors
-                                                                            .grey,
-                                                                      ),
-                                                                    ),
-                                                                    Text(
-                                                                      elemento
-                                                                          .nombreEng,
-                                                                      style: TextStyle(
-                                                                        fontSize:
-                                                                            anchoTexto *
-                                                                            0.035,
-                                                                        color: temas
-                                                                            .verdeModoOscuroProvider,
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                      ),
-                                                                    ),
-                                                              ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Transform.translate(
-                                                              offset: Offset(
-                                                                0,
-                                                                -5,
+                                                        decoration: BoxDecoration(
+                                                          color: temas.cardDesc,
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                24,
                                                               ),
-                                                              child: IconButton(
-                                                                onPressed: () {
-                                                                  VoiceConfig.hablar(
+                                                          border: Border.all(
+                                                            color: temas
+                                                                .bordercardDesc,
+                                                          ),
+                                                        ),
+                                                        child: Row(
+                                                          children: [
+                                                            Expanded(
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
                                                                     elemento
-                                                                        .nombreEng,
-                                                                  );
-                                                                },
-                                                                icon: Icon(
-                                                                  Icons
-                                                                      .volume_up_outlined,
-                                                                ),
+                                                                        .nombreEsp,
+                                                                    softWrap:
+                                                                        true,
+                                                                    style: TextStyle(
+                                                                      fontSize:
+                                                                          (anchoTexto *
+                                                                                  0.038)
+                                                                              .clamp(
+                                                                                14.0,
+                                                                                22.0,
+                                                                              ),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    height: 4,
+                                                                  ),
+                                                                  Text(
+                                                                    "EN: ${elemento.nombreEng}",
+                                                                    softWrap:
+                                                                        true,
+                                                                    style: TextStyle(
+                                                                      fontSize:
+                                                                          (anchoTexto *
+                                                                                  0.035)
+                                                                              .clamp(
+                                                                                12.0,
+                                                                                20.0,
+                                                                              ),
+                                                                      color: temas
+                                                                          .verdeModoOscuroProvider,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 8,
+                                                            ),
+                                                            IconButton(
+                                                              constraints:
+                                                                  const BoxConstraints.tightFor(
+                                                                    width: 44,
+                                                                    height: 44,
+                                                                  ),
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .zero,
+                                                              onPressed: () {
+                                                                VoiceConfig.hablar(
+                                                                  elemento
+                                                                      .nombreEng,
+                                                                );
+                                                              },
+                                                              icon: const Icon(
+                                                                Icons
+                                                                    .volume_up_outlined,
                                                               ),
                                                             ),
                                                           ],
                                                         ),
                                                       ),
-                                                    ),
-
-                                                    SizedBox(
-                                                      height: alto * 0.03,
-                                                    ),
-                                                  ],
-                                                );
-                                                }),
-                                              ],
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            ),
-                        ),
-
-                        // SizedBox(
-                        //   // height: alto * 0.00,
-                        // ),
-                        Divider(),
-                        Padding(
-                          padding: EdgeInsets.only(top: alto * 0.02),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            spacing: anchoTexto * 0.1,
-                            children: [
-                              CardWidget(
-                                ancho: ancho * 0.399,
-                                alto: altoTarjetaEstadistica,
-                                decoracion: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(18),
-                                  border: Border.all(
-                                    color: temas.bordercardDesc,
-                                  ),
-                                  color: temas.fondoCartaModo,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withValues(
-                                        alpha: 0.05,
-                                      ),
-                                      blurRadius: 12,
-                                      offset: const Offset(0, 4),
-                                    ),
-                                  ],
-                                ),
-                                contenido: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: (ancho * 0.025).clamp(
-                                      8.0,
-                                      14.0,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    spacing: anchoTexto * 0.025,
-                                    children: [
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          color:
-                                              temas.verdeClaroTranslucidoFijo,
-                                          borderRadius:
-                                              BorderRadius.circular(13),
-                                        ),
-                                        child: Icon(
-                                          Icons.history_rounded,
-                                          color: temas.letrasModoOscuro,
-                                          size: 22,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Historial",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: (anchoTexto * 0.03)
-                                                    .clamp(11.0, 14.0),
-                                                fontWeight: FontWeight.w500,
+                                                    );
+                                                  }),
+                                                ],
                                               ),
                                             ),
-                                            Text(
-                                              "$_cantidad",
-                                              style: TextStyle(
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              // SizedBox(
+                              //   // height: alto * 0.00,
+                              // ),
+                              Divider(),
+                              Padding(
+                                padding: EdgeInsets.only(top: alto * 0.02),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  spacing: anchoTexto * 0.1,
+                                  children: [
+                                    CardWidget(
+                                      ancho: ancho * 0.399,
+                                      alto: altoTarjetaEstadistica,
+                                      decoracion: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(18),
+                                        border: Border.all(
+                                          color: temas.bordercardDesc,
+                                        ),
+                                        color: temas.fondoCartaModo,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withValues(
+                                              alpha: 0.05,
+                                            ),
+                                            blurRadius: 12,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      contenido: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: (ancho * 0.025).clamp(
+                                            8.0,
+                                            14.0,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          spacing: anchoTexto * 0.025,
+                                          children: [
+                                            Container(
+                                              width: 40,
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                color: temas
+                                                    .verdeClaroTranslucidoFijo,
+                                                borderRadius:
+                                                    BorderRadius.circular(13),
+                                              ),
+                                              child: Icon(
+                                                Icons.history_rounded,
                                                 color: temas.letrasModoOscuro,
-                                                fontSize: (anchoTexto * 0.05)
-                                                    .clamp(20.0, 26.0),
-                                                fontWeight: FontWeight.bold,
+                                                size: 22,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Historial",
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize:
+                                                          (anchoTexto * 0.03)
+                                                              .clamp(
+                                                                11.0,
+                                                                14.0,
+                                                              ),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "$_cantidad",
+                                                    style: TextStyle(
+                                                      color: temas
+                                                          .letrasModoOscuro,
+                                                      fontSize:
+                                                          (anchoTexto * 0.05)
+                                                              .clamp(
+                                                                20.0,
+                                                                26.0,
+                                                              ),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                                    ),
 
-                              CardWidget(
-                                ancho: ancho * 0.399,
-                                alto: altoTarjetaEstadistica,
-                                decoracion: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(18),
-                                  border: Border.all(
-                                    color: temas.bordercardDesc,
-                                  ),
-                                  color: temas.fondoCartaModo,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withValues(
-                                        alpha: 0.05,
-                                      ),
-                                      blurRadius: 12,
-                                      offset: const Offset(0, 4),
-                                    ),
-                                  ],
-                                ),
-                                contenido: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: (ancho * 0.025).clamp(
-                                      8.0,
-                                      14.0,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    spacing: anchoTexto * 0.025,
-                                    children: [
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          color:
-                                              temas.verdeClaroTranslucidoFijo,
-                                          borderRadius:
-                                              BorderRadius.circular(13),
+                                    CardWidget(
+                                      ancho: ancho * 0.399,
+                                      alto: altoTarjetaEstadistica,
+                                      decoracion: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(18),
+                                        border: Border.all(
+                                          color: temas.bordercardDesc,
                                         ),
-                                        child: Icon(
-                                          Icons.leaderboard_rounded,
-                                          color: temas.letrasModoOscuro,
-                                          size: 22,
-                                        ),
+                                        color: temas.fondoCartaModo,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withValues(
+                                              alpha: 0.05,
+                                            ),
+                                            blurRadius: 12,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ],
                                       ),
-                                      Expanded(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                      contenido: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: (ancho * 0.025).clamp(
+                                            8.0,
+                                            14.0,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          spacing: anchoTexto * 0.025,
                                           children: [
-                                            Text(
-                                              "Puesto ficha",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: (anchoTexto * 0.03)
-                                                    .clamp(11.0, 14.0),
-                                                fontWeight: FontWeight.w500,
+                                            Container(
+                                              width: 40,
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                color: temas
+                                                    .verdeClaroTranslucidoFijo,
+                                                borderRadius:
+                                                    BorderRadius.circular(13),
+                                              ),
+                                              child: Icon(
+                                                Icons.leaderboard_rounded,
+                                                color: temas.letrasModoOscuro,
+                                                size: 22,
                                               ),
                                             ),
-                                            Text(
-                                              _puestoFicha == null
-                                                  ? "—"
-                                                  : "#$_puestoFicha",
-                                              style: TextStyle(
-                                                color: temas.letrasModoOscuro,
-                                                fontSize: (anchoTexto * 0.05)
-                                                    .clamp(20.0, 26.0),
-                                                fontWeight: FontWeight.bold,
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Puesto ficha",
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize:
+                                                          (anchoTexto * 0.03)
+                                                              .clamp(
+                                                                11.0,
+                                                                14.0,
+                                                              ),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    _puestoFicha == null
+                                                        ? "—"
+                                                        : "#$_puestoFicha",
+                                                    style: TextStyle(
+                                                      color: temas
+                                                          .letrasModoOscuro,
+                                                      fontSize:
+                                                          (anchoTexto * 0.05)
+                                                              .clamp(
+                                                                20.0,
+                                                                26.0,
+                                                              ),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: ancho * 0.08,
-                            right: ancho * 0.08,
-                            bottom: alto * 0.01,
-                            top: alto * 0.01,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.auto_stories_outlined,
-                                size: anchoTexto * 0.04,
-                                color: temas.verdeClaroTranslucidoFijo,
-                              ),
-                              SizedBox(width: anchoTexto * 0.02),
-                              Flexible(
-                                child: Text(
-                                  "Sigue aprendiendo paso a paso",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: (anchoTexto * 0.03).clamp(
-                                      11.0,
-                                      14.0,
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: ancho * 0.08,
+                                  right: ancho * 0.08,
+                                  bottom: alto * 0.01,
+                                  top: alto * 0.01,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.auto_stories_outlined,
+                                      size: anchoTexto * 0.04,
+                                      color: temas.verdeClaroTranslucidoFijo,
+                                    ),
+                                    SizedBox(width: anchoTexto * 0.02),
+                                    Flexible(
+                                      child: Text(
+                                        "Sigue aprendiendo paso a paso",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: (anchoTexto * 0.03).clamp(
+                                            11.0,
+                                            14.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ),
                     ),
                   ),
-                  );
+                );
         },
       ),
 
